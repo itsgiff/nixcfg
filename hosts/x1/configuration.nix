@@ -6,14 +6,10 @@
 
 {
   imports = [ 
-    # Include the results of the hardware scan
+    # Hardware config
     ./hardware-configuration.nix
   ];
 
-  #############################################################################
-  #                              BOOT CONFIGURATION                           #
-  #############################################################################
-  
   # Bootloader settings
   boot = {
     # Systemd-boot configuration
@@ -37,10 +33,7 @@
     initrd.systemd.enable = true;
   };
 
-  #############################################################################
-  #                            NETWORK CONFIGURATION                          #
-  #############################################################################
-  
+  # Networking settings
   networking = {
     hostName = "x1";
     networkmanager.enable = true;
@@ -53,17 +46,10 @@
     '';
   };
 
-  #############################################################################
-  #                            LOCALE CONFIGURATION                           #
-  #############################################################################
   
   # Time and locale settings
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
-
-  #############################################################################
-  #                           DESKTOP ENVIRONMENT                             #
-  #############################################################################
   
   # X server and desktop environment
   services.xserver = {
@@ -96,10 +82,6 @@
   ]) ++ (with pkgs.gnome; [
     # Add any other GNOME packages to exclude
   ]);
-
-  #############################################################################
-  #                                  FONTS                                    #
-  #############################################################################
   
   # System fonts
   fonts.packages = with pkgs; [
@@ -110,10 +92,6 @@
     noto-fonts noto-fonts-emoji
     material-icons
   ];
-
-  #############################################################################
-  #                              PRINTING & SCANNING                          #
-  #############################################################################
   
   # CUPS printing service
   services.printing = {
@@ -130,10 +108,6 @@
   
   # Enable printer configuration tool
   programs.system-config-printer.enable = true;
-
-  #############################################################################
-  #                             FILESYSTEM MOUNTS                             #
-  #############################################################################
   
   # NFS mount configurations
   # See: https://nixos.wiki/wiki/NFS
@@ -202,10 +176,6 @@
     (commonAutoMountOptions // { where = "/mnt/docker"; })
     (commonAutoMountOptions // { where = "/mnt/data"; })
   ];
-
-  #############################################################################
-  #                               AUDIO SETUP                                 #
-  #############################################################################
   
   # PipeWire audio system
   security.rtkit.enable = true;
@@ -218,10 +188,6 @@
     };
     pulse.enable = true;
   };
-
-  #############################################################################
-  #                               USER SETUP                                  #
-  #############################################################################
   
   # User account configuration
   users.users.paul = {
@@ -236,10 +202,6 @@
   
   # Sudo configuration
   security.sudo.wheelNeedsPassword = false;
-
-  #############################################################################
-  #                           PACKAGE MANAGEMENT                              #
-  #############################################################################
   
   # Package configuration
   nixpkgs.config = {
@@ -329,20 +291,12 @@
     # Clipboard management
     clipboard-jh
   ];
-
-  #############################################################################
-  #                             PROGRAM SETTINGS                              #
-  #############################################################################
   
   # Enable specific programs
   programs = {
     fish.enable = true;
     dconf.enable = true;
   };
-
-  #############################################################################
-  #                            HARDWARE SUPPORT                               #
-  #############################################################################
   
   # Firmware updates
   services.fwupd.enable = true;
@@ -357,10 +311,6 @@
       # driver = pkgs.libfprint-2-tod1-vfs0090;
     };
   };
-
-  #############################################################################
-  #                           SYSTEM MAINTENANCE                              #
-  #############################################################################
   
   # System version (important for NixOS upgrades - don't change after install)
   system.stateVersion = "23.05";
