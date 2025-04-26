@@ -12,18 +12,18 @@ Legend: [✓] Complete  [⏳] In Progress  [_] Not Started  [⨯] Blocked
   - [✓] Initial commit
   - [✓] Add Gitea remote
   - [✓] Push initial commit
-- [⏳] Ensure Flakes Enabled (NixOS)
-  - [⏳] Check configuration.nix for flakes
-  - [_] Add if needed and apply
-- [_] Create Initial flake.nix
-  - [_] Define inputs (nixpkgs, home-manager, nix-darwin)
-  - [_] Setup outputs with nixosConfigurations and darwinConfigurations
-  - [_] Define mkSystem helper function
-- [_] Create Directory Structure
-  - [_] hosts/{x1,macbook}
-  - [_] users/paul
-  - [_] modules/{shared,nixos,darwin,home,features}
-- [_] Migrate NixOS System Config
+- [✓] Ensure Flakes Enabled (NixOS)
+  - [✓] Check configuration.nix for flakes
+  - [✓] Add if needed and apply
+- [✓] Create Initial flake.nix
+  - [✓] Define inputs (nixpkgs, home-manager, nix-darwin)
+  - [✓] Setup outputs with nixosConfigurations and darwinConfigurations
+  - [✓] Define mkSystem helper function
+- [✓] Create Directory Structure
+  - [✓] hosts/{x1,macbook}
+  - [✓] users/paul
+  - [✓] modules/{shared,nixos,darwin,home,features}
+- [⏳] Migrate NixOS System Config
   - [_] Copy configuration.nix and hardware-configuration.nix
   - [_] Modify with new module structure
   - [_] Update user definition
