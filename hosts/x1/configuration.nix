@@ -1,17 +1,20 @@
 # NixOS Configuration for X1 ThinkPad
-# Maintained as part of nixcfg repository
+# Maintained as part of dotfiles repository
 # Last updated: April 2025
 
-{ config, pkgs, lib, inputs, hostname, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ 
-    # hardware configuration
+    # Include the results of the hardware scan
     ./hardware-configuration.nix
   ];
-  
-  # Bootloader
 
+  #############################################################################
+  #                              BOOT CONFIGURATION                           #
+  #############################################################################
+  
+  # Bootloader settings
   boot = {
     # Systemd-boot configuration
     loader = {
@@ -34,8 +37,10 @@
     initrd.systemd.enable = true;
   };
 
-  # Networking
-
+  #############################################################################
+  #                            NETWORK CONFIGURATION                          #
+  #############################################################################
+  
   networking = {
     hostName = "x1";
     networkmanager.enable = true;
@@ -48,14 +53,19 @@
     '';
   };
 
-  # Locale 
-
+  #############################################################################
+  #                            LOCALE CONFIGURATION                           #
+  #############################################################################
+  
   # Time and locale settings
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  # Desktop
-
+  #############################################################################
+  #                           DESKTOP ENVIRONMENT                             #
+  #############################################################################
+  
+  # X server and desktop environment
   services.xserver = {
     enable = true;
     
@@ -86,9 +96,12 @@
   ]) ++ (with pkgs.gnome; [
     # Add any other GNOME packages to exclude
   ]);
+
+  #############################################################################
+  #                                  FONTS                                    #
+  #############################################################################
   
   # System fonts
-
   fonts.packages = with pkgs; [
     font-awesome
     fira fira-mono fira-code fira-code-symbols
@@ -97,9 +110,12 @@
     noto-fonts noto-fonts-emoji
     material-icons
   ];
+
+  #############################################################################
+  #                              PRINTING & SCANNING                          #
+  #############################################################################
   
   # CUPS printing service
-
   services.printing = {
     enable = true;
     drivers = [ pkgs.hplip ];
@@ -114,6 +130,10 @@
   
   # Enable printer configuration tool
   programs.system-config-printer.enable = true;
+
+  #############################################################################
+  #                             FILESYSTEM MOUNTS                             #
+  #############################################################################
   
   # NFS mount configurations
   # See: https://nixos.wiki/wiki/NFS
@@ -182,6 +202,10 @@
     (commonAutoMountOptions // { where = "/mnt/docker"; })
     (commonAutoMountOptions // { where = "/mnt/data"; })
   ];
+
+  #############################################################################
+  #                               AUDIO SETUP                                 #
+  #############################################################################
   
   # PipeWire audio system
   security.rtkit.enable = true;
@@ -195,9 +219,11 @@
     pulse.enable = true;
   };
 
+  #############################################################################
+  #                               USER SETUP                                  #
+  #############################################################################
   
   # User account configuration
-
   users.users.paul = {
     isNormalUser = true;
     description = "paul";
@@ -211,9 +237,11 @@
   # Sudo configuration
   security.sudo.wheelNeedsPassword = false;
 
+  #############################################################################
+  #                           PACKAGE MANAGEMENT                              #
+  #############################################################################
   
   # Package configuration
-
   nixpkgs.config = {
     allowUnfree = true;
     # allowBroken = true; # Uncomment if needed
@@ -245,7 +273,7 @@
     bitwarden gnupg
     
     # Desktop applications
-    firefox google-chrome
+    firefox google-chrome # brave (commented out)
     vscode
     signal-desktop-bin discord
     thunderbird
@@ -302,17 +330,21 @@
     clipboard-jh
   ];
 
+  #############################################################################
+  #                             PROGRAM SETTINGS                              #
+  #############################################################################
   
-  # Enable specific applications
-
+  # Enable specific programs
   programs = {
     fish.enable = true;
     dconf.enable = true;
   };
 
+  #############################################################################
+  #                            HARDWARE SUPPORT                               #
+  #############################################################################
   
   # Firmware updates
-
   services.fwupd.enable = true;
   
   # Fingerprint reader support
@@ -326,6 +358,9 @@
     };
   };
 
+  #############################################################################
+  #                           SYSTEM MAINTENANCE                              #
+  #############################################################################
   
   # System version (important for NixOS upgrades - don't change after install)
   system.stateVersion = "23.05";

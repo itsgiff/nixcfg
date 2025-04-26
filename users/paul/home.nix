@@ -1,13 +1,23 @@
-{ config, pkgs, lib, inputs, hostname, ... }:
+{ config, pkgs, ... }:
 
 {
+  # Import all module configurations
+  imports = [
+    ./modules/fish.nix
+    ./modules/git.nix
+    ./modules/vscode.nix # must be installed in configuration.nix and settings managed here
+    ./modules/fastfetch.nix
+    # Add more modules here as you create them
+    
+    # Import host-specific configuration
+    ./hosts/x1.nix
+  ];
+
   # User information
   home.username = "paul";
-  home.homeDirectory = if pkgs.stdenv.isLinux 
-                      then "/home/${config.home.username}" 
-                      else "/Users/${config.home.username}";
-  
-  # Home Manager Release
+  home.homeDirectory = "/home/paul";
+
+  # Home Manager release
   home.stateVersion = "23.05";
 
   # Allow unfree packages
@@ -18,13 +28,11 @@
   home.packages = with pkgs; [
     htop
     ripgrep
-  ] 
-  # Conditional for fastfetch if available
-  ++ (if pkgs ? fastfetch then [ pkgs.fastfetch ] else []);
-
-  # Enable Home Manager
-  programs.home-manager.enable = true;
+] ++ (if pkgs ? fastfetch then [ pkgs.fastfetch ] else []);
 
   # Dotfiles (if needed)
   home.file = {};
+
+  # Let Home Manager install and manage itself
+  programs.home-manager.enable = true;
 }
