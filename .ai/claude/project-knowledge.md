@@ -35,7 +35,14 @@ Primary structure:
 ├── users/                      # User-specific configurations
 │   └── paul/
 │       └── home.nix            # Home Manager configuration
-└── secrets/                    # Secret management (if using sops-nix)
+├── secrets/                    # Secret management (if using sops-nix)
+└── docs/                       # Project documentation
+    ├── plan.md                 # Detailed implementation plan
+    └── tracker.md              # Project progress tracker
+
+## Project Management
+- Implementation Plan (docs/plan.md): Detailed step-by-step guide for implementing the configuration
+- Progress Tracker (docs/tracker.md): Checklist to track progress through each phase of the project
 
 ## Gitea Repo 
 - url: git@gitea:paul/nixcfg.git
@@ -57,6 +64,8 @@ Primary structure:
 - Use conditional configurations based on platform (isLinux/isDarwin)
 - Commit frequently with descriptive messages following conventional commits
 - Test changes incrementally on each platform
+- Regularly update the tracker to reflect progress
+- Follow the implementation plan for a structured approach
 
 ## Implementation Approach
 - Start with minimal working configuration
@@ -76,3 +85,5 @@ Primary structure:
 - configuration.nix: System-specific settings
 - home.nix: User environment configuration
 - Feature modules: Specific software/settings organized by function
+- docs/plan.md: Detailed implementation steps for each phase
+- docs/tracker.md: Checklist to track completion status of each step

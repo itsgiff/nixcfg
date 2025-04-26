@@ -29,7 +29,10 @@ This repository contains a reproducible, declarative configuration for my comput
 ├── users/                      # User-specific configurations
 │   └── paul/
 │       └── home.nix            # Home Manager configuration
-└── secrets/                    # Secret management (using sops-nix)
+├── secrets/                    # Secret management (using sops-nix)
+└── docs/                       # Project documentation
+    ├── plan.md                 # Detailed implementation plan
+    └── tracker.md              # Project progress tracker
 ```
 
 ## Usage
@@ -61,6 +64,11 @@ darwin-rebuild switch --flake .#macbook
 - **Transitional:** Homebrew/Mac App Store support for macOS-specific applications
 - **Secure:** Secret management with encrypted files (using sops-nix)
 - **AI-assisted:** Includes documentation and templates for AI assistants to help with configuration
+
+## Project Management
+
+- **Implementation Plan:** The `docs/plan.md` file contains a detailed, step-by-step guide for implementing the configuration across both systems
+- **Progress Tracker:** The `docs/tracker.md` file provides a checklist to track implementation progress through each phase of the project
 
 ## Requirements
 
