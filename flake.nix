@@ -25,33 +25,34 @@
       };
 
       mkSystem = { hostname, system, pkgs, modules }:
-        if pkgs.stdenv.isLinux then
-          nixpkgs.lib.nixosSystem {
-            inherit system;
-            specialArgs = { inherit inputs hostname; };
-            modules = modules ++ [
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.paul = import ./users/paul/home.nix;
-              }
-            ];
-          }
-        else if pkgs.stdenv.isDarwin then
-          nix-darwin.lib.darwinSystem {
-            inherit system;
-            specialArgs = { inherit inputs hostname; };
-            modules = modules ++ [
-              home-manager.darwinModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.paul = import ./users/paul/home.nix;
-              }
-            ];
-          };
-
+      if pkgs.stdenv.isLinux then
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs hostname; };
+          modules = modules ++ [
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.paul = import ./users/paul/home.nix;
+            }
+          ];
+        }
+      else if pkgs.stdenv.isDarwin then
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit inputs hostname; };
+          modules = modules ++ [
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.paul = import ./users/paul/home.nix;
+            }
+          ];
+        }
+      else
+        throw "Unsupported system: ${system}";
     in {
       nixosConfigurations.x1 = mkSystem {
         hostname = systems.x1.hostname;
