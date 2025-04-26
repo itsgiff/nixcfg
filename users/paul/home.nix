@@ -1,28 +1,26 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, hostname, ... }:
 
 {
   # Import all module configurations
-  imports = [
-    ./modules/fish.nix
-    ./modules/git.nix
-    ./modules/vscode.nix # must be installed in configuration.nix and settings managed here
-    ./modules/fastfetch.nix
-    # Add more modules here as you create them
-    
-    # Import host-specific configuration
-    ./hosts/x1.nix
-  ];
+imports = [
+  ../../modules/features/fish.nix
+  ../../modules/features/git.nix
+  ../../modules/features/vscode.nix
+  ../../modules/features/fastfetch.nix
+  # Comment out this conditional import for now
+  # (if hostname == "x1" then ../../hosts/x1/home.nix else ../../hosts/macbook/home.nix)
+];
 
   # User information
-  home.username = "paul";
-  home.homeDirectory = "/home/paul";
+home.username = "paul";
+home.homeDirectory = if pkgs.stdenv.isLinux then "/home/paul" else "/Users/paul";
 
   # Home Manager release
   home.stateVersion = "23.05";
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = (_: true);  
+#  nixpkgs.config.allowUnfree = true;
+#  nixpkgs.config.allowUnfreePredicate = (_: true);  
 
   # Basic packages that don't need dedicated modules
   home.packages = with pkgs; [

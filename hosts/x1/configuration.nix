@@ -2,7 +2,7 @@
 # Maintained as part of dotfiles repository
 # Last updated: April 2025
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, hostname, ... }:
 
 {
   imports = [ 

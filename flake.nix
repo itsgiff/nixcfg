@@ -29,7 +29,7 @@
           ./hosts/x1/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
+            home-manager.useGlobalPkgs = false;
             home-manager.useUserPackages = true;
             home-manager.users.paul = import ./users/paul/home.nix;
           }
@@ -43,7 +43,7 @@
           ./hosts/macbook/configuration.nix
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
+            home-manager.useGlobalPkgs = false;
             home-manager.useUserPackages = true;
             home-manager.users.paul = import ./users/paul/home.nix;
           }
