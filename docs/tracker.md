@@ -23,22 +23,22 @@ Legend: [✓] Complete  [⏳] In Progress  [_] Not Started  [⨯] Blocked
   - [✓] hosts/{x1,macbook}
   - [✓] users/paul
   - [✓] modules/{shared,nixos,darwin,home,features}
-- [⏳] Migrate NixOS System Config
-  - [_] Copy configuration.nix and hardware-configuration.nix
-  - [_] Modify with new module structure
-  - [_] Update user definition
-- [_] Migrate Home Manager Config
-  - [_] Copy existing home.nix
-  - [_] Adapt for cross-platform use
-  - [_] Add conditionals (isLinux/isDarwin)
-- [_] Initial NixOS Build & Test
-  - [_] Run nix flake check
-  - [_] Run nixos-rebuild switch
-  - [_] Fix any errors
-- [_] Commit & Push NixOS Setup
-  - [_] Generate flake.lock
-  - [_] Commit changes
-  - [_] Push to Gitea
+- [✓] Migrate NixOS System Config
+  - [✓] Copy configuration.nix and hardware-configuration.nix
+  - [✓] Modify with new module structure
+  - [✓] Update user definition
+- [✓] Migrate Home Manager Config
+  - [✓] Copy existing home.nix
+  - [✓] Adapt for cross-platform use
+  - [✓] Add conditionals (isLinux/isDarwin)
+- [✓] Initial NixOS Build & Test
+  - [✓] Run nix flake check
+  - [✓] Run nixos-rebuild switch
+  - [✓] Fix any errors
+- [✓] Commit & Push NixOS Setup
+  - [✓] Generate flake.lock
+  - [✓] Commit changes
+  - [✓] Push to Gitea
 
 ## Phase 2: macOS Integration (on macbook)
 - [_] Clone Repository
