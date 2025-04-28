@@ -7,7 +7,7 @@
   # Basic system settings
   system.stateVersion = 4;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.enable = true;
+  nix.enable = false;
   
   # User configuration
   users.users.paul = {

@@ -1,5 +1,5 @@
 {
-    description = "My unified Nix configurations for x1 (NixOS) and macbook (macOS)";
+    description = "Unified Nix configurations for x1 (NixOS) and macbook (macOS)";
   
     inputs = {
       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -43,6 +43,10 @@
           specialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
           modules = [
             ./hosts/macbook/configuration.nix
+            {
+              nixpkgs.config.allowUnfree = true;
+              # Other global nixpkgs settings here
+            }
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
