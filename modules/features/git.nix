@@ -86,6 +86,7 @@
         "/mnt/files/Google Drive/Projects/pull-request-coffee/operations"
         "/mnt/data/dotfiles"
         "/mnt/data/infrastructure"
+        "/mnt/data/run"        
         "/mnt/data/nixconfig"
         "/mnt/data/scripts"
         "/mnt/data/ssh-keys"
