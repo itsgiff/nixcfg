@@ -1,3 +1,5 @@
+# ~/.nixcfg/modules/fish.nix
+
 { config, pkgs, ... }:
 
 {
@@ -44,23 +46,6 @@
       # flakeCfg = "nano .config/home-manager/flake.nix";
       # hwCfg = "sudo nano /etc/nixos/hardware-configuration.nix";
       # update = "nixUpdate; nixUpgrade; homeSwitch";
-    };
-
-    functions = {
-      fish_greeting = {
-        description = "Greeting to show when starting a fish shell";
-        body = "";
-      };
-      mkdcd = {
-        description = "Make a directory tree and enter it";
-        body = "mkdir -p $argv[1]; and cd $argv[1]";
-      };
-      
-      # New function to edit any file in the nixcfg repository
-      nixedit = {
-        description = "Edit a file in the Nix configuration";
-        body = "cd ~/.nixcfg && $EDITOR $argv[1]";
-      };
     };
   };
 }

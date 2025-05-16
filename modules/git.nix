@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   programs.git = {
@@ -67,7 +67,7 @@
         whitespace = "trailing-space,space-before-tab";
         fileMode = true;
         autocrlf = "input";
-        excludesFile = "/Users/paul/.gitignore_global";
+        # Removed hardcoded excludesFile - Home Manager handles this
       };
 
       color.ui = "auto";
@@ -82,18 +82,28 @@
 
       pull.rebase = false;
 
-      safe.directory = [
-        "/mnt/files/Google Drive/Projects/pull-request-coffee/operations"
-        "/mnt/data/dotfiles"
-        "/mnt/data/infrastructure"
-        "/mnt/data/run"        
-        "/mnt/data/nixconfig"
-        "/mnt/data/scripts"
-        "/mnt/data/ssh-keys"
-        "/mnt/data"
-        "/mnt/files"
-
-        # Add others here if needed
+      # Platform-specific safe directories
+      safe.directory = lib.mkMerge [
+        # Common directories (if any)
+        []
+        
+        # Linux-specific directories
+        (lib.mkIf pkgs.stdenv.isLinux [
+          "/mnt/files/Google Drive/Projects/pull-request-coffee/operations"
+          "/mnt/data/dotfiles"
+          "/mnt/data/infrastructure"
+          "/mnt/data/run"        
+          "/mnt/data/nixconfig"
+          "/mnt/data/scripts"
+          "/mnt/data/ssh-keys"
+          "/mnt/data"
+          "/mnt/files"
+        ])
+        
+        # macOS-specific directories (add any if needed)
+        (lib.mkIf pkgs.stdenv.isDarwin [
+          # Add macOS paths that need safe.directory here
+        ])
       ];
     };
   };
