@@ -1,37 +1,45 @@
 # NixOS Configuration for X1 ThinkPad
 # Maintained as part of dotfiles repository
-# Last updated: April 2025
+# Last updated: May 2025
 
 { config, pkgs, lib, inputs, hostname, ... }:
 
 {
   imports = [ 
-    # Hardware config
     ./hardware-configuration.nix
   ];
 
   # Bootloader settings
-  boot = {
-    # Systemd-boot configuration
-    loader = {
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 5;
-        consoleMode = "max";
-      };
-      efi.canTouchEfiVariables = true;
-    };
-    
-    # Kernel parameters
-    kernel.sysctl = { "vm.swappiness" = 10; };
-    
-    # Plymouth boot splash
-    plymouth = {
-      enable = true;
-      theme = "breeze";
-    };
-    initrd.systemd.enable = true;
-  };
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
+  boot.loader.systemd-boot.consoleMode = "max";
+  boot.loader.efi.canTouchEfiVariables = true;
+  # Plymouth boot splash
+  boot.plymouth.enable = true;
+  boot.plymouth.theme ="breeze";
+  # Enble systemd
+  boot.initrd.systemd.enable = true;
+
+#  boot = {
+#    loader = {
+#      systemd-boot = {
+#        enable = true;
+#        configurationLimit = 5;
+#        consoleMode = "max";
+#      };
+#      efi.canTouchEfiVariables = true;
+#    };
+#    
+#    # Kernel parameters
+#    kernel.sysctl = { "vm.swappiness" = 10; };
+#    
+#    # Plymouth boot splash
+#    plymouth = {
+#      enable = true;
+#      theme = "breeze";
+#    };
+#    initrd.systemd.enable = true;
+#  };
 
   # Networking settings
   networking = {
