@@ -1,68 +1,106 @@
 {
-    description = "Unified Nix configurations for x1 (NixOS) and macbook (macOS)";
-  
-    inputs = {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
+  description = "Unified Nix configurations for x1 (NixOS), macbook (macOS), and nuc (NixOS)";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }@inputs:
+    let
+      systems = {
+        x1 = { hostname = "x1"; system = "x86_64-linux"; username = "paul"; };
+        macbook = { hostname = "macbook"; system = "aarch64-darwin"; username = "paul"; };
+        nuc = { hostname = "nuc"; system = "x86_64-linux"; username = "admin"; };
       };
-  
-      nix-darwin = {
-        url = "github:LnL7/nix-darwin";
-        inputs.nixpkgs.follows = "nixpkgs";
+    in {
+      # NixOS configuration for x1
+      nixosConfigurations.x1 = nixpkgs.lib.nixosSystem {
+        system = systems.x1.system;
+        specialArgs = { inherit inputs; hostname = systems.x1.hostname; };
+        modules = [
+          ./hosts/x1/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            # Pass hostname to Home Manager
+            home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
+            home-manager.users.${systems.x1.username} = import ./users/paul/home.nix;
+          }
+        ];
+      };
+
+      # NixOS configuration for nuc
+      nixosConfigurations.nuc = nixpkgs.lib.nixosSystem {
+        system = systems.nuc.system;
+        specialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
+        modules = [
+          ./hosts/nuc/configuration.nix  # You'll need to create this file
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            # Pass hostname to Home Manager
+            home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
+            home-manager.users.${systems.nuc.username} = import ./users/paul/home.nix;  # Using the same home.nix
+          }
+        ];
+      };
+
+      # Darwin configuration
+      darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+        system = systems.macbook.system;
+        specialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
+        modules = [
+          ./hosts/macbook/configuration.nix
+          {
+            nixpkgs.config.allowUnfree = true;
+            # Other global nixpkgs settings here
+          }
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            # Pass hostname to Home Manager
+            home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
+            home-manager.users.${systems.macbook.username} = import ./users/paul/home.nix;
+          }
+        ];
+      };
+
+      # Home Manager standalone configurations
+      homeConfigurations."paul@x1" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${systems.x1.system};
+        extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
+        modules = [
+          ./users/paul/home.nix
+        ];
+      };
+      
+      homeConfigurations."paul@macbook" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${systems.macbook.system};
+        extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
+        modules = [
+          ./users/paul/home.nix
+        ];
+      };
+      
+      homeConfigurations."admin@nuc" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${systems.nuc.system};
+        extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
+        modules = [
+          ./users/paul/home.nix
+        ];
       };
     };
-  
-    outputs = { self, nixpkgs, home-manager, nix-darwin, ... }@inputs:
-      let
-        systems = {
-          x1 = { hostname = "x1"; system = "x86_64-linux"; };
-          macbook = { hostname = "macbook"; system = "aarch64-darwin"; };
-        };
-      in {
-        # NixOS configuration
-        nixosConfigurations.x1 = nixpkgs.lib.nixosSystem {
-          system = systems.x1.system;
-          specialArgs = { inherit inputs; hostname = systems.x1.hostname; };
-          modules = [
-            ./hosts/x1/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.paul = import ./users/paul/home.nix;
-            }
-          ];
-        };
-  
-        # Darwin configuration
-        darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
-          system = systems.macbook.system;
-          specialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
-          modules = [
-            ./hosts/macbook/configuration.nix
-            {
-              nixpkgs.config.allowUnfree = true;
-              # Other global nixpkgs settings here
-            }
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.paul = import ./users/paul/home.nix;
-            }
-          ];
-        };
-  
-        # Home Manager standalone configuration (for command: home-manager switch --flake)
-        homeConfigurations."paul@x1" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${systems.x1.system};
-          extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
-          modules = [
-            ./users/paul/home.nix
-          ];
-        };
-      };
-  }
+}

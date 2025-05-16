@@ -1,9 +1,24 @@
 { config, pkgs, lib, inputs, hostname, ... }:
 
+let
+  # Map of hostnames to usernames
+  userMapping = {
+    "x1" = "paul";         # ThinkPad
+    "macbook" = "paul";    # MacBook
+    "nuc" = "admin";       # NUC with admin username
+    # Add other machines as needed
+  };
+  
+  # Get username based on hostname, defaulting to "paul" if not found
+  username = userMapping.${hostname} or "paul";
+in
 {
-  # User information
-  home.username = "paul";
-  home.homeDirectory = if pkgs.stdenv.isLinux then "/home/paul" else "/Users/paul";
+  # Dynamic user information based on hostname
+  home.username = username;
+  home.homeDirectory = 
+    if pkgs.stdenv.isLinux then "/home/${username}" 
+    else if pkgs.stdenv.isDarwin then "/Users/${username}"
+    else "/home/${username}";  # Fallback
 
   # Import all your modules
   imports = [
@@ -13,7 +28,7 @@
   ];
 
   # Home Manager release
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 
   # Allow unfree packages
   #  nixpkgs.config.allowUnfree = true;
