@@ -9,7 +9,7 @@
     ./hardware-configuration.nix
   ];
 
-  # Bootloader settings
+  # Bootloader configuration
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.systemd-boot.consoleMode = "max";
@@ -20,75 +20,35 @@
   # Enble systemd
   boot.initrd.systemd.enable = true;
 
-#  boot = {
-#    loader = {
-#      systemd-boot = {
-#        enable = true;
-#        configurationLimit = 5;
-#        consoleMode = "max";
-#      };
-#      efi.canTouchEfiVariables = true;
-#    };
-#    
-#    # Kernel parameters
-#    kernel.sysctl = { "vm.swappiness" = 10; };
-#    
-#    # Plymouth boot splash
-#    plymouth = {
-#      enable = true;
-#      theme = "breeze";
-#    };
-#    initrd.systemd.enable = true;
-#  };
-
-  # Networking settings
+  # Networking configuration
   networking = {
     hostName = "x1";
     networkmanager.enable = true;
-    
-    # Static host entries
-    extraHosts = ''
-      10.10.1.50 storage
-      10.10.1.60 media
-      10.10.2.8 nuc
-    '';
   };
 
-  
-  # Time and locale settings
+  # Localization and timezone
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
   
-  # X server and desktop environment
+  # X11 and display configuration 
   services.xserver = {
     enable = true;
-    
-    # Display manager and desktop environment
     displayManager.gdm.enable = true;
-    desktopManager = {
-      gnome.enable = true;
-      xterm.enable = false;
-    };
-    
-    # Remove unnecessary packages
-    excludePackages = [ pkgs.xterm ];
-    
-    # Keyboard layout
+    displayManager.gdm.autoSuspend = false;
+    desktopManager.gnome.enable = true;
     xkb = {
       layout = "us";
       variant = "";
     };
   };
-  
-  # GNOME specific services
+      
+  # GNOME Services
   services.gnome.gnome-keyring.enable = true;
   
-  # Exclude unnecessary GNOME packages
+  # Exclude GNOME packages
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
     gnome-tour
-  ]) ++ (with pkgs.gnome; [
-    # Add any other GNOME packages to exclude
   ]);
   
   # System fonts
@@ -100,22 +60,6 @@
     noto-fonts noto-fonts-emoji
     material-icons
   ];
-  
-  # CUPS printing service
-  services.printing = {
-    enable = true;
-    drivers = [ pkgs.hplip ];
-  };
-  
-  # Avahi for printer discovery
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-  
-  # Enable printer configuration tool
-  programs.system-config-printer.enable = true;
   
   # NFS mount configurations
   # See: https://nixos.wiki/wiki/NFS
