@@ -2,9 +2,9 @@
   description = "Unified Nix configurations for x1 (NixOS), macbook (macOS), and nuc (NixOS)";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     
-    # Add back nixos-hardware for NUC support
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     home-manager = {
