@@ -22,10 +22,9 @@
   # Blacklist nouveau
   boot.blacklistedKernelModules = [ "nouveau" ];
   
-  # Use openGL (for NixOS 23.11)
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
   
   # Use the older Docker NVIDIA setup compatible with 23.11
@@ -33,8 +32,8 @@
   
   # NVIDIA Packages
   environment.systemPackages = with pkgs; [
-    # cudatoolkit  # Uncomment if needed
-    # nvtop        # Uncomment if needed
+    cudatoolkit  d
+    nvtop       
     pciutils
     glxinfo
   ];
