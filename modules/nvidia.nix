@@ -1,4 +1,4 @@
-# ~/.nixcfg/modules/nvidia.nix                                                
+# ~/.nixcfg/modules/nvidia.nix
 { config, pkgs, ... }:
 
 {
@@ -23,17 +23,20 @@
   # Set kernel parameters for NVIDIA
   boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
   
-  # Use openGL
-  hardware.opengl = {
+  # Use graphics instead of openGL (updated syntax)
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
   
-  # Alternative NVIDIA Docker setup (for older NixOS versions)
+  # Updated NVIDIA container toolkit setup
   virtualisation.docker = {
     enable = true;
-    enableNvidia = true;
   };
+  
+  # Use the newer NVIDIA container toolkit configuration
+  virtualisation.podman.enableNvidia = true;
+  # hardware.nvidia.container.enable = true;
  
   # NVIDIA Packages
   environment.systemPackages = [
