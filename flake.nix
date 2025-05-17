@@ -2,8 +2,8 @@
   description = "Unified Nix configurations for x1 (NixOS), macbook (macOS), and nuc (NixOS)";
 
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
