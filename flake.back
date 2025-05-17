@@ -3,9 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    
-    # Add back nixos-hardware for NUC support
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -18,7 +15,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }@inputs:
     let
       systems = {
         x1 = { hostname = "x1"; system = "x86_64-linux"; username = "paul"; };
@@ -38,6 +35,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
+            # CHANGED: Use proper module import syntax
             home-manager.users.${systems.x1.username} = ./users/paul/home.nix;
           }
         ];
@@ -49,16 +47,14 @@
         specialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
         modules = [
           ./hosts/nuc/configuration.nix
-          nixos-hardware.nixosModules.common-cpu-intel
-          # Add other hardware modules as needed
           { nixpkgs.config.allowUnfree = true; }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
-            # Point to the correct home.nix file for admin user
-            home-manager.users.${systems.nuc.username} = ./users/admin/home.nix;
+            # CHANGED: Use proper module import syntax
+            home-manager.users.${systems.nuc.username} = ./users/paul/home.nix;
           }
         ];
       };
@@ -77,6 +73,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
+            # CHANGED: Use proper module import syntax
             home-manager.users.${systems.macbook.username} = ./users/paul/home.nix;
           }
         ];
@@ -87,6 +84,7 @@
         pkgs = nixpkgs.legacyPackages.${systems.x1.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
         modules = [
+          # CHANGED: No need to import explicitly
           ./users/paul/home.nix
           { nixpkgs.config.allowUnfree = true; }
         ];
@@ -96,6 +94,7 @@
         pkgs = nixpkgs.legacyPackages.${systems.macbook.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
         modules = [
+          # CHANGED: No need to import explicitly
           ./users/paul/home.nix
           { nixpkgs.config.allowUnfree = true; }
         ];
@@ -105,7 +104,8 @@
         pkgs = nixpkgs.legacyPackages.${systems.nuc.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
         modules = [
-          ./users/admin/home.nix
+          # CHANGED: No need to import explicitly
+          ./users/paul/home.nix
           { nixpkgs.config.allowUnfree = true; }
         ];
       };
