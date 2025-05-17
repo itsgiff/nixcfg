@@ -25,7 +25,6 @@
   # Use openGL (for NixOS 23.11)
   hardware.opengl = {
     enable = true;
-    driSupport = true;
     driSupport32Bit = true;
   };
   
