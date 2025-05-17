@@ -25,7 +25,7 @@ in
     ../../modules/fastfetch.nix
     ../../modules/git.nix
     ../../modules/vscode.nix
-    (builtins.toString ./fish.nix)  # Use a string conversion
+    ./fish.nix
   ];
 
   # Home Manager release
