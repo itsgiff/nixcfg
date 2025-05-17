@@ -1,6 +1,6 @@
-# ~/.nixcfg/modules/fish.nix
+# ~/.nixcfg/users/paul/fish.nix
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Fish Shell configuration
@@ -35,17 +35,6 @@
       nixOpt = "nix-store --optimise";
       restartDesktop = "sudo systemctl restart display-manager.service";
       
-      # Legacy aliases (can be removed later)
-      # homeCfg = "nano /home/paul/.config/home-manager/home.nix";
-      # homeSwitch = "home-manager switch";
-      # nixCfg = "sudo nano /etc/nixos/configuration.nix";
-      # nixBuild = "sudo nixos-rebuild switch";
-      # nixBoot = "sudo nixos-rebuild boot";
-      # nixUpdate = "nix-channel --update";
-      # nixUpgrade = "sudo nixos-rebuild switch --upgrade";
-      # flakeCfg = "nano .config/home-manager/flake.nix";
-      # hwCfg = "sudo nano /etc/nixos/hardware-configuration.nix";
-      # update = "nixUpdate; nixUpgrade; homeSwitch";
     };
   };
 }

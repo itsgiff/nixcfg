@@ -34,9 +34,9 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # Pass hostname to Home Manager
             home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
-            home-manager.users.${systems.x1.username} = import ./users/paul/home.nix;
+            # CHANGED: Use proper module import syntax
+            home-manager.users.${systems.x1.username} = ./users/paul/home.nix;
           }
         ];
       };
@@ -52,9 +52,9 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # Pass hostname to Home Manager
             home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
-            home-manager.users.${systems.nuc.username} = import ./users/paul/home.nix;  # Using the same home.nix
+            # CHANGED: Use proper module import syntax
+            home-manager.users.${systems.nuc.username} = ./users/paul/home.nix;
           }
         ];
       };
@@ -72,9 +72,9 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            # Pass hostname to Home Manager
             home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
-            home-manager.users.${systems.macbook.username} = import ./users/paul/home.nix;
+            # CHANGED: Use proper module import syntax
+            home-manager.users.${systems.macbook.username} = ./users/paul/home.nix;
           }
         ];
       };
@@ -84,6 +84,7 @@
         pkgs = nixpkgs.legacyPackages.${systems.x1.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
         modules = [
+          # CHANGED: No need to import explicitly
           ./users/paul/home.nix
           { nixpkgs.config.allowUnfree = true; }
         ];
@@ -93,6 +94,7 @@
         pkgs = nixpkgs.legacyPackages.${systems.macbook.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
         modules = [
+          # CHANGED: No need to import explicitly
           ./users/paul/home.nix
           { nixpkgs.config.allowUnfree = true; }
         ];
@@ -102,6 +104,7 @@
         pkgs = nixpkgs.legacyPackages.${systems.nuc.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
         modules = [
+          # CHANGED: No need to import explicitly
           ./users/paul/home.nix
           { nixpkgs.config.allowUnfree = true; }
         ];
