@@ -5,45 +5,38 @@
   # Enable NVIDIA drivers
   services.xserver.videoDrivers = [ "nvidia" ];
   
-  # NVIDIA driver configuration
+  # NVIDIA driver configuration for NixOS 23.11
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     open = false;
     nvidiaSettings = true;
     forceFullCompositionPipeline = true;
+    # Use the stable driver package
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
   
-  # Ensure kernel modules are loaded
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-  boot.blacklistedKernelModules = [ "nouveau" ];
+  # DO NOT add these to boot.initrd.kernelModules, add them to boot.kernelModules instead
   boot.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   
-  # Set kernel parameters for NVIDIA
-  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+  # Blacklist nouveau
+  boot.blacklistedKernelModules = [ "nouveau" ];
   
-  # Use graphics instead of openGL (updated syntax)
-  hardware.graphics = {
+  # Use openGL (for NixOS 23.11)
+  hardware.opengl = {
     enable = true;
-    enable32Bit = true;
+    driSupport = true;
+    driSupport32Bit = true;
   };
   
-  # Updated NVIDIA container toolkit setup
-  virtualisation.docker = {
-    enable = true;
-  };
+  # Use the older Docker NVIDIA setup compatible with 23.11
+  virtualisation.docker.enableNvidia = true;
   
-  # Use the newer NVIDIA container toolkit configuration
-  virtualisation.podman.enableNvidia = true;
-  # hardware.nvidia.container.enable = true;
- 
   # NVIDIA Packages
-  environment.systemPackages = [
-    pkgs.cudatoolkit
-    # pkgs.nvtop
-    pkgs.pciutils
-    pkgs.glxinfo
-    pkgs.vulkan-tools
+  environment.systemPackages = with pkgs; [
+    # cudatoolkit  # Uncomment if needed
+    # nvtop        # Uncomment if needed
+    pciutils
+    glxinfo
   ];
 }
