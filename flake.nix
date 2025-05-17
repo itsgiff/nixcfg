@@ -46,7 +46,8 @@
         system = systems.nuc.system;
         specialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
         modules = [
-          ./hosts/nuc/configuration.nix  # You'll need to create this file
+          ./hosts/nuc/configuration.nix
+          { nixpkgs.config.allowUnfree = true; }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -66,7 +67,6 @@
           ./hosts/macbook/configuration.nix
           {
             nixpkgs.config.allowUnfree = true;
-            # Other global nixpkgs settings here
           }
           home-manager.darwinModules.home-manager
           {

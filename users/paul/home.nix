@@ -4,8 +4,8 @@ let
   # Map of hostnames to usernames
   userMapping = {
     "x1" = "paul";         # ThinkPad
-    "macbook" = "paul";    # MacBook
-    "nuc" = "admin";       # NUC with admin username
+    "macbook" = "paul";    # Macbook
+    "nuc" = "admin";       # NUC
     # Add other machines as needed
   };
   
