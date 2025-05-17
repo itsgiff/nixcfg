@@ -121,7 +121,9 @@
   security.sudo.wheelNeedsPassword = false;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
 
   # System wide environmental variables
   environment.variables = {

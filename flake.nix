@@ -85,7 +85,7 @@
         extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
         modules = [
           ./users/paul/home.nix
-          { nixpkgs.config.allowUnfree = true; }  # Add this module
+          { nixpkgs.config.allowUnfree = true; }
         ];
       };
 
@@ -94,7 +94,7 @@
         extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
         modules = [
           ./users/paul/home.nix
-          { nixpkgs.config.allowUnfree = true; }  # Add this module
+          { nixpkgs.config.allowUnfree = true; }
         ];
       };
 
@@ -103,7 +103,7 @@
         extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
         modules = [
           ./users/paul/home.nix
-          { nixpkgs.config.allowUnfree = true; }  # Add this module
+          { nixpkgs.config.allowUnfree = true; }
         ];
       };
     };
