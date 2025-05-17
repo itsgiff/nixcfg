@@ -5,7 +5,7 @@
   # Enable NVIDIA drivers
   services.xserver.videoDrivers = [ "nvidia" ];
   
-  # NVIDIA driver configuration for NixOS 23.11
+  # NVIDIA driver configuration
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -27,13 +27,11 @@
     enable32Bit = true;
   };
   
-  # Use the older Docker NVIDIA setup compatible with 23.11
   virtualisation.docker.enableNvidia = true;
   
   # NVIDIA Packages
   environment.systemPackages = with pkgs; [
     cudatoolkit
-    # nvtop       
     pciutils
     glxinfo
   ];
