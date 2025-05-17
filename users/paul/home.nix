@@ -22,6 +22,7 @@ in
 
   # Import all your modules
   imports = [
+    ../../modules/fastfetch.nix
     ../../modules/git.nix
     ../../modules/vscode.nix
     ../../modules/fish.nix

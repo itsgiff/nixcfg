@@ -1,6 +1,6 @@
 # NixOS & macOS Unified Configuration
 
-A unified Nix configuration for my NixOS ThinkPad (x1) and macOS MacBook (macbook) using Flakes, Home Manager, and feature-based modules.
+A unified Nix configuration for my Linux (x1, nuc) and macOS (macbook) systems using Flakes, Home Manager, and feature-based modules.
 
 ## Overview
 
@@ -17,19 +17,26 @@ This repository contains a reproducible, declarative configuration for my comput
 │   ├── x1/                     # NixOS ThinkPad
 │   │   ├── configuration.nix   # System configuration
 │   │   └── hardware-configuration.nix
+│   ├── nuc/                    # NixOS NUC
+│   │   ├── configuration.nix   # System configuration
+│   │   └── hardware-configuration.nix
 │   └── macbook/                # macOS MacBook
 │       ├── configuration.nix   # Darwin configuration
-│       └── Brewfile            # Homebrew packages (transitional)
+│       └── home.nix            # Optional host-specific home config
 ├── modules/                    # Shared configuration modules
-│   ├── features/               # Feature-based modules (shell, git, etc.)
-│   ├── shared/                 # Shared between all systems
-│   ├── nixos/                  # NixOS-specific modules
 │   ├── darwin/                 # macOS-specific modules
-│   └── home/                   # Home Manager specific modules
+│   ├── fastfetch.nix           # fastfetch config
+│   ├── fish.nix                # Fish shell configuration
+│   ├── git.nix                 # Git configuration
+│   ├── nixos/                  # NixOS-specific modules
+│   │   └── nfs.nix             # NFS configuration for NixOS
+│   └── vscode.nix              # VSCode configuration
 ├── users/                      # User-specific configurations
-│   └── paul/
+│   ├── admin/                  # NUC admin user
+│   │   └── home.nix            # Home Manager configuration
+│   └── paul/                   # Main user for x1 and macbook
 │       └── home.nix            # Home Manager configuration
-├── secrets/                    # Secret management (using sops-nix)
+├── README.md                   # This file
 └── docs/                       # Project documentation
     ├── plan.md                 # Detailed implementation plan
     └── tracker.md              # Project progress tracker
@@ -46,6 +53,15 @@ cd ~/.nixcfg
 sudo nixos-rebuild switch --flake .#x1
 ```
 
+### NixOS (nuc)
+
+Build and activate the system configuration:
+
+```bash
+cd ~/.nixcfg
+sudo nixos-rebuild switch --flake .#nuc
+```
+
 ### macOS (macbook)
 
 Build and activate the Darwin configuration:
@@ -55,19 +71,30 @@ cd ~/.nixcfg
 darwin-rebuild switch --flake .#macbook
 ```
 
+### Standalone Home Manager
+
+You can also use Home Manager standalone if needed:
+
+```bash
+cd ~/.nixcfg
+home-manager switch --flake .#paul@x1    # For ThinkPad
+home-manager switch --flake .#paul@macbook  # For MacBook
+home-manager switch --flake .#admin@nuc   # For NUC with admin user
+```
+
 ## Features
 
 - **Cross-platform:** Unified configuration across NixOS and macOS
+- **Multi-user:** Supports different usernames across systems (paul on x1/macbook, admin on nuc)
 - **Modular design:** Feature-based modules for easy reuse and organization
 - **Home Manager integration:** Consistent user environment across systems
 - **Reproducible:** Pinned dependencies via Flakes
 - **Transitional:** Homebrew/Mac App Store support for macOS-specific applications
-- **Secure:** Secret management with encrypted files (using sops-nix)
-- **AI-assisted:** Includes documentation and templates for AI assistants to help with configuration
+- **Unfree Package Support:** Configuration includes allowance for proprietary software like VSCode
 
 ## Project Management
 
-- **Implementation Plan:** The `docs/plan.md` file contains a detailed, step-by-step guide for implementing the configuration across both systems
+- **Implementation Plan:** The `docs/plan.md` file contains a detailed, step-by-step guide for implementing the configuration across all systems
 - **Progress Tracker:** The `docs/tracker.md` file provides a checklist to track implementation progress through each phase of the project
 
 ## Requirements
@@ -80,17 +107,6 @@ darwin-rebuild switch --flake .#macbook
 
 See the `docs/` directory for setup instructions and documentation.
 
-## AI Integration
-
-The `.ai/` directory contains instructions, context documents, and templates for various AI assistants used with this project:
-
-- **claude/**: Claude-specific project knowledge and templates
-- **chatgpt/**: ChatGPT custom instructions and templates
-- **gemini/**: Gemini context information and templates
-- **shared/**: Common resources usable across all AI platforms
-
-These resources help maintain consistency when using AI assistants to work with this configuration.
-
 ## License
 
-This configuration is released under the MIT License. See [LICENSE](LICENSE) for details.
+This configuration is released under the MIT License.
