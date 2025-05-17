@@ -33,7 +33,7 @@
   # NVIDIA Packages
   environment.systemPackages = with pkgs; [
     cudatoolkit
-    nvtop       
+    # nvtop       
     pciutils
     glxinfo
   ];
