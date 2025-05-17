@@ -30,10 +30,6 @@ in
   # Home Manager release
   home.stateVersion = "23.11";
 
-  # Allow unfree packages
-  #  nixpkgs.config.allowUnfree = true;
-  #  nixpkgs.config.allowUnfreePredicate = (_: true);  
-
   # Basic packages that don't need dedicated modules
   home.packages = with pkgs; [
     htop

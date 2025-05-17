@@ -29,6 +29,7 @@
         specialArgs = { inherit inputs; hostname = systems.x1.hostname; };
         modules = [
           ./hosts/x1/configuration.nix
+          { nixpkgs.config.allowUnfree = true; }          
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -84,22 +85,25 @@
         extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
         modules = [
           ./users/paul/home.nix
+          { nixpkgs.config.allowUnfree = true; }  # Add this module
         ];
       };
-      
+
       homeConfigurations."paul@macbook" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${systems.macbook.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
         modules = [
           ./users/paul/home.nix
+          { nixpkgs.config.allowUnfree = true; }  # Add this module
         ];
       };
-      
+
       homeConfigurations."admin@nuc" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${systems.nuc.system};
         extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
         modules = [
           ./users/paul/home.nix
+          { nixpkgs.config.allowUnfree = true; }  # Add this module
         ];
       };
     };
