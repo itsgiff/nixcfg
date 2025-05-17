@@ -20,7 +20,7 @@ in
     else if pkgs.stdenv.isDarwin then "/Users/${username}"
     else "/home/${username}";  # Fallback
 
-  # Import all your modules
+  # Application preferences
   imports = [
     ../../modules/fastfetch.nix
     ../../modules/git.nix
