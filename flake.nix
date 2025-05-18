@@ -19,31 +19,29 @@
 
   outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-hardware, ... }@inputs:
     let
-      systems = {
-        x1 = { hostname = "x1"; system = "x86_64-linux"; username = "paul"; };
-        nuc = { hostname = "nuc"; system = "x86_64-linux"; username = "admin"; };
-        macbook = { hostname = "macbook"; system = "aarch64-darwin"; username = "paul"; };
-      };
+      x1System = "x86_64-linux";
+      nucSystem = "x86_64-linux";
+      macSystem = "aarch64-darwin";
     in {
       nixosConfigurations.x1 = nixpkgs.lib.nixosSystem {
-        system = systems.x1.system;
-        specialArgs = { inherit inputs; hostname = systems.x1.hostname; };
+        system = x1System;
+        specialArgs = { inherit inputs; hostname = "x1"; };
         modules = [
           ./hosts/x1/configuration.nix
-          { nixpkgs.config.allowUnfree = true; }          
+          { nixpkgs.config.allowUnfree = true; }
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
-            home-manager.users.${systems.x1.username} = ./users/paul/home.nix;
+            home-manager.extraSpecialArgs = { inherit inputs; hostname = "x1"; };
+            home-manager.users.paul = ./users/paul/home.nix;
           }
         ];
       };
 
       nixosConfigurations.nuc = nixpkgs.lib.nixosSystem {
-        system = systems.nuc.system;
-        specialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
+        system = nucSystem;
+        specialArgs = { inherit inputs; hostname = "nuc"; };
         modules = [
           ./hosts/nuc/configuration.nix
           nixos-hardware.nixosModules.common-cpu-intel
@@ -52,55 +50,44 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
-            home-manager.users.${systems.nuc.username} = ./users/admin/home.nix;
+            home-manager.extraSpecialArgs = { inherit inputs; hostname = "nuc"; };
+            home-manager.users.admin = ./users/admin/home.nix;
           }
         ];
       };
 
       darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
-        system = systems.macbook.system;
-        specialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
+        system = macSystem;
+        specialArgs = { inherit inputs; hostname = "macbook"; };
         modules = [
           ./hosts/macbook/configuration.nix
-          {
-            nixpkgs.config.allowUnfree = true;
-          }
+          { nixpkgs.config.allowUnfree = true; }
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
-            home-manager.users.${systems.macbook.username} = ./users/paul/home.nix;
+            home-manager.extraSpecialArgs = { inherit inputs; hostname = "macbook"; };
+            home-manager.users.paul = ./users/paul/home.nix;
           }
         ];
       };
 
       homeConfigurations."paul@x1" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${systems.x1.system};
-        extraSpecialArgs = { inherit inputs; hostname = systems.x1.hostname; };
-        modules = [
-          ./users/paul/home.nix
-          { nixpkgs.config.allowUnfree = true; }
-        ];
+        pkgs = nixpkgs.legacyPackages.${x1System};
+        extraSpecialArgs = { inherit inputs; hostname = "x1"; };
+        modules = [ ./users/paul/home.nix { nixpkgs.config.allowUnfree = true; } ];
       };
 
       homeConfigurations."admin@nuc" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${systems.nuc.system};
-        extraSpecialArgs = { inherit inputs; hostname = systems.nuc.hostname; };
-        modules = [
-          ./users/admin/home.nix
-          { nixpkgs.config.allowUnfree = true; }
-        ];
+        pkgs = nixpkgs.legacyPackages.${nucSystem};
+        extraSpecialArgs = { inherit inputs; hostname = "nuc"; };
+        modules = [ ./users/admin/home.nix { nixpkgs.config.allowUnfree = true; } ];
       };
 
       homeConfigurations."paul@macbook" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${systems.macbook.system};
-        extraSpecialArgs = { inherit inputs; hostname = systems.macbook.hostname; };
-        modules = [
-          ./users/paul/home.nix
-          { nixpkgs.config.allowUnfree = true; }
-        ];
+        pkgs = nixpkgs.legacyPackages.${macSystem};
+        extraSpecialArgs = { inherit inputs; hostname = "macbook"; };
+        modules = [ ./users/paul/home.nix { nixpkgs.config.allowUnfree = true; } ];
       };
     };
 }
