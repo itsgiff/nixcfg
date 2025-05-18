@@ -28,8 +28,8 @@ in
     ./fish.nix
   ];
 
-    # Home Manager release
-  home.stateVersion = "23.11";
+  # Home Manager release
+  home.stateVersion = "24.11";
 
   # Basic packages that don't need dedicated modules
   home.packages = with pkgs; [

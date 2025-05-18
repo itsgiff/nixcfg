@@ -16,9 +16,7 @@
   # Bootloader configuration
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  
-  # Note: Removed explicit kernel package specification to use default from the channel
-  # The NVIDIA module will handle necessary kernel module loading
+
   
   # Enable firmware updates
   services.fwupd.enable = true;
