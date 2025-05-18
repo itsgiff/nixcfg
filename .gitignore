@@ -1,5 +1,4 @@
 # Nix specific
-flake.lock
 result
 result-*
 .direnv/
