@@ -9,7 +9,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nvidia.nix
-    ../../modules/nixos/nfs.nix
+    #../../modules/nixos/nfs.nix
     ../../modules/ssh.nix
   ];
 
