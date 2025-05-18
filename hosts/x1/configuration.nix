@@ -98,7 +98,7 @@
   
   # PipeWire audio system
   security.rtkit.enable = true;
-  services.pulseaudio.enable = false;
+  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa = {
@@ -151,12 +151,12 @@
     
     firefox google-chrome
     vscode
-    signal-desktop-bin discord
+    signal-desktop discord
     thunderbird
     obsidian
     
     gimp feh flameshot
-    cheese totem simple-scan
+    simple-scan
     
     libreoffice-qt
     hunspell hunspellDicts.en_CA
@@ -200,5 +200,5 @@
   system.stateVersion = "23.05";
   
   # Automatic system updates
-  system.autoUpgrade.enable = true;
+  # system.autoUpgrade.enable = true;
 }

@@ -29,7 +29,7 @@ in
   ];
 
   # Home Manager release
-  home.stateVersion = "23.05";
+  home.stateVersion = "24.11";
 
   # Basic packages that don't need dedicated modules
   home.packages = with pkgs; [
