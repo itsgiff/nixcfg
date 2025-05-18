@@ -10,7 +10,7 @@
     ./hardware-configuration.nix
     ../../modules/nvidia.nix
     ../../modules/nixos/nfs.nix
-    #../../modules/ssh.nix
+    ../../modules/ssh.nix
   ];
 
   # Bootloader configuration
