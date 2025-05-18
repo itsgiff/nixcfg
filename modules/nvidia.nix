@@ -12,26 +12,29 @@
     open = false;
     nvidiaSettings = true;
     forceFullCompositionPipeline = true;
-    # Use the stable driver package
+    # Use the stable driver package without specifying a specific kernel package
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
   
-  # DO NOT add these to boot.initrd.kernelModules, add them to boot.kernelModules instead
+  # Add NVIDIA kernel modules
   boot.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   
   # Blacklist nouveau
   boot.blacklistedKernelModules = [ "nouveau" ];
   
-  hardware.graphics = {
+  # Enable OpenGL
+  hardware.opengl = {
     enable = true;
-    enable32Bit = true;
+    driSupport = true;
+    driSupport32Bit = true;
   };
   
+  # Enable NVIDIA for Docker if needed
   virtualisation.docker.enableNvidia = true;
   
   # NVIDIA Packages
   environment.systemPackages = with pkgs; [
-    cudatoolkit
+    # cudatoolkit # Uncomment if needed for CUDA development
     pciutils
     glxinfo
   ];

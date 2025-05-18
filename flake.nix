@@ -2,7 +2,8 @@
   description = "Unified Nix configurations for x1 (NixOS), macbook (macOS), and nuc (NixOS)";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # Use nixos-unstable for more predictable behavior during transition
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";

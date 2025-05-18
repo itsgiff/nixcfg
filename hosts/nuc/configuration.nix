@@ -16,8 +16,9 @@
   # Bootloader configuration
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-  boot.kernelPackages = pkgs.linuxPackages_6_1;
+  
+  # Note: Removed explicit kernel package specification to use default from the channel
+  # The NVIDIA module will handle necessary kernel module loading
   
   # Enable firmware updates
   services.fwupd.enable = true;
@@ -126,19 +127,7 @@
     vscode
     
     dconf 
-
   ];
-
-  # SSH configuration
-#  services.openssh = {
-#    enable = true;
-#    settings = {
-#      PermitRootLogin = "no";
-#      PasswordAuthentication = true;
-#      KbdInteractiveAuthentication = false;
-#    };
-#  };
-
 
   # System state version - do not change
   system.stateVersion = "24.11";
