@@ -23,10 +23,8 @@
   boot.blacklistedKernelModules = [ "nouveau" ];
   
   # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport32Bit = true;
-  };
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   
   # Enable NVIDIA for Docker if needed
   virtualisation.docker.enableNvidia = true;
