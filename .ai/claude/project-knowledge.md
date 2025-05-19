@@ -22,14 +22,14 @@
 
 ## Directory Structure
 Current structure:
+```
 ~/.nixcfg/
 ├── flake.nix                   # Main flake configuration
-├── flake.lock                  # Generated lock file
+├── flake.lock                  # Generated lock file (pinned dependencies)
 ├── hosts/                      # Machine-specific configurations
 │   ├── x1/                     # NixOS ThinkPad
 │   │   ├── configuration.nix   # System configuration
 │   │   └── hardware-configuration.nix
-│   │   └── home.nix            # Host-specific home config (optional)
 │   ├── nuc/                    # NixOS NUC
 │   │   ├── configuration.nix   # System configuration
 │   │   └── hardware-configuration.nix
@@ -53,10 +53,11 @@ Current structure:
 │   └── paul/                   # Main user for x1 and macbook
 │       ├── fish.nix            # Fish shell configuration for paul
 │       └── home.nix            # Home Manager configuration
-├── README.md                   # Project overview and usage instructions
+├── README.md                   # This file
 └── docs/                       # Project documentation
     ├── plan.md                 # Detailed implementation plan
     └── tracker.md              # Project progress tracker
+```
 
 ## Project Management
 - Implementation Plan (docs/plan.md): Detailed step-by-step guide with current status
