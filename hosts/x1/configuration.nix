@@ -145,7 +145,7 @@
     docker docker-compose
     terraform kubectl kubernetes-helm eksctl
     
-    iperf nmap openvpn nss
+    iperf nmap openvpn nss dig
     
     bitwarden gnupg
     

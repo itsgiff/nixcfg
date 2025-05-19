@@ -120,7 +120,7 @@
     docker docker-compose
     terraform kubectl kubernetes-helm eksctl
 
-    iperf nmap nss
+    iperf nmap nss dig
 
     firefox google-chrome
     vscode
