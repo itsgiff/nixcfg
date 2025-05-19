@@ -8,9 +8,8 @@
     enableOnBoot = true;
     # Additional Docker settings can go here
     autoPrune = {
-      enable = true;
+      enable = false;
       dates = "weekly";
-      flags = ["--all"];
     };
   };
   

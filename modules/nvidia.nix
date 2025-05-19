@@ -26,9 +26,9 @@
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
   
-  # Enable NVIDIA for Docker if needed
-  virtualisation.docker.enableNvidia = true;
-  
+  # Enable NVIDIA Container toolkit
+  hardware.nvidia-container-toolkit.enable = true;
+
   # NVIDIA Packages
   environment.systemPackages = with pkgs; [
     # cudatoolkit # Uncomment if needed for CUDA development

@@ -117,6 +117,8 @@
     git git-cliff git-crypt
     cmake
 
+    home-manager
+
     docker docker-compose
     terraform kubectl kubernetes-helm eksctl
 
