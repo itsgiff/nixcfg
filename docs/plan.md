@@ -1,224 +1,106 @@
-# Nix Configuration Implementation Plan
+# NixOS/macOS Unified Configuration Implementation Plan
 
-This plan outlines the steps to create a unified Nix configuration for the NixOS ThinkPad (x1) and macOS MacBook (macbook).
+This document outlines the step-by-step implementation plan for the unified configuration across NixOS and macOS systems.
 
-## Phase 1: Setup & NixOS Migration (Perform on `x1`)
+## Current Status Overview
 
-1.  **Initialize Repository:**
-    * Open a terminal on `x1`.
-    * Create the directory: `mkdir -p ~/.nixcfg`
-    * Navigate into it: `cd ~/.nixcfg`
-    * Initialize Git: `git init`
-    * Create essential Git files
-    * Initial commit: `git add .gitignore README.md && git commit -m "Initial commit"`
-    * Add your Gitea remote: `git remote add origin git@gitea:paul/nixcfg.git`
-    * Push initial commit: `git push -u origin main` (or `master`)
+- ✅ NixOS configurations for x1 and nuc are complete and operational
+- ✅ Home Manager configurations for paul and admin users are working
+- ✅ Core feature modules implemented (git, fish, vscode, fastfetch, etc.)
+- ✅ Specialized modules for NixOS are working (docker, nfs, nvidia)
+- ⏳ macOS/nix-darwin integration is in progress 
+- ⏳ Feature module refinement is ongoing
+- 🔜 Secret management implementation planned
 
-2.  **Ensure Flakes Enabled (NixOS):**
-    * Check if Flakes are enabled (likely on NixOS 25.05pre). Ensure the following line exists in `/etc/nixos/configuration.nix` under the `nix` attribute set, or add it:
-        ```nix
-        # /etc/nixos/configuration.nix
-        nix.settings.experimental-features = [ "nix-command" "flakes" ];
-        ```
-    * If added, run `sudo nixos-rebuild switch` using your *old* configuration to apply the setting.
+## Phase 1: SETUP & NIXOS ✅ COMPLETED
 
-3.  **Create Initial `flake.nix`:**
-    * Create the file `~/.nixcfg/flake.nix` with the following content (replace `your_username`):
-        ```nix
-        # ~/.nixcfg/flake.nix
-        {
-          description = "My unified Nix configurations for x1 (NixOS) and macbook (macOS)";
+### Repository Initialization
+- ✅ Create initial repository structure
+- ✅ Set up basic flake.nix with inputs
+- ✅ Initialize git repository
+- ✅ Add LICENSE and README.md
 
-          inputs = {
-            nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+### NixOS Configuration (x1)
+- ✅ Create initial system configuration
+- ✅ Set up Home Manager integration
+- ✅ Configure system packages and services
+- ✅ Test and validate core functionality
+- ✅ Add user-specific configurations
 
-            home-manager = {
-              url = "github:nix-community/home-manager";
-              inputs.nixpkgs.follows = "nixpkgs";
-            };
+### NixOS Configuration (nuc)
+- ✅ Create system configuration with appropriate hardware settings
+- ✅ Set up admin user with Home Manager
+- ✅ Configure Docker with NVIDIA support
+- ✅ Set up NFS mounts and SSH configuration
+- ✅ Test and validate server functionality
 
-            nix-darwin = {
-              url = "github:LnL7/nix-darwin";
-              inputs.nixpkgs.follows = "nixpkgs";
-            };
-            # Add sops-nix or agenix later if needed
-          };
+## Phase 2: MACOS INTEGRATION 🟡 IN PROGRESS
 
-          outputs = { self, nixpkgs, home-manager, nix-darwin, ... }@inputs:
-            let
-              systems = {
-                x1 = { hostname = "x1"; system = "x86_64-linux"; };
-                macbook = { hostname = "macbook"; system = "aarch64-darwin"; };
-              };
+### nix-darwin Setup
+- ✅ Install nix-darwin on macOS
+- ✅ Create basic configuration.nix for macOS
+- ⏳ Configure Homebrew integration
+- ⏳ Set up macOS-specific preferences
 
-              mkSystem = { hostname, system, pkgs, modules }:
-                if pkgs.stdenv.isLinux then
-                  nixpkgs.lib.nixosSystem {
-                    inherit system;
-                    specialArgs = { inherit inputs hostname; };
-                    modules = modules ++ [
-                      home-manager.nixosModules.home-manager
-                      {
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.useUserPackages = true;
-                        home-manager.users.your_username = import ./users/your_username/home.nix;
-                      }
-                    ];
-                  }
-                else if pkgs.stdenv.isDarwin then
-                  nix-darwin.lib.darwinSystem {
-                    inherit system;
-                    specialArgs = { inherit inputs hostname; };
-                    modules = modules ++ [
-                      home-manager.darwinModules.home-manager
-                      {
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.useUserPackages = true;
-                        home-manager.users.your_username = import ./users/your_username/home.nix;
-                      }
-                    ];
-                  };
+### Home Manager for macOS
+- ⏳ Configure Home Manager for paul@macbook
+- 🔜 Set up application preferences
+- 🔜 Configure macOS-specific shell environment
+- 🔜 Test cross-platform Home Manager modules
 
-            in {
-              nixosConfigurations.x1 = mkSystem {
-                hostname = systems.x1.hostname;
-                system = systems.x1.system;
-                pkgs = nixpkgs.legacyPackages.${systems.x1.system};
-                modules = [ ./hosts/x1/configuration.nix ];
-              };
+### Integration Testing
+- 🔜 Test unified configuration across all systems
+- 🔜 Verify feature modules work on macOS
+- 🔜 Ensure smooth updates and rebuilds
 
-              darwinConfigurations.macbook = mkSystem {
-                hostname = systems.macbook.hostname;
-                system = systems.macbook.system;
-                pkgs = nixpkgs.legacyPackages.${systems.macbook.system};
-                modules = [ ./hosts/macbook/configuration.nix ];
-              };
-            };
-        }
-        ```
+## Phase 3: REFINEMENT 🔜 PLANNED
 
-4.  **Create Directory Structure:**
-    ```bash
-    cd ~/.nixcfg
-    mkdir -p hosts/x1 hosts/macbook users/your_username modules/{shared,nixos,darwin,home,features}
-    touch hosts/macbook/configuration.nix
-    ```
+### Feature Module Development
+- ✅ Create initial modules for common applications (git, vscode, etc.)
+- 🔜 Refine existing modules for better cross-platform compatibility
+- 🔜 Add more application-specific configurations
+- 🔜 Implement conditional configurations for different platforms
 
-5.  **Migrate NixOS System Config (`x1`):**
-    * Copy existing files:
-        ```bash
-        cp /etc/nixos/configuration.nix ~/.nixcfg/hosts/x1/configuration.nix
-        cp /etc/nixos/hardware-configuration.nix ~/.nixcfg/hosts/x1/hardware-configuration.nix
-        ```
-    * Edit `~/.nixcfg/hosts/x1/configuration.nix`:
-        * Add header: `{ config, pkgs, lib, inputs, hostname, ... }:`.
-        * Add imports: `imports = [ ./hardware-configuration.nix /* other modules later */ ];`.
-        * Verify `networking.hostName = "x1";`.
-        * Check `system.stateVersion`.
-        * Update `users.users.your_username` block, removing direct Home Manager config.
+### Homebrew Integration
+- 🔜 Finalize Homebrew package selection for macOS
+- 🔜 Create proper integration between Nix and Homebrew packages
+- 🔜 Set up Mac App Store (mas) integration
 
-6.  **Migrate Home Manager Config (`x1`):**
-    * Copy existing config: `cp ~/.config/home-manager/home.nix ~/.nixcfg/users/your_username/home.nix`
-    * Edit `~/.nixcfg/users/your_username/home.nix`:
-        * Add header: `{ config, pkgs, lib, inputs, hostname, ... }:`.
-        * Set Basic Info (Adapt for OS): `home.username`, `home.homeDirectory = if pkgs.stdenv.isLinux then "/home/${config.home.username}" else "/Users/${config.home.username}";`, `home.stateVersion`.
-        * Review and wrap Linux-specific settings: `lib.mkIf pkgs.stdenv.isLinux { ... }`. Add placeholders for Darwin: `lib.mkIf pkgs.stdenv.isDarwin { /* macOS settings later */ }`.
+### Secret Management
+- 🔜 Set up sops-nix for encrypted secrets
+- 🔜 Create secure SSH and GPG key configuration
+- 🔜 Manage sensitive data safely across systems
 
-7.  **Initial NixOS Build & Test (`x1`):**
-    * `cd ~/.nixcfg`
-    * Check for errors: `nix flake check`
-    * Build and switch: `sudo nixos-rebuild switch --flake .#x1`
-    * Debug any errors.
+## Implementation Details
 
-8.  **Commit & Push NixOS Setup:**
-    * Update lock file: `nix flake lock`
-    * Stage changes: `git add .`
-    * Commit: `git commit -m "feat(nixos): Initial migration for x1 host"`
-    * Push: `git push`
+### macOS Integration Steps
+1. ✅ Install nix-darwin on macBook
+2. ✅ Create initial configuration.nix for macbook (basic system preferences)
+3. ✅ Add darwin configuration to flake.nix
+4. ⏳ Test initial darwin-rebuild switch
+5. 🔜 Set up Homebrew integration for macOS-specific applications
+6. ⏳ Configure Home Manager for paul@macbook
+7. 🔜 Test cross-platform modules
 
-## Phase 2: macOS Integration (Perform on `macbook`)
+### Feature Module Roadmap
+1. Review and refine existing modules (git, fish, vscode, fastfetch)
+2. Create platform-specific versions of any incompatible configurations
+3. Add additional application configurations:
+   - Browser configurations (Firefox, Chrome)
+   - Terminal emulators
+   - Development environments
+   - Media applications
+4. Implement conditional platform detection and configuration
 
-9.  **Clone Repository:**
-    * Open a terminal on `macbook`.
-    * `git clone git@gitea:paul/nixcfg.git ~/.nixcfg`
-    * `cd ~/.nixcfg`
+### Secret Management Approach
+1. Install and configure sops-nix
+2. Create encrypted secrets directory
+3. Store SSH keys, API tokens, and other sensitive data
+4. Set up automatic decryption during system activation
 
-10. **Ensure Nix Setup:**
-    * Verify Nix is installed (`nix --version`). Install if needed.
-    * Ensure flakes are enabled in `~/.config/nix/nix.conf` or `/etc/nix/nix.conf`: `experimental-features = nix-command flakes`.
-    * Restart Nix daemon if necessary.
-
-11. **Create Initial Darwin Config:**
-    * Edit `~/.nixcfg/hosts/macbook/configuration.nix`:
-        ```nix
-        # ~/.nixcfg/hosts/macbook/configuration.nix
-        { config, pkgs, lib, inputs, hostname, ... }:
-
-        {
-          imports = [ /* modules later */ ];
-          system.stateVersion = 4;
-          nix.settings.experimental-features = [ "nix-command" "flakes" ];
-          users.users.your_username = {
-            home = "/Users/your_username";
-            shell = pkgs.zsh; # Or your preferred shell
-          };
-          services.nix-daemon.enable = true;
-          time.timeZone = "America/Vancouver"; # Set your time zone
-        }
-        ```
-
-12. **Initial macOS Build & Test (`macbook`):**
-    * `cd ~/.nixcfg`
-    * Check flake: `nix flake check`
-    * Build derivation first: `nix build .#darwinConfigurations.macbook.config.system.build.toplevel`
-    * Apply configuration: `darwin-rebuild switch --flake .#macbook`
-    * Debug any errors.
-
-13. **Test Home Manager on macOS:**
-    * Verify shared settings from `users/your_username/home.nix` are active (packages, aliases, etc.).
-    * Add macOS-specific settings (`lib.mkIf pkgs.stdenv.isDarwin { ... }`) to `home.nix`, rebuild, and test.
-
-14. **Commit & Push Basic macOS Setup:**
-    * `cd ~/.nixcfg`
-    * Stage changes: `git add .`
-    * Commit: `git commit -m "feat(darwin): Initial setup for macbook host"`
-    * Push: `git push`
-
-## Phase 3: Refactoring & Advanced Features (Iterate on either machine)
-
-15. **Refactor into Feature Modules:**
-    * Identify common configurations (shell, git, editor, etc.).
-    * Create files like `modules/features/shell.nix`, `modules/features/git.nix`.
-    * Move relevant Nix options into these modules.
-    * Import modules using `imports = [ ../../modules/features/shell.nix ];` in host or user configurations.
-
-16. **Transitional Homebrew/MAS Integration (macOS):**
-    * Edit `~/.nixcfg/hosts/macbook/configuration.nix`.
-    * Add the `homebrew` block:
-        ```nix
-        { config, pkgs, lib, ... }: {
-          # ... other settings ...
-          homebrew = {
-            enable = true;
-            onActivation.cleanup = "uninstall"; # Or "zap" or "skip"
-            taps = [ /* "homebrew/cask-fonts" */ ];
-            brewfile = ./Brewfile; # Preferred method
-          };
-        }
-        ```
-    * Create `~/.nixcfg/hosts/macbook/Brewfile` and add packages/casks/mas apps needed transitionally.
-    * Rebuild on macOS: `darwin-rebuild switch --flake .#macbook`.
-    * Actively try to replace Brew/MAS items with Nix equivalents over time.
-
-17. **Secrets Management (Example: `sops-nix`):**
-    * Add `sops-nix` input to `flake.nix`.
-    * Import `sops-nix` module in system configs (`nixosModules.sops` / `darwinModules.sops`).
-    * Configure `sops` settings (keys, paths).
-    * Create encrypted secrets files (e.g., `secrets/secrets.yaml`) using `sops`. **Commit these encrypted files.**
-    * Reference secrets in Nix configs (e.g., `config.sops.secrets.api_token.path`).
-    * Ensure **private decryption keys** are NOT committed and exist only on target machines. Add key files/plaintext secrets to `.gitignore`.
-
-18. **Continuous Iteration:**
-    * On either machine: Make changes -> Test (`nixos-rebuild switch` / `darwin-rebuild switch`) -> Commit (`git commit`) -> Push (`git push`).
-    * On the other machine: Pull (`git pull`) -> Apply (`nixos-rebuild switch` / `darwin-rebuild switch`).
-
+## Next Actions
+1. Complete macOS/nix-darwin configuration
+2. Test Home Manager modules on macOS
+3. Refine feature modules for better cross-platform compatibility
+4. Implement secret management
+5. Document system management workflows
