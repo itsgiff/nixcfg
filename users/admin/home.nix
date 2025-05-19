@@ -40,6 +40,9 @@ in
   # Dotfiles (if needed)
   home.file = {};
 
+  # Disable news
+  news.display = "silent";
+
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
 }
