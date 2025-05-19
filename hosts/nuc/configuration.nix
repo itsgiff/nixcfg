@@ -8,6 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/nixos/docker.nix
     ../../modules/nvidia.nix
     ../../modules/nixos/nfs.nix
     ../../modules/ssh.nix
