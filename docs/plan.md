@@ -8,6 +8,7 @@ This document outlines the step-by-step implementation plan for the unified conf
 - ✅ Home Manager configurations for paul and admin users are working
 - ✅ Core feature modules implemented (git, fish, vscode, fastfetch, etc.)
 - ✅ Specialized modules for NixOS are working (docker, nfs, nvidia)
+- ✅ Bootstrap script (nixinit.sh) created for easy machine setup
 - ⏳ macOS/nix-darwin integration is in progress 
 - ⏳ Feature module refinement is ongoing
 - 🔜 Secret management implementation planned
@@ -33,6 +34,13 @@ This document outlines the step-by-step implementation plan for the unified conf
 - ✅ Configure Docker with NVIDIA support
 - ✅ Set up NFS mounts and SSH configuration
 - ✅ Test and validate server functionality
+
+### Bootstrap Script
+- ✅ Create nixinit.sh bootstrap script
+- ✅ Add hostname validation and configuration
+- ✅ Add repository cloning and setup
+- ✅ Add flake configuration application
+- ✅ Test script functionality across different hosts
 
 ## Phase 2: MACOS INTEGRATION 🟡 IN PROGRESS
 
@@ -72,6 +80,19 @@ This document outlines the step-by-step implementation plan for the unified conf
 - 🔜 Manage sensitive data safely across systems
 
 ## Implementation Details
+
+### Bootstrap Script Implementation
+1. ✅ Create scripts directory in repository
+2. ✅ Develop nixinit.sh with the following features:
+   - Hostname validation (x1, nuc, macbook only)
+   - Configuration file backups
+   - Git installation and repository cloning
+   - Flake experimental features enablement
+   - System configuration application
+   - Special handling for the nuc's Docker setup
+   - Optional fish shell enhancements
+3. ✅ Create one-liner for easy script execution
+4. ✅ Test script on different host types
 
 ### macOS Integration Steps
 1. ✅ Install nix-darwin on macBook

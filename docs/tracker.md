@@ -9,6 +9,7 @@ This document tracks the progress of implementing the unified configuration acro
 - **macOS Hosts**: 🟡 25% Complete (1/1 hosts)
 - **Feature Modules**: 🟡 60% Complete
 - **Home Manager**: 🟡 70% Complete
+- **Bootstrap Script**: ✅ 100% Complete
 - **Secret Management**: 🔴 0% Complete
 
 ## Detailed Tracking
@@ -26,6 +27,7 @@ This document tracks the progress of implementing the unified configuration acro
 | Home Manager for admin | ✅ | Working on nuc |
 | NFS configuration | ✅ | Mounts working on both NixOS systems |
 | Docker with NVIDIA | ✅ | Working on nuc |
+| Bootstrap script | ✅ | nixinit.sh created for quick setup |
 
 ## Phase 2: MACOS INTEGRATION 🟡 IN PROGRESS
 | Task | Status | Notes |
@@ -58,9 +60,24 @@ This document tracks the progress of implementing the unified configuration acro
 | vscode.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
 | fastfetch.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
 | ssh.nix | ✅ | 🔜 | Working on Linux, not yet configured for macOS |
-| docker.nix | ✅ | 🔜 | Working on nuc, not relevant for macOS |
+| docker.nix | ✅ | N/A | Working on nuc, not relevant for macOS |
 | nfs.nix | ✅ | 🔜 | Working on Linux, equivalent needed for macOS |
-| nvidia.nix | ✅ | 🔜 | Working on nuc, not relevant for macOS |
+| nvidia.nix | ✅ | N/A | Working on nuc, not relevant for macOS |
+| nixinit.sh | ✅ | ✅ | Bootstrap script working for both platforms |
+
+## Bootstrap Script Status
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Host validation | ✅ | Strict validation for x1, nuc, macbook |
+| Config backups | ✅ | Backs up original configuration files |
+| Git installation | ✅ | Ensures git is available for repo cloning |
+| Repo cloning | ✅ | Clones from GitHub, updates remote to gitea |
+| Flake setup | ✅ | Enables experimental features for flakes |
+| Config application | ✅ | Applies flake configuration for the host |
+| macOS handling | ✅ | Special handling for macOS setup |
+| Docker setup | ✅ | Provides guidance for Docker on NUC |
+| Fish enhancements | ✅ | Optional setup for fish shell |
 
 ## Next Steps
 
@@ -93,6 +110,7 @@ This document tracks the progress of implementing the unified configuration acro
 
 ## Recent Updates
 
+- **May 2025**: Created nixinit.sh bootstrap script for fast machine setup
 - **May 2025**: Successfully configured nuc with Docker, NVIDIA, and NFS support
 - **May 2025**: Refined user configurations for both paul and admin users
 - **May 2025**: Started macOS integration with basic directory structure

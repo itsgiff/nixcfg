@@ -14,6 +14,7 @@ This repository contains a reproducible, declarative configuration for my comput
 - **Feature Modules**: ✅ Core modules implemented (git, fish, vscode, etc.)
 - **NFS Configuration**: ✅ Configured for shared storage access
 - **Docker Support**: ✅ Set up for nuc with NVIDIA support
+- **Bootstrap Script**: ✅ `nixinit.sh` available for quickly setting up new machines
 
 ## Structure
 
@@ -41,6 +42,8 @@ This repository contains a reproducible, declarative configuration for my comput
 │   ├── nvidia.nix              # NVIDIA driver and container support
 │   ├── ssh.nix                 # SSH configuration
 │   └── vscode.nix              # VSCode configuration
+├── scripts/                    # Utility scripts
+│   └── nixinit.sh              # Bootstrap script for new machines
 ├── users/                      # User-specific configurations
 │   ├── admin/                  # NUC admin user
 │   │   ├── fish.nix            # Fish shell configuration for admin
@@ -54,9 +57,31 @@ This repository contains a reproducible, declarative configuration for my comput
     └── tracker.md              # Project progress tracker
 ```
 
-## Usage
+## Getting Started
 
-### NixOS (x1)
+### Bootstrap a New Machine
+
+To quickly set up a new machine with this configuration:
+
+```bash
+# For fresh NixOS installations:
+wget -O- https://raw.githubusercontent.com/itsgiff/nixcfg/main/scripts/nixinit.sh | bash
+
+# If curl is available (e.g., on macOS):
+curl -L https://raw.githubusercontent.com/itsgiff/nixcfg/main/scripts/nixinit.sh | bash
+```
+
+The script will:
+1. Prompt for the machine hostname (must be one of: x1, nuc, macbook)
+2. Set up the basic configuration and install git (for NixOS)
+3. Clone the nixcfg repository
+4. Enable experimental features for flakes
+5. Apply the flake configuration
+6. Optionally set up fish shell enhancements
+
+### Manual Usage
+
+#### NixOS (x1)
 
 Build and activate the system configuration:
 
@@ -65,7 +90,7 @@ cd ~/.nixcfg
 sudo nixos-rebuild switch --flake .#x1
 ```
 
-### NixOS (nuc)
+#### NixOS (nuc)
 
 Build and activate the system configuration:
 
@@ -74,7 +99,7 @@ cd ~/.nixcfg
 sudo nixos-rebuild switch --flake .#nuc
 ```
 
-### macOS (macbook)
+#### macOS (macbook)
 
 Build and activate the Darwin configuration:
 
@@ -105,6 +130,7 @@ home-manager switch --flake .#admin@nuc   # For NUC with admin user
 - **Unfree Package Support:** Configuration includes allowance for proprietary software like VSCode
 - **NFS Integration:** Configured for seamless access to shared storage
 - **Docker Support:** Full Docker configuration with NVIDIA support for containers
+- **Bootstrap Script:** Easy setup for new machines with the nixinit.sh script
 
 ## Next Steps
 
