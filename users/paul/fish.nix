@@ -50,6 +50,7 @@ in {
       nixEdit = "cd ~/.nixcfg && $EDITOR";
       nixSystem = "cd ~/.nixcfg && $EDITOR hosts/${hostname}/configuration.nix";
       nixHome = "cd ~/.nixcfg && $EDITOR users/paul/home.nix";
+      nixPull = "cd ~/.nixcfg && git pull";
       
       # Flake building and updating
       nixFlakeCheck = "cd ~/.nixcfg && nix flake check";

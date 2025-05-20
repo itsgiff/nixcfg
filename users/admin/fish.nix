@@ -32,7 +32,8 @@
       nixEdit = "cd ~/.nixcfg && $EDITOR";
       nixSystem = "cd ~/.nixcfg && $EDITOR hosts/nuc/configuration.nix";
       nixHome = "cd ~/.nixcfg && $EDITOR users/admin/home.nix";
-      
+      nixPull = "cd ~/.nixcfg && git pull";
+
       # Flake building and updating
       nixFlakeCheck = "cd ~/.nixcfg && nix flake check";
       nixFlakeUpdate = "cd ~/.nixcfg && nix flake update";
