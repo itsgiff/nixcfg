@@ -1,6 +1,6 @@
 # ~/.nixcfg/users/paul/fish.nix
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hostname ? "x1", ... }:
 
 {
   # Fish Shell configuration
@@ -22,24 +22,24 @@
       # Flake-based configuration aliases
       nixCfg = "cd ~/.nixcfg && $EDITOR flake.nix";
       nixEdit = "cd ~/.nixcfg && $EDITOR";
-      nixSystem = "cd ~/.nixcfg && $EDITOR hosts/x1/configuration.nix";
+      nixSystem = "cd ~/.nixcfg && $EDITOR hosts/${hostname}/configuration.nix";
       nixHome = "cd ~/.nixcfg && $EDITOR users/paul/home.nix";
       
       # Flake building and updating
       nixFlakeCheck = "cd ~/.nixcfg && nix flake check";
       nixFlakeUpdate = "cd ~/.nixcfg && nix flake update";
-      nixSwitch = "cd ~/.nixcfg && sudo nixos-rebuild switch --flake .#x1";
-      homeSwitch = "cd ~/.nixcfg && home-manager switch --flake .#paul@x1";
-      nixUpgrade = "cd ~/.nixcfg && nix flake update && sudo nixos-rebuild switch --flake .#x1";
-      fullUpdate = "cd ~/.nixcfg && nix flake update && sudo nixos-rebuild switch --flake .#x1 && home-manager switch --flake .#paul@x1";
+      nixSwitch = "cd ~/.nixcfg && ${if hostname == "macbook" then "darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
+      homeSwitch = "cd ~/.nixcfg && home-manager switch --flake .#paul@${hostname}";
+      nixUpgrade = "cd ~/.nixcfg && nix flake update && ${if hostname == "macbook" then "darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
+      fullUpdate = "cd ~/.nixcfg && nix flake update && ${if hostname == "macbook" then "darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname} && home-manager switch --flake .#paul@${hostname}";
       
       # System maintenance
       nixClean = "sudo nix-collect-garbage --delete-older-than 2d";
       nixOpt = "nix-store --optimise";
-      restartDesktop = "sudo systemctl restart display-manager.service";
+      restartDesktop = "${if hostname == "macbook" then "echo 'Not applicable on macOS'" else "sudo systemctl restart display-manager.service"}";
 
-      # Infrastucture Management
-      infra-scripts = "cd /mnt/data/scripts/infrastructure";
+      # Infrastructure Management
+      infra-scripts = "cd ${if hostname == "macbook" then "/Volumes/data/scripts/infrastructure" else "/mnt/data/scripts/infrastructure"}";
     
     }; 
 
@@ -47,8 +47,7 @@
       fish_greeting = {
         description = "Greeting to show when starting a fish shell";
         body = "";      
+      };
     };
   };
- };
 }
-
