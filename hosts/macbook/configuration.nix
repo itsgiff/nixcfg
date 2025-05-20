@@ -24,7 +24,7 @@
   # Basic system configuration
   system.defaults = {
     dock = {
-      autohide = true;
+      autohide = false;
       orientation = "bottom";
       show-recents = false;
       mru-spaces = false;
