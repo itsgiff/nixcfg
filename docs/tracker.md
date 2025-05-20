@@ -4,113 +4,103 @@ This document tracks the progress of implementing the unified configuration acro
 
 ## Progress Summary
 
-- **Overall Status**: 🟡 In Progress (NixOS complete, macOS in progress)
-- **NixOS Hosts**: ✅ 100% Complete (2/2 hosts)
-- **macOS Hosts**: 🟡 25% Complete (1/1 hosts)
-- **Feature Modules**: 🟡 60% Complete
-- **Home Manager**: 🟡 70% Complete
-- **Bootstrap Script**: ✅ 100% Complete
-- **Secret Management**: 🔴 0% Complete
+- **Overall Status**: :hourglass_flowing_sand: In Progress (Core functionality complete, refinements ongoing)
+- **NixOS Hosts**: :white_check_mark: 100% Complete (2/2 hosts)
+- **macOS Hosts**: :white_check_mark: 90% Complete (1/1 hosts)
+- **Feature Modules**: :yellow_circle: 70% Complete
+- **Home Manager**: :white_check_mark: 100% Complete
+- **Bootstrap Script**: :white_check_mark: 100% Complete
+- **Secret Management**: :red_circle: 0% Complete
 
 ## Detailed Tracking
 
-### Phase 1: SETUP & NIXOS ✅ COMPLETED
+### Phase 1: SETUP & NIXOS :white_check_mark: COMPLETED
 | Task | Status | Notes |
 |------|--------|-------|
-| Create repository structure | ✅ | Basic directory layout established |
-| Set up flake.nix | ✅ | Working flake with proper inputs |
-| Initialize git repo | ✅ | Using gitea repo |
-| Create documentation | ✅ | README, plan, and tracker created |
-| NixOS x1 configuration | ✅ | ThinkPad fully configured |
-| NixOS nuc configuration | ✅ | NUC fully configured |
-| Home Manager for paul | ✅ | Working on x1 |
-| Home Manager for admin | ✅ | Working on nuc |
-| NFS configuration | ✅ | Mounts working on both NixOS systems |
-| Docker with NVIDIA | ✅ | Working on nuc |
-| Bootstrap script | ✅ | nixinit.sh created for quick setup |
+| Create repository structure | :white_check_mark: | Basic directory layout established |
+| Set up flake.nix | :white_check_mark: | Working flake with proper inputs |
+| Initialize git repo | :white_check_mark: | Using gitea repo |
+| Create documentation | :white_check_mark: | README, plan, and tracker created |
+| NixOS x1 configuration | :white_check_mark: | ThinkPad fully configured |
+| NixOS nuc configuration | :white_check_mark: | NUC fully configured |
+| Home Manager for paul | :white_check_mark: | Working on x1 |
+| Home Manager for admin | :white_check_mark: | Working on nuc |
+| NFS configuration | :white_check_mark: | Mounts working on both NixOS systems |
+| Docker with NVIDIA | :white_check_mark: | Working on nuc |
+| Bootstrap script | :white_check_mark: | nixinit.sh created for quick setup |
 
-## Phase 2: MACOS INTEGRATION 🟡 IN PROGRESS
+## Phase 2: MACOS INTEGRATION :white_check_mark: COMPLETED
 | Task | Status | Notes |
 |------|--------|-------|
-| nix-darwin installation | ✅ | Installed and configured |
-| Basic macOS configuration | ✅ | Basic dock and finder preferences set |
-| Homebrew integration | ⏳ | Structure prepared, implementation in progress |
-| macOS-specific preferences | ⏳ | Basic preferences configured, more to add |
-| Home Manager for macOS | ⏳ | Basic structure created, needs testing |
-| macOS application config | 🔜 | Not fully started yet |
-| Cross-platform testing | 🔜 | Not started yet |
+| nix-darwin installation | :white_check_mark: | Installed and configured |
+| Basic macOS configuration | :white_check_mark: | Basic dock and finder preferences set |
+| NixOS 24.11 compatibility | :white_check_mark: | Successfully integrated with NixOS 24.11 |
+| macOS-specific preferences | :white_check_mark: | Basic preferences configured, more can be added |
+| Home Manager for macOS | :white_check_mark: | Working with paul@macbook |
+| Cross-platform commands | :white_check_mark: | Fixed PATH issues for darwin-rebuild and home-manager |
+| Fish shell configuration | :white_check_mark: | Working across all platforms |
+| Cross-platform testing | :white_check_mark: | All systems can be updated with the same configuration |
 
-### Phase 3: REFINEMENT 🔜 PLANNED
+### Phase 3: REFINEMENT :hourglass_flowing_sand: IN PROGRESS
 | Task | Status | Notes |
 |------|--------|-------|
-| Refine feature modules | 🟡 | Core modules created, refinement needed |
-| Add more application configs | 🟡 | Some configs done, more to add |
-| Implement conditional configs | 🟡 | Basic conditionals working |
-| Finalize Homebrew integration | 🔜 | Not started yet |
-| Mac App Store integration | 🔜 | Not started yet |
-| sops-nix setup | 🔜 | Not started yet |
-| Secret management | 🔜 | Not started yet |
+| Refine feature modules | :yellow_circle: | Core modules created, refinement ongoing |
+| Add more application configs | :yellow_circle: | Some configs done, more to add |
+| Implement conditional configs | :yellow_circle: | Basic conditionals working |
+| Finalize Homebrew integration | :soon: | Not started yet |
+| Mac App Store integration | :soon: | Not started yet |
+| sops-nix setup | :soon: | Not started yet |
+| Secret management | :soon: | Not started yet |
 
 ## Feature Module Status
 
 | Module | Linux | macOS | Notes |
 |--------|-------|-------|-------|
-| git.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| fish.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| vscode.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| fastfetch.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| ssh.nix | ✅ | 🔜 | Working on Linux, not yet configured for macOS |
-| docker.nix | ✅ | N/A | Working on nuc, not relevant for macOS |
-| nfs.nix | ✅ | 🔜 | Working on Linux, equivalent needed for macOS |
-| nvidia.nix | ✅ | N/A | Working on nuc, not relevant for macOS |
-| nixinit.sh | ✅ | ✅ | Bootstrap script working for both platforms |
+| git.nix | :white_check_mark: | :white_check_mark: | Working on all platforms |
+| fish.nix | :white_check_mark: | :white_check_mark: | Working on all platforms with platform-specific features |
+| vscode.nix | :white_check_mark: | :white_check_mark: | Working on all platforms |
+| fastfetch.nix | :white_check_mark: | :white_check_mark: | Working on all platforms |
+| ssh.nix | :white_check_mark: | :yellow_circle: | Working on Linux, partially configured for macOS |
+| docker.nix | :white_check_mark: | N/A | Working on nuc, not relevant for macOS |
+| nfs.nix | :white_check_mark: | :soon: | Working on Linux, equivalent needed for macOS |
+| nvidia.nix | :white_check_mark: | N/A | Working on nuc, not relevant for macOS |
+| nixinit.sh | :white_check_mark: | :white_check_mark: | Bootstrap script working for both platforms |
 
 ## Bootstrap Script Status
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Host validation | ✅ | Strict validation for x1, nuc, macbook |
-| Config backups | ✅ | Backs up original configuration files |
-| Git installation | ✅ | Ensures git is available for repo cloning |
-| Repo cloning | ✅ | Clones from GitHub, updates remote to gitea |
-| Flake setup | ✅ | Enables experimental features for flakes |
-| Config application | ✅ | Applies flake configuration for the host |
-| macOS handling | ✅ | Special handling for macOS setup |
-| Docker setup | ✅ | Provides guidance for Docker on NUC |
-| Fish enhancements | ✅ | Optional setup for fish shell |
+| Host validation | :white_check_mark: | Strict validation for x1, nuc, macbook |
+| Config backups | :white_check_mark: | Backs up original configuration files |
+| Git installation | :white_check_mark: | Ensures git is available for repo cloning |
+| Repo cloning | :white_check_mark: | Clones from GitHub, updates remote to gitea |
+| Flake setup | :white_check_mark: | Enables experimental features for flakes |
+| Config application | :white_check_mark: | Applies flake configuration for the host |
+| macOS handling | :white_check_mark: | Special handling for macOS setup |
+| Docker setup | :white_check_mark: | Provides guidance for Docker on NUC |
+| Fish enhancements | :white_check_mark: | Optional setup for fish shell |
 
 ## Next Steps
 
-1. **Complete macOS Integration**:
-   - Finish nix-darwin installation
-   - Test basic darwin-rebuild switch
-   - Configure macOS-specific settings
+1. **Enhance macOS Configuration**:
+   - Implement Homebrew integration for macOS-specific applications
+   - Add more macOS system preferences
+   - Add Mac App Store integration
 
-2. **Test Feature Modules on macOS**:
-   - Verify git.nix compatibility
-   - Test fish.nix on macOS
-   - Configure vscode.nix for macOS
-   - Adapt other modules as needed
+2. **Refine Feature Modules**:
+   - Add browser configurations (Firefox, Chrome)
+   - Add terminal emulator configurations
+   - Add development environment configurations
+   - Add media application configurations
 
-3. **Add More Feature Modules**:
-   - Browser configurations
-   - Terminal emulators
-   - Development environments
-   - Media applications
-
-4. **Implement Secret Management**:
+3. **Implement Secret Management**:
    - Set up sops-nix
    - Configure secure key storage
-
-## Issues and Blockers
-
-- **macOS Homebrew Integration**: Need to determine best approach for managing Homebrew packages alongside Nix
-- **Cross-Platform Compatibility**: Some configurations may need conditional logic for different platforms
-- **Secret Management**: Need to research best practices for sops-nix integration
+   - Implement SSH key management
 
 ## Recent Updates
 
-- **May 2025**: Created nixinit.sh bootstrap script for fast machine setup
-- **May 2025**: Successfully configured nuc with Docker, NVIDIA, and NFS support
-- **May 2025**: Refined user configurations for both paul and admin users
-- **May 2025**: Started macOS integration with basic directory structure
+- **May 2025**: Completed macOS integration with nix-darwin
+- **May 2025**: Fixed PATH issues for darwin-rebuild and home-manager
+- **May 2025**: Successfully tested cross-platform Home Manager configurations
+- **May 2025**: Ensured fish shell works consistently across all platforms

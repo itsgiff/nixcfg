@@ -8,13 +8,13 @@ This repository contains a reproducible, declarative configuration for my comput
 
 ## Current Status
 
-- **NixOS (x1 & nuc)**: ✅ Fully configured and operational on NixOS 24.11
-- **macOS (macbook)**: 🟡 Basic configuration started - system preferences and dock settings configured
-- **Home Manager**: ✅ Working for both paul (x1) and admin (nuc) users
-- **Feature Modules**: ✅ Core modules implemented (git, fish, vscode, etc.)
-- **NFS Configuration**: ✅ Configured for shared storage access
-- **Docker Support**: ✅ Set up for nuc with NVIDIA support
-- **Bootstrap Script**: ✅ `nixinit.sh` available for quickly setting up new machines
+- **NixOS (x1 & nuc)**: :white_check_mark: Fully configured and operational on NixOS 24.11
+- **macOS (macbook)**: :white_check_mark: Successfully integrated with nix-darwin and operational
+- **Home Manager**: :white_check_mark: Working for all users across all systems (paul on x1/macbook, admin on nuc)
+- **Feature Modules**: :white_check_mark: Core modules implemented and tested across platforms
+- **NFS Configuration**: :white_check_mark: Configured for shared storage access on NixOS systems
+- **Docker Support**: :white_check_mark: Set up for nuc with NVIDIA support
+- **Bootstrap Script**: :white_check_mark: `nixinit.sh` available for quickly setting up new machines
 
 ## Structure
 
@@ -126,7 +126,7 @@ home-manager switch --flake .#admin@nuc   # For NUC with admin user
 - **Modular design:** Feature-based modules for easy reuse and organization
 - **Home Manager integration:** Consistent user environment across systems
 - **Reproducible:** Pinned dependencies via Flakes
-- **Transitional:** Homebrew/Mac App Store support for macOS-specific applications
+- **Transitional:** Homebrew/Mac App Store support for macOS-specific applications (planned)
 - **Unfree Package Support:** Configuration includes allowance for proprietary software like VSCode
 - **NFS Integration:** Configured for seamless access to shared storage
 - **Docker Support:** Full Docker configuration with NVIDIA support for containers
@@ -134,8 +134,8 @@ home-manager switch --flake .#admin@nuc   # For NUC with admin user
 
 ## Next Steps
 
-- Complete macOS/nix-darwin integration
-- Refine feature modules and user configurations
+- Implement Homebrew integration for macOS-specific applications
+- Expand macOS system preferences configuration
 - Implement secret management with sops-nix
 - Add more application-specific configurations
 
@@ -145,9 +145,9 @@ home-manager switch --flake .#admin@nuc   # For NUC with admin user
 - For macOS: nix-darwin
 - Git for version control
 
-## Getting Started
+## Documentation
 
-See the `docs/` directory for setup instructions and detailed documentation.
+See the `docs/` directory for detailed implementation plans and progress tracking.
 
 ## License
 

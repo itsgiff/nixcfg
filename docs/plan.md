@@ -4,86 +4,86 @@ This document outlines the step-by-step implementation plan for the unified conf
 
 ## Current Status Overview
 
-- ✅ NixOS configurations for x1 and nuc are complete and operational
-- ✅ Home Manager configurations for paul and admin users are working
-- ✅ Core feature modules implemented (git, fish, vscode, fastfetch, etc.)
-- ✅ Specialized modules for NixOS are working (docker, nfs, nvidia)
-- ✅ Bootstrap script (nixinit.sh) created for easy machine setup
-- ⏳ macOS/nix-darwin integration is in progress 
-- ⏳ Feature module refinement is ongoing
-- 🔜 Secret management implementation planned
+- :white_check_mark: NixOS configurations for x1 and nuc are complete and operational
+- :white_check_mark: Home Manager configurations for paul and admin users are working
+- :white_check_mark: Core feature modules implemented (git, fish, vscode, fastfetch, etc.)
+- :white_check_mark: Specialized modules for NixOS are working (docker, nfs, nvidia)
+- :white_check_mark: Bootstrap script (nixinit.sh) created for easy machine setup
+- :white_check_mark: macOS/nix-darwin integration is complete and operational
+- :hourglass_flowing_sand: Feature module refinement is ongoing
+- :soon: Secret management implementation planned
 
-## Phase 1: SETUP & NIXOS ✅ COMPLETED
+## Phase 1: SETUP & NIXOS :white_check_mark: COMPLETED
 
 ### Repository Initialization
-- ✅ Create initial repository structure
-- ✅ Set up basic flake.nix with inputs
-- ✅ Initialize git repository
-- ✅ Add LICENSE and README.md
+- :white_check_mark: Create initial repository structure
+- :white_check_mark: Set up basic flake.nix with inputs
+- :white_check_mark: Initialize git repository
+- :white_check_mark: Add LICENSE and README.md
 
 ### NixOS Configuration (x1)
-- ✅ Create initial system configuration
-- ✅ Set up Home Manager integration
-- ✅ Configure system packages and services
-- ✅ Test and validate core functionality
-- ✅ Add user-specific configurations
+- :white_check_mark: Create initial system configuration
+- :white_check_mark: Set up Home Manager integration
+- :white_check_mark: Configure system packages and services
+- :white_check_mark: Test and validate core functionality
+- :white_check_mark: Add user-specific configurations
 
 ### NixOS Configuration (nuc)
-- ✅ Create system configuration with appropriate hardware settings
-- ✅ Set up admin user with Home Manager
-- ✅ Configure Docker with NVIDIA support
-- ✅ Set up NFS mounts and SSH configuration
-- ✅ Test and validate server functionality
+- :white_check_mark: Create system configuration with appropriate hardware settings
+- :white_check_mark: Set up admin user with Home Manager
+- :white_check_mark: Configure Docker with NVIDIA support
+- :white_check_mark: Set up NFS mounts and SSH configuration
+- :white_check_mark: Test and validate server functionality
 
 ### Bootstrap Script
-- ✅ Create nixinit.sh bootstrap script
-- ✅ Add hostname validation and configuration
-- ✅ Add repository cloning and setup
-- ✅ Add flake configuration application
-- ✅ Test script functionality across different hosts
+- :white_check_mark: Create nixinit.sh bootstrap script
+- :white_check_mark: Add hostname validation and configuration
+- :white_check_mark: Add repository cloning and setup
+- :white_check_mark: Add flake configuration application
+- :white_check_mark: Test script functionality across different hosts
 
-## Phase 2: MACOS INTEGRATION 🟡 IN PROGRESS
+## Phase 2: MACOS INTEGRATION :white_check_mark: COMPLETED
 
 ### nix-darwin Setup
-- ✅ Install nix-darwin on macOS
-- ✅ Create basic configuration.nix for macOS
-- ⏳ Configure Homebrew integration
-- ⏳ Set up macOS-specific preferences
+- :white_check_mark: Install nix-darwin on macOS
+- :white_check_mark: Create basic configuration.nix for macOS
+- :white_check_mark: Set up compatibility with NixOS 24.11
+- :white_check_mark: Set up macOS-specific preferences
 
 ### Home Manager for macOS
-- ⏳ Configure Home Manager for paul@macbook
-- 🔜 Set up application preferences
-- 🔜 Configure macOS-specific shell environment
-- 🔜 Test cross-platform Home Manager modules
+- :white_check_mark: Configure Home Manager for paul@macbook
+- :white_check_mark: Fix PATH issues for darwin-rebuild and home-manager
+- :white_check_mark: Configure macOS-specific shell environment
+- :white_check_mark: Test cross-platform Home Manager modules
 
 ### Integration Testing
-- 🔜 Test unified configuration across all systems
-- 🔜 Verify feature modules work on macOS
-- 🔜 Ensure smooth updates and rebuilds
+- :white_check_mark: Test unified configuration across all systems
+- :white_check_mark: Verify feature modules work on macOS
+- :white_check_mark: Ensure smooth updates and rebuilds
 
-## Phase 3: REFINEMENT 🔜 PLANNED
+## Phase 3: REFINEMENT :hourglass_flowing_sand: IN PROGRESS
 
 ### Feature Module Development
-- ✅ Create initial modules for common applications (git, vscode, etc.)
-- 🔜 Refine existing modules for better cross-platform compatibility
-- 🔜 Add more application-specific configurations
-- 🔜 Implement conditional configurations for different platforms
+- :white_check_mark: Create initial modules for common applications (git, vscode, etc.)
+- :hourglass_flowing_sand: Refine existing modules for better cross-platform compatibility
+- :hourglass_flowing_sand: Add more application-specific configurations
+- :hourglass_flowing_sand: Implement conditional configurations for different platforms
 
 ### Homebrew Integration
-- 🔜 Finalize Homebrew package selection for macOS
-- 🔜 Create proper integration between Nix and Homebrew packages
-- 🔜 Set up Mac App Store (mas) integration
+- :soon: Finalize Homebrew package selection for macOS
+- :soon: Create proper integration between Nix and Homebrew packages
+- :soon: Set up Mac App Store (mas) integration
 
 ### Secret Management
-- 🔜 Set up sops-nix for encrypted secrets
-- 🔜 Create secure SSH and GPG key configuration
-- 🔜 Manage sensitive data safely across systems
+- :soon: Set up sops-nix for encrypted secrets
+- :soon: Create secure SSH and GPG key configuration
+- :soon: Manage sensitive data safely across systems
 
 ## Implementation Details
 
 ### Bootstrap Script Implementation
-1. ✅ Create scripts directory in repository
-2. ✅ Develop nixinit.sh with the following features:
+1. :white_check_mark: Create scripts directory in repository
+2. :white_check_mark: Develop nixinit.sh with the following features:
    - Hostname validation (x1, nuc, macbook only)
    - Configuration file backups
    - Git installation and repository cloning
@@ -91,37 +91,38 @@ This document outlines the step-by-step implementation plan for the unified conf
    - System configuration application
    - Special handling for the nuc's Docker setup
    - Optional fish shell enhancements
-3. ✅ Create one-liner for easy script execution
-4. ✅ Test script on different host types
+3. :white_check_mark: Create one-liner for easy script execution
+4. :white_check_mark: Test script on different host types
 
 ### macOS Integration Steps
-1. ✅ Install nix-darwin on macBook
-2. ✅ Create initial configuration.nix for macbook (basic system preferences)
-3. ✅ Add darwin configuration to flake.nix
-4. ⏳ Test initial darwin-rebuild switch
-5. 🔜 Set up Homebrew integration for macOS-specific applications
-6. ⏳ Configure Home Manager for paul@macbook
-7. 🔜 Test cross-platform modules
+1. :white_check_mark: Install nix-darwin on macBook
+2. :white_check_mark: Create initial configuration.nix for macbook (basic system preferences)
+3. :white_check_mark: Add darwin configuration to flake.nix
+4. :white_check_mark: Test initial darwin-rebuild switch
+5. :white_check_mark: Configure Home Manager for paul@macbook
+6. :white_check_mark: Ensure PATH integration for system commands
+7. :white_check_mark: Test cross-platform modules
 
 ### Feature Module Roadmap
-1. Review and refine existing modules (git, fish, vscode, fastfetch)
-2. Create platform-specific versions of any incompatible configurations
-3. Add additional application configurations:
+1. :white_check_mark: Review and refine existing modules (git, fish, vscode, fastfetch)
+2. :hourglass_flowing_sand: Create platform-specific versions of any incompatible configurations
+3. :soon: Add additional application configurations:
    - Browser configurations (Firefox, Chrome)
    - Terminal emulators
    - Development environments
    - Media applications
-4. Implement conditional platform detection and configuration
+4. :hourglass_flowing_sand: Implement conditional platform detection and configuration
 
 ### Secret Management Approach
-1. Install and configure sops-nix
-2. Create encrypted secrets directory
-3. Store SSH keys, API tokens, and other sensitive data
-4. Set up automatic decryption during system activation
+1. :soon: Install and configure sops-nix
+2. :soon: Create encrypted secrets directory
+3. :soon: Store SSH keys, API tokens, and other sensitive data
+4. :soon: Set up automatic decryption during system activation
 
 ## Next Actions
-1. Complete macOS/nix-darwin configuration
-2. Test Home Manager modules on macOS
-3. Refine feature modules for better cross-platform compatibility
-4. Implement secret management
-5. Document system management workflows
+1. :white_check_mark: Complete macOS/nix-darwin configuration
+2. :white_check_mark: Test Home Manager modules on macOS
+3. :hourglass_flowing_sand: Refine feature modules for better cross-platform compatibility
+4. :soon: Implement Homebrew integration for macOS
+5. :soon: Implement secret management
+6. :soon: Document system management workflows
