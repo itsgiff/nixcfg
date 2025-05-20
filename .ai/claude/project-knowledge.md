@@ -6,11 +6,11 @@
 - Including transitional Homebrew and mas support for macOS
 
 ## Current Status
-- **NixOS hosts** (x1, nuc): ✅ Fully configured and operational on NixOS 24.11
-- **macOS** (macbook): 🟡 Basic configuration started - system preferences and dock settings configured
-- **Feature modules**: 🟡 Core modules implemented (git, fish, vscode, fastfetch, etc.)
-- **Home Manager**: ✅ Working for both paul (x1) and admin (nuc) users
-- **Secret management**: 🔴 Not yet implemented
+- **NixOS hosts** (x1, nuc): :white_check_mark: Fully configured and operational on NixOS 24.11
+- **macOS** (macbook): :white_check_mark: Successfully integrated with nix-darwin and operational
+- **Feature modules**: :yellow_circle: Core modules implemented and working across platforms
+- **Home Manager**: :white_check_mark: Working for all users across all systems
+- **Secret management**: :red_circle: Not yet implemented
 
 ## Key Technology Stack
 - Nix/NixOS (24.11)
@@ -67,13 +67,52 @@ Current structure:
 - url: git@gitea:paul/nixcfg.git
 
 ## Development Process
-1. ✅ Initialize git repo and use for sync
-2. ✅ Implement on primary machine (x1) first
-3. ✅ Test thoroughly before committing
-4. ✅ Integrate with additional machine (nuc)
-5. ⏳ Integrate with macbook (in progress)
-6. 🟡 Refactor into feature modules (ongoing)
-7. ⏳ Iterate with continuous improvements
+1. :white_check_mark: Initialize git repo and use for sync
+2. :white_check_mark: Implement on primary machine (x1) first
+3. :white_check_mark: Test thoroughly before committing
+4. :white_check_mark: Integrate with additional machine (nuc)
+5. :white_check_mark: Integrate with macbook (complete)
+6. :yellow_circle: Refactor into feature modules (ongoing)
+7. :hourglass_flowing_sand: Iterate with continuous improvements
+
+## Git Commit Conventions
+All commits to this repository MUST follow the Conventional Commits specification:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+- **feat**: A new feature or enhancement
+- **fix**: A bug fix
+- **docs**: Documentation changes only
+- **style**: Changes that don't affect code meaning (white-space, formatting)
+- **refactor**: Code restructuring without feature changes
+- **perf**: Performance improvements
+- **test**: Test additions or modifications
+- **chore**: Maintenance tasks, dependency updates
+- **ci**: Changes to CI configuration
+
+### Scopes
+Common scopes for this project include:
+- **core**: Base configuration
+- **macOS**: macOS/darwin-specific changes
+- **nixos**: NixOS-specific changes
+- **fish**: Fish shell configuration
+- **modules**: Feature modules changes
+- **home**: Home-manager configurations
+- **flake**: Changes to flake.nix
+
+### Examples
+- `feat(macOS): add homebrew integration`
+- `fix(fish): resolve PATH issues on macOS`
+- `docs: update status after macOS implementation`
+- `refactor(modules): improve cross-platform compatibility`
+- `chore: update flake inputs`
 
 ## Best Practices
 - Use READMEs in key directories to document purpose and structure
@@ -96,29 +135,28 @@ Current structure:
 - Test configurations on both systems after each significant change
 
 ## Project Phases
-1. SETUP & NIXOS: ✅ Repository initialization and NixOS migration (COMPLETE)
-2. MACOS: 🟡 Darwin integration and basic Home Manager (IN PROGRESS)
-3. REFACTOR: 🔜 Feature modules, Homebrew integration, secrets (PLANNED)
+1. SETUP & NIXOS: :white_check_mark: Repository initialization and NixOS migration (COMPLETE)
+2. MACOS: :white_check_mark: Darwin integration and Home Manager (COMPLETE)
+3. REFACTOR: :hourglass_flowing_sand: Feature modules, Homebrew integration, secrets (IN PROGRESS)
 
 ## Feature Module Status
 | Module | Linux | macOS | Notes |
 |--------|-------|-------|-------|
-| git.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| fish.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| vscode.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| fastfetch.nix | ✅ | 🟡 | Working on Linux, needs testing on macOS |
-| ssh.nix | ✅ | 🔜 | Working on Linux, not yet configured for macOS |
-| docker.nix | ✅ | N/A | Working on nuc, not relevant for macOS |
-| nfs.nix | ✅ | 🔜 | Working on Linux, equivalent needed for macOS |
-| nvidia.nix | ✅ | N/A | Working on nuc, not relevant for macOS |
+| git.nix | :white_check_mark: | :white_check_mark: | Working on all platforms |
+| fish.nix | :white_check_mark: | :white_check_mark: | Working with platform-specific features |
+| vscode.nix | :white_check_mark: | :white_check_mark: | Working on all platforms |
+| fastfetch.nix | :white_check_mark: | :white_check_mark: | Working on all platforms |
+| ssh.nix | :white_check_mark: | :yellow_circle: | Working on Linux, partially on macOS |
+| docker.nix | :white_check_mark: | N/A | Working on nuc, not relevant for macOS |
+| nfs.nix | :white_check_mark: | :soon: | Working on Linux, equivalent needed for macOS |
+| nvidia.nix | :white_check_mark: | N/A | Working on nuc, not relevant for macOS |
 
 ## Next Actions
-1. Complete macOS/nix-darwin configuration
-2. Test Home Manager modules on macOS
+1. Implement Homebrew integration for macOS-specific applications
+2. Expand macOS system preferences configuration
 3. Refine feature modules for better cross-platform compatibility
-4. Implement Homebrew integration for macOS-specific applications
-5. Set up secret management with sops-nix
-6. Add more application-specific configurations
+4. Set up secret management with sops-nix
+5. Add more application-specific configurations
 
 ## File Responsibilities
 - flake.nix: Input sources, system definitions, module inclusion
