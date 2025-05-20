@@ -21,6 +21,16 @@ in {
       if test -d /run/current-system/sw/bin
         fish_add_path /run/current-system/sw/bin
       end
+      
+      # Add home-manager path if it exists
+      if test -d $HOME/.nix-profile/bin
+        fish_add_path $HOME/.nix-profile/bin
+      end
+      
+      # Add local bin directory to PATH
+      if test -d $HOME/.local/bin
+        fish_add_path $HOME/.local/bin
+      end
     '';
 
     shellAliases = {
