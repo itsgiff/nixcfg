@@ -2,7 +2,13 @@
 { config, pkgs, lib, inputs, hostname, ... }:
 
 {
-  imports = [ /* modules later */ ];
+  imports = [ 
+    # Import darwin-specific modules
+    ../../modules/darwin/defaults.nix
+    ../../modules/darwin/desktop.nix
+    # wait to do brew for a bit
+    # ../../modules/darwin/homebrew.nix
+  ];
   
   # Basic system settings
   system.stateVersion = 4;
@@ -21,35 +27,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Basic system configuration
-  system.defaults = {
-    dock = {
-      autohide = false;
-      orientation = "bottom";
-      show-recents = false;
-      mru-spaces = false;
-    };
-    finder = {
-      AppleShowAllExtensions = true;
-      QuitMenuItem = true;
-      FXEnableExtensionChangeWarning = false;
-    };
-    NSGlobalDomain = {
-      "com.apple.swipescrolldirection" = false; # "Natural" scrolling
-      AppleKeyboardUIMode = 3; # Full keyboard navigation
-      NSAutomaticCapitalizationEnabled = false;
-      NSAutomaticDashSubstitutionEnabled = false;
-      NSAutomaticPeriodSubstitutionEnabled = false;
-      NSAutomaticQuoteSubstitutionEnabled = false;
-      NSAutomaticSpellingCorrectionEnabled = false;
-    };
-    # Add trackpad settings
-    trackpad = {
-      Clicking = true;
-      TrackpadRightClick = true;
-    };
-  };
-  
   # Basic programs
   programs.fish.enable = true;
   
@@ -59,5 +36,12 @@
     curl
     home-manager
     wget
+    htop
+    ripgrep
   ];
+
+  system.activationScripts.postActivation.text = ''
+    # Additional activation scripts can go here
+    echo "Darwin configuration activated"
+  '';  
 }
