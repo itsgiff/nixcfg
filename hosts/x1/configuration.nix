@@ -163,7 +163,7 @@
     libreoffice-qt
     hunspell hunspellDicts.en_CA
         
-    dconf
+    dconf dconf2nix
     epiphany
     gnome-tweaks seahorse
     gnome-settings-daemon
