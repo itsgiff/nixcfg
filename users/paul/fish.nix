@@ -2,10 +2,26 @@
 
 { config, pkgs, lib, hostname ? "x1", ... }:
 
-{
+let
+  # Define platform-specific content
+  isMacOS = pkgs.stdenv.isDarwin;
+in {
   # Fish Shell configuration
   programs.fish = {
     enable = true;
+
+    # Add initialization to source nix-darwin paths on macOS
+    interactiveShellInit = lib.optionalString isMacOS ''
+      # Source nix-darwin environment if available
+      if test -e /etc/static/fish/config.fish
+        source /etc/static/fish/config.fish
+      end
+
+      # Add nix-darwin paths to PATH if needed
+      if test -d /run/current-system/sw/bin
+        fish_add_path /run/current-system/sw/bin
+      end
+    '';
 
     shellAliases = {
       # General
@@ -40,8 +56,14 @@
 
       # Infrastructure Management
       infra-scripts = "cd ${if hostname == "macbook" then "/Volumes/data/scripts/infrastructure" else "/mnt/data/scripts/infrastructure"}";
-    
-    }; 
+      
+      # macOS specific aliases (only added on macOS)
+      # You can add more here as needed, they'll only be applied on macOS
+    } // (if isMacOS then {
+      # Optional: Add macOS-specific aliases here
+      brewup = "brew update && brew upgrade && brew cleanup";
+      macup = "softwareupdate --all --install --force";
+    } else {});
 
     functions = {
       fish_greeting = {
