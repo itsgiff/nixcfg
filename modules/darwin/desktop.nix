@@ -14,18 +14,10 @@
   
   # macOS-specific packages
   environment.systemPackages = with pkgs; [
-    # CLI tools useful on macOS
-    bat
-    coreutils
-    fd
-    findutils    
-    fzf
-    gnused
-    gawk
-    m-cli
-
-    # graphical tools
-    rectangle
+    # CLI tools
+    #
+    # Graphical tools
+    #
   ];
   
 }

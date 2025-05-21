@@ -6,8 +6,7 @@
     # Import darwin-specific modules
     ../../modules/darwin/defaults.nix
     ../../modules/darwin/desktop.nix
-    # wait to do brew for a bit
-    # ../../modules/darwin/homebrew.nix
+    ../../modules/darwin/homebrew.nix
   ];
   
   # Basic system settings
