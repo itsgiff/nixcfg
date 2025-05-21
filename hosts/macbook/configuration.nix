@@ -31,7 +31,6 @@
   
   # Basic packages
   environment.systemPackages = with pkgs; [
-    git
     curl
     home-manager
     wget
