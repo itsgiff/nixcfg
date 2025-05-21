@@ -12,7 +12,45 @@
       up = "pull --rebase";
       undo = "reset HEAD --soft";      
       sync = "!git pull --rebase && git push";
-     save = "!sh -c 'git add -A && git commit -m \"$1\" && git push origin main' -";
+      # save = "!sh -c 'git add -A && git commit -m \"$1\" && git push origin main' -"; 
+      alias.save=!f() { 
+          if git diff-index --quiet HEAD --; then
+              git pull --rebase origin main &&
+              git add -A &&
+              git commit -m "$1" &&
+              git push origin main || {
+                  echo "⚠️ Changes not pushed due to conflicts or errors."
+                  echo "ℹ️ Current status:"
+                  git status --short
+                  echo "\n❗ To resolve:"
+                  echo "1. Check the conflicts with 'git status'"
+                  echo "2. Resolve the conflicted files (look for conflict markers <<<, ===, >>>)"
+                  echo "3. After fixing conflicts: 'git add <resolved-files>'" 
+                  echo "4. Continue the rebase with 'git rebase --continue'"
+                  echo "5. Push your changes with 'git push origin main'"
+              }
+          else
+              echo "Stashing uncommitted changes first..." &&
+              git stash &&
+              git pull --rebase origin main &&
+              git stash pop &&
+              git add -A &&
+              git commit -m "$1" &&
+              git push origin main || {
+                  echo "⚠️ Changes not pushed due to conflicts or errors."
+                  echo "ℹ️ Current status:"
+                  git status --short
+                  echo "\n❗ To resolve:"
+                  echo "1. Check the conflicts with 'git status'"
+                  echo "2. Resolve the conflicted files (look for conflict markers <<<, ===, >>>)"
+                  echo "3. After fixing conflicts: 'git add <resolved-files>'" 
+                  echo "4. If you were in the middle of a rebase: 'git rebase --continue'"
+                  echo "5. If you had stash conflicts: resolve them and 'git add' the fixed files"
+                  echo "6. Commit with 'git commit -m \"Your message\"'"
+                  echo "7. Push your changes with 'git push origin main'"
+              }
+          fi
+      }; f
       st = "status";
       co = "checkout";
       br = "branch";
