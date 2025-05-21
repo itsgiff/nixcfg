@@ -12,7 +12,7 @@
       up = "pull --rebase";
       undo = "reset HEAD --soft";      
       sync = "!git pull --rebase && git push";
-      save = "!f() { git add -A && git commit -m \"$1\" && git push origin main; }; f";
+     save = "!sh -c 'git add -A && git commit -m \"$1\" && git push origin main' -";
       st = "status";
       co = "checkout";
       br = "branch";
