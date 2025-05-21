@@ -8,13 +8,14 @@ This repository contains a reproducible, declarative configuration for my comput
 
 ## Current Status
 
-- **NixOS (x1 & nuc)**: :white_check_mark: Fully configured and operational on NixOS 24.11
-- **macOS (macbook)**: :white_check_mark: Successfully integrated with nix-darwin and operational
-- **Home Manager**: :white_check_mark: Working for all users across all systems (paul on x1/macbook, admin on nuc)
-- **Feature Modules**: :white_check_mark: Core modules implemented and tested across platforms
-- **NFS Configuration**: :white_check_mark: Configured for shared storage access on NixOS systems
-- **Docker Support**: :white_check_mark: Set up for nuc with NVIDIA support
-- **Bootstrap Script**: :white_check_mark: `nixinit.sh` available for quickly setting up new machines
+- **NixOS (x1 & nuc)**: ✅ Fully configured and operational on NixOS 24.11
+- **macOS (macbook)**: ✅ Successfully integrated with nix-darwin and operational
+- **Home Manager**: ✅ Working for all users across all systems (paul on x1/macbook, admin on nuc)
+- **Feature Modules**: ✅ Core modules implemented and tested across platforms
+- **NFS Configuration**: ✅ Configured for shared storage access on NixOS systems
+- **Docker Support**: ✅ Set up for nuc with NVIDIA support
+- **Bootstrap Script**: ✅ `nixinit.sh` available for quickly setting up new machines
+- **Secret Management**: 🔴 Not yet implemented
 
 ## Structure
 
@@ -34,16 +35,22 @@ This repository contains a reproducible, declarative configuration for my comput
 │       └── home.nix            # Host-specific home config
 ├── modules/                    # Shared configuration modules
 │   ├── darwin/                 # macOS-specific modules
+│   │   ├── defaults.nix        # macOS system preferences
+│   │   ├── desktop.nix         # macOS desktop environment
+│   │   ├── homebrew.nix        # Homebrew integration
+│   │   └── README.md           # macOS modules documentation
 │   ├── nixos/                  # NixOS-specific modules
 │   │   ├── docker.nix          # Docker configuration for NixOS
 │   │   └── nfs.nix             # NFS configuration for NixOS
 │   ├── fastfetch.nix           # fastfetch config
+│   ├── fish.nix                # Fish shell configuration
 │   ├── git.nix                 # Git configuration
 │   ├── nvidia.nix              # NVIDIA driver and container support
 │   ├── ssh.nix                 # SSH configuration
 │   └── vscode.nix              # VSCode configuration
 ├── scripts/                    # Utility scripts
-│   └── nixinit.sh              # Bootstrap script for new machines
+│   ├── nixinit.sh              # Bootstrap script for new machines
+│   └── README.md               # Scripts documentation
 ├── users/                      # User-specific configurations
 │   ├── admin/                  # NUC admin user
 │   │   ├── fish.nix            # Fish shell configuration for admin
@@ -126,7 +133,7 @@ home-manager switch --flake .#admin@nuc   # For NUC with admin user
 - **Modular design:** Feature-based modules for easy reuse and organization
 - **Home Manager integration:** Consistent user environment across systems
 - **Reproducible:** Pinned dependencies via Flakes
-- **Transitional:** Homebrew/Mac App Store support for macOS-specific applications (planned)
+- **Transitional:** Homebrew/Mac App Store support for macOS-specific applications
 - **Unfree Package Support:** Configuration includes allowance for proprietary software like VSCode
 - **NFS Integration:** Configured for seamless access to shared storage
 - **Docker Support:** Full Docker configuration with NVIDIA support for containers
@@ -134,10 +141,12 @@ home-manager switch --flake .#admin@nuc   # For NUC with admin user
 
 ## Next Steps
 
-- Implement Homebrew integration for macOS-specific applications
-- Expand macOS system preferences configuration
-- Implement secret management with sops-nix
-- Add more application-specific configurations
+1. Refine feature modules for better cross-platform compatibility
+2. Finalize Homebrew integration for macOS-specific applications
+3. Set up Mac App Store integration for macOS
+4. Implement secret management with sops-nix
+5. Add more application-specific configurations
+6. Document system management workflows
 
 ## Requirements
 
