@@ -9,7 +9,7 @@
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      # cleanup = "zap"; # Uninstall packages not in spec
+      # cleanup = "zap"; # jesus this is destructive 
     };
     
     # Global Homebrew settings
@@ -26,35 +26,58 @@
     
     # Command line tools to install through Homebrew
     brews = [
-      "awscli"
       "aws-iam-authenticator"
+      "awscli"
+      "azure-cli"
       "bat"
       "coreutils"
+      "docker-compose"
       "docker-machine"
-      "fd"
-      "findutils"    
-      "fzf"
+      "dockutil"
+      "eksctl"
+      "eza"
       "fastfetch"
+      "fd"
+      "findutils"
       "fish"
+      "fzf"
       "gawk"
       "gh"
+      "git-delta"
+      "git-flow"
+      "git-lfs"
+      "helm"
+      "httpie"
+      "jq"
       "keychain"
+      "kubectl"
+      "m-cli"
       "macchina"
       "mas"
-      "m-cli"
+      "moreutils"
+      "neovim"
       "ninja"
       "nmap"
       "nut"
-      "snappy"
-      "rclone"
-      "ripgrep"
-      "telnet"
-      "terraform"
-      "tree"
       "openconnect"
       "openjpeg"
+      "p7zip"
+      "pandoc"
       "python"
-
+      "rclone"
+      "ripgrep"
+      "rsync"
+      "snappy"
+      "speedtest-cli"
+      "tcpdump"
+      "telnet"
+      "terraform"
+      "trash"
+      "tree"
+      "vim"
+      "watch"
+      "xclip"
+      "yq"
     ];
     
     # GUI macOS applications to install through Homebrew Cask
@@ -62,42 +85,50 @@
       # Add macOS apps that aren't available in nixpkgs
       "alfred"
       "appcleaner"
-      "brooklyn"
-      "bartender"
       "balenaetcher"
+      "bartender"
+      "brooklyn"
       "discord"
       "docker"
       "firefox"
       "ghostty"
       "gimp"
       "google-chrome"
+      "google-cloud-sdk"
       "google-drive"
-      "handbrake" 
-      "obsidian"
+      "handbrake"
       "macfuse"
       "microsoft-office"
-      "rectangle"      
+      "obsidian"
+      "plex"
+      "rectangle"
       "remarkable"
       "signal"
       "slack"
       "spotify"
       "tailscale"
-      "plex"
+      "the-unarchiver"
       "visual-studio-code"
-      "vnc-viewer"
       "vlc"
+      "vnc-viewer"
       "whatsapp"
+      "wifiman"
     ];
     
     # Mac App Store applications to install through mas
     masApps = {
       # Format: "AppName" = App Store ID;
       "Bitwarden" = 1352778147;
-      "Keynote" = 409183694;
       "G App Launcher" = 1543803459;
+      "HP Smart" = 1474276998;
+      "Keynote" = 409183694;
       "Menu World Time" = 1446377255;
       "Numbers" = 409203825;
       "Pages" = 409201541;
+      "reMarkable" = 1276493162;
+      "Slack" = 803453959;
+      "Tailscale" = 1475387142;
+      "Windows App" = 1295203466;
     };
   };
 }
