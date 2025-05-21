@@ -13,7 +13,7 @@
       undo = "reset HEAD --soft";      
       sync = "!git pull --rebase && git push";
       # save = "!sh -c 'git add -A && git commit -m \"$1\" && git push origin main' -"; 
-      alias.save=!f() { 
+      save = ''!f() { 
           if git diff-index --quiet HEAD --; then
               git pull --rebase origin main &&
               git add -A &&
@@ -50,7 +50,7 @@
                   echo "7. Push your changes with 'git push origin main'"
               }
           fi
-      }; f
+      }; f'';
       st = "status";
       co = "checkout";
       br = "branch";
