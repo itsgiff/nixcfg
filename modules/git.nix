@@ -3,12 +3,14 @@
 {
   programs.git = {
     enable = true;
+    package = pkgs.git;
 
     userName = "Paul Gifford";
     userEmail = "paul@giff.ca";
 
     aliases = {
       up = "pull --rebase";
+      undo = "reset HEAD --soft";      
       sync = "!git pull --rebase && git push";
       save = "!f() { git add -A && git commit -m \"$1\" && git push origin main; }; f";
       st = "status";
@@ -90,10 +92,8 @@
         # Linux-specific directories
         (lib.mkIf pkgs.stdenv.isLinux [
           "/mnt/files/Google Drive/Projects/pull-request-coffee/operations"
-          "/mnt/data/dotfiles"
           "/mnt/data/infrastructure"
           "/mnt/data/run"        
-          "/mnt/data/nixconfig"
           "/mnt/data/scripts"
           "/mnt/data/ssh-keys"
           "/mnt/data"
