@@ -132,7 +132,8 @@
         (lib.mkIf pkgs.stdenv.isLinux [
           "/mnt/files/Google Drive/Projects/pull-request-coffee/operations"
           "/mnt/data/infrastructure"
-          "/mnt/data/run"        
+          "/mnt/data/run"
+          "/mnt/data/wc"       
           "/mnt/data/scripts"
           "/mnt/data/ssh-keys"
           "/mnt/data"
