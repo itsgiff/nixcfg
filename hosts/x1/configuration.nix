@@ -156,6 +156,7 @@
     signal-desktop discord
     thunderbird
     obsidian
+    publii
     
     gimp feh flameshot
     simple-scan
