@@ -9,6 +9,7 @@
   # X1-specific packages
   home.packages = with pkgs; [
     # Add X1-specific packages here
+    publii
   ];
   
   # X1-specific settings

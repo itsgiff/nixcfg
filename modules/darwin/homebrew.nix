@@ -101,6 +101,7 @@
       "microsoft-office"
       "obsidian"
       "plex"
+      "publii"
       "rectangle"
       "remarkable"
       "signal"
