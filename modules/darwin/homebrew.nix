@@ -100,6 +100,7 @@
       "macfuse"
       "microsoft-office"
       "obsidian"
+      "obs"
       "plex"
       "publii"
       "rectangle"
