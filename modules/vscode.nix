@@ -13,13 +13,7 @@
       extensions = with pkgs.vscode-extensions; [
         # Core extensions
         pkief.material-icon-theme
-        
-        # Python support 
-        ms-python.python
-        
-        # Git integration
-        github.copilot # Requires allowUnfree
-        
+      
         # Kubernetes
         ms-kubernetes-tools.vscode-kubernetes-tools
         
