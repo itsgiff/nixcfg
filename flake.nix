@@ -2,18 +2,18 @@
   description = "Unified Nix configurations for x1 (NixOS), macbook (macOS), and nuc (NixOS)";
 
   inputs = {
-    # Use nixos-24.05 for a more stable experience
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    # Update to nixos-25.05 for a more stable experience
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-24.11";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

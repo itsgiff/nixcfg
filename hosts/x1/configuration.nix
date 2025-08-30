@@ -71,9 +71,9 @@
     enable = true;
     tod = {
       enable = true;
-      # driver = pkgs.libfprint-2-tod1-goodix;
+      driver = pkgs.libfprint-2-tod1-goodix;
       # Alternative driver if needed:
-      driver = pkgs.libfprint-2-tod1-vfs0090;
+      # driver = pkgs.libfprint-2-tod1-vfs0090;
     };
   };
 
@@ -98,7 +98,7 @@
   
   # PipeWire audio system
   security.rtkit.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa = {
