@@ -57,8 +57,8 @@ in {
       # Flake building and updating
       nixFlakeCheck = "cd ~/.nixcfg && nix flake check";
       nixFlakeUpdate = "cd ~/.nixcfg && nix flake update";
-      nixSwitch = "cd ~/.nixcfg && ${if isMacOS then "darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
-      nixUpgrade = "cd ~/.nixcfg && nix flake update && ${if isMacOS then "darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
+      nixSwitch = "cd ~/.nixcfg && ${if isMacOS then "sudo darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
+      nixUpgrade = "cd ~/.nixcfg && nix flake update && ${if isMacOS then "sudo darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
       
       # System maintenance
       nixClean = "sudo nix-collect-garbage --delete-older-than 2d";

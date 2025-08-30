@@ -17,7 +17,7 @@ in {
     # User-specific aliases 
     nixHome = "cd ~/.nixcfg && $EDITOR users/paul/home.nix";
     homeSwitch = "cd ~/.nixcfg && home-manager switch --flake .#paul@${hostname}";
-    fullUpdate = "cd ~/.nixcfg && nix flake update && ${if isMacOS then "darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname} && home-manager switch --flake .#paul@${hostname}";
+    fullUpdate = "cd ~/.nixcfg && nix flake update && ${if isMacOS then "sudo darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname} && home-manager switch --flake .#paul@${hostname}";
     
     # Infrastructure Management with path based on platform
     infra-scripts = "cd ${if isMacOS then "/Volumes/data/scripts/infrastructure" else "/mnt/data/scripts/infrastructure"}";

@@ -11,6 +11,7 @@
   
   # Basic system settings
   system.stateVersion = 4;
+  system.primaryUser = "paul";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.enable = false;  # use nix-darwin with Determinate
   
@@ -37,6 +38,10 @@
     htop
     ripgrep
   ];
+
+  # Prevent nix-darwin from managing these shell files
+  environment.etc."zshrc".enable = false;
+  environment.etc."zprofile".enable = false;
 
   system.activationScripts.postActivation.text = ''
     # Additional activation scripts can go here
