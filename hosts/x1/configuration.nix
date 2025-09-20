@@ -157,6 +157,7 @@
     thunderbird
     obsidian
     publii
+    drawio
     
     gimp feh flameshot
     simple-scan
