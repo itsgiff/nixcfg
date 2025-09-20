@@ -90,6 +90,7 @@
       "brooklyn"
       "discord"
       "docker"
+      "drawio"
       "firefox"
       "ghostty"
       "gimp"
