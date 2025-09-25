@@ -92,7 +92,7 @@
       "docker"
       "drawio"
       "firefox"
-      "ghostty"
+      # "ghostty"
       "gimp"
       "google-chrome"
       "google-cloud-sdk"
@@ -107,7 +107,7 @@
       "rectangle"
       "remarkable"
       "signal"
-      "slack"
+      # "slack"
       "spotify"
       "tailscale"
       "the-unarchiver"
@@ -129,7 +129,7 @@
       "Numbers" = 409203825;
       "Pages" = 409201541;
       "reMarkable" = 1276493162;
-      "Slack" = 803453959;
+      # "Slack" = 803453959;
       "Tailscale" = 1475387142;
       "Windows App" = 1295203466;
     };
