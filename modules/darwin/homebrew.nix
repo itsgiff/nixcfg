@@ -123,7 +123,7 @@
       # Format: "AppName" = App Store ID;
       "Bitwarden" = 1352778147;
       "G App Launcher" = 1543803459;
-      "HP Smart" = 1474276998;
+      # "HP Smart" = 1474276998;
       "Keynote" = 409183694;
       "Menu World Time" = 1446377255;
       "Numbers" = 409203825;
