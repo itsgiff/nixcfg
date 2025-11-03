@@ -14,7 +14,7 @@
     daemon.settings = {
       runtimes = {
         nvidia = {
-          path = "${pkgs.nvidia-docker}/bin/nvidia-docker";
+          path = "nvidia-container-runtime";
           runtimeArgs = [];
         };
       };
@@ -34,6 +34,7 @@
     docker-compose
     docker-buildx
     nvidia-docker
+    nvidia-container-runtime
   ];
   
   # Ensure NVIDIA container toolkit systemd integration
