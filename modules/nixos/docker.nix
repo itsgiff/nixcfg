@@ -7,7 +7,7 @@
     enable = true;
     enableOnBoot = true;
     # Enable NVIDIA runtime - this is the deprecated method and a temp fix - see below
-    enableNvidia = true;    
+    # enableNvidia = true;    
     # Docker cleanup settings
     autoPrune = {
       enable = false;
@@ -16,7 +16,7 @@
   };
 
   # Enable NVIDIA Container toolkit - this is the new method but it's not working yet - might be something with compose setup
-  # hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
 
   # Ensure Docker packages are available
   environment.systemPackages = with pkgs; [
