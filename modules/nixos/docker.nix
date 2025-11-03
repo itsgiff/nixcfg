@@ -2,21 +2,29 @@
 { config, pkgs, ... }:
 
 {
+  # Enable NVIDIA Container toolkit first (this must come before Docker config)
+  hardware.nvidia-container-toolkit.enable = true;
+
   # Enable Docker and related tools
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
-    # Enable NVIDIA runtime - this is the deprecated method and a temp fix - see below
-    # enableNvidia = true;    
+    # Configure NVIDIA as the default runtime
+    daemon.settings = {
+      runtimes = {
+        nvidia = {
+          path = "${pkgs.nvidia-docker}/bin/nvidia-docker";
+          runtimeArgs = [];
+        };
+      };
+      default-runtime = "nvidia";
+    };
     # Docker cleanup settings
     autoPrune = {
       enable = false;
       dates = "weekly";
     };
   };
-
-  # Enable NVIDIA Container toolkit - this is the new method but it's not working yet - might be something with compose setup
-  hardware.nvidia-container-toolkit.enable = true;
 
   # Ensure Docker packages are available
   environment.systemPackages = with pkgs; [
