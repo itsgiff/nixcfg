@@ -2,14 +2,15 @@
 { config, pkgs, ... }:
 
 {
-  # Enable NVIDIA Container toolkit first (this must come before Docker config)
+  # Enable NVIDIA Container toolkit FIRST
   hardware.nvidia-container-toolkit.enable = true;
 
   # Enable Docker and related tools
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
-    # Configure NVIDIA as the default runtime
+    
+    # Configure Docker daemon with NVIDIA runtime
     daemon.settings = {
       runtimes = {
         nvidia = {
@@ -17,8 +18,10 @@
           runtimeArgs = [];
         };
       };
+      # Set nvidia as the default runtime for all containers
       default-runtime = "nvidia";
     };
+    
     # Docker cleanup settings
     autoPrune = {
       enable = false;
@@ -30,7 +33,16 @@
   environment.systemPackages = with pkgs; [
     docker-compose
     docker-buildx
+    nvidia-docker
+    cuda_12_1  # Explicitly include CUDA tools
   ];
+  
+  # Ensure NVIDIA container toolkit systemd integration
+  systemd.services.docker = {
+    serviceConfig = {
+      ExecStartPost = "${pkgs.coreutils}/bin/sleep 2";
+    };
+  };
   
   # Create Docker networks using systemd
   systemd.services.docker-networks = {
@@ -42,6 +54,14 @@
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = pkgs.writeShellScript "docker-networks.sh" ''
+        # Wait for docker socket to be available
+        for i in {1..30}; do
+          if [ -S /var/run/docker.sock ]; then
+            break
+          fi
+          ${pkgs.coreutils}/bin/sleep 1
+        done
+        
         # Check if the proxy network exists
         if ! ${pkgs.docker}/bin/docker network ls | ${pkgs.gnugrep}/bin/grep -q proxy; then
           ${pkgs.docker}/bin/docker network create proxy
