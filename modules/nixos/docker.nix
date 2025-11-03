@@ -34,7 +34,6 @@
     docker-compose
     docker-buildx
     nvidia-docker
-    cuda_12_1  # Explicitly include CUDA tools
   ];
   
   # Ensure NVIDIA container toolkit systemd integration
