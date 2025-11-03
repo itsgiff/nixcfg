@@ -2,25 +2,13 @@
 { config, pkgs, ... }:
 
 {
-  # Enable NVIDIA Container toolkit FIRST
+  # Enable NVIDIA container toolkit - this is the modern, officially supported way
   hardware.nvidia-container-toolkit.enable = true;
 
-  # Enable Docker and related tools
+  # Enable Docker
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
-    
-    # Configure Docker daemon with NVIDIA runtime
-    daemon.settings = {
-      runtimes = {
-        nvidia = {
-          path = "nvidia-container-runtime";
-          runtimeArgs = [];
-        };
-      };
-      # Set nvidia as the default runtime for all containers
-      default-runtime = "nvidia";
-    };
     
     # Docker cleanup settings
     autoPrune = {
@@ -29,20 +17,11 @@
     };
   };
 
-  # Ensure Docker packages are available
+  # Ensure Docker compose is available
   environment.systemPackages = with pkgs; [
     docker-compose
     docker-buildx
-    nvidia-docker
-    nvidia-container-runtime
   ];
-  
-  # Ensure NVIDIA container toolkit systemd integration
-  systemd.services.docker = {
-    serviceConfig = {
-      ExecStartPost = "${pkgs.coreutils}/bin/sleep 2";
-    };
-  };
   
   # Create Docker networks using systemd
   systemd.services.docker-networks = {
