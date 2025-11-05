@@ -2,7 +2,7 @@
 { config, pkgs, ... }:
 
 {
-  # Enable NVIDIA container toolkit - this is the modern, officially supported way
+  # Enable NVIDIA container toolkit
   hardware.nvidia-container-toolkit.enable = true;
 
   # Enable Docker
@@ -10,7 +10,7 @@
     enable = true;
     enableOnBoot = true;
     
-    # Explicitly register NVIDIA runtime with Docker daemon
+    # Register NVIDIA runtime with Docker daemon
     daemon.settings = {
       default-runtime = "runc";
       runtimes = {
@@ -28,13 +28,15 @@
     };
   };
 
-  # Ensure Docker compose is available
+  # Docker tools and NVIDIA container packages
   environment.systemPackages = with pkgs; [
     docker-compose
     docker-buildx
+    nvidia-container-toolkit
+    nvidia-docker
   ];
   
-  # Create Docker networks using systemd
+  # Create Docker proxy network on startup
   systemd.services.docker-networks = {
     description = "Create Docker networks";
     requires = [ "docker.service" ];
@@ -44,16 +46,17 @@
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = pkgs.writeShellScript "docker-networks.sh" ''
-        # Wait for docker socket to be available
+        set -e
+        # Wait for docker socket
         for i in {1..30}; do
           if [ -S /var/run/docker.sock ]; then
             break
           fi
-          ${pkgs.coreutils}/bin/sleep 1
+          sleep 1
         done
         
-        # Check if the proxy network exists
-        if ! ${pkgs.docker}/bin/docker network ls | ${pkgs.gnugrep}/bin/grep -q proxy; then
+        # Create proxy network if it doesn't exist
+        if ! ${pkgs.docker}/bin/docker network ls | ${pkgs.gnugrep}/bin/grep -q "proxy"; then
           ${pkgs.docker}/bin/docker network create proxy
         fi
       '';

@@ -1,4 +1,4 @@
-# ~/.nixcfg/modules/nvidia.nix
+# ~/.nixcfg/modules/nixos/nvidia.nix
 { config, pkgs, ... }:
 
 {
@@ -21,14 +21,12 @@
   # Blacklist nouveau
   boot.blacklistedKernelModules = [ "nouveau" ];
   
-  # Enable OpenGL
+  # Enable OpenGL (required for GPU acceleration)
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
-  # NVIDIA Packages
+  # System utilities for GPU management
   environment.systemPackages = with pkgs; [
-    nvidia-container-toolkit
-    nvidia-docker
     pciutils
     glxinfo
   ];
