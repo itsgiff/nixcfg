@@ -9,6 +9,15 @@
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
+    daemon.settings = {
+      default-runtime = "runc";
+      runtimes = {
+        nvidia = {
+          path = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
+          runtimeArgs = [ ];
+        };
+      };
+    };        
     
     # Docker cleanup settings
     autoPrune = {
