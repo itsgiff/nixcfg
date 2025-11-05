@@ -15,7 +15,7 @@
       default-runtime = "runc";
       runtimes = {
         nvidia = {
-          path = "nvidia-container-runtime";
+          path = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
           runtimeArgs = [ ];
         };
       };
