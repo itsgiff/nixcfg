@@ -10,17 +10,6 @@
     enable = true;
     enableOnBoot = true;
     
-    # Register NVIDIA runtime with Docker daemon
-    daemon.settings = {
-      default-runtime = "runc";
-      runtimes = {
-        nvidia = {
-          path = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
-          runtimeArgs = [ ];
-        };
-      };
-    };
-    
     # Docker cleanup settings
     autoPrune = {
       enable = false;
@@ -33,7 +22,6 @@
     docker-compose
     docker-buildx
     nvidia-container-toolkit
-    nvidia-docker
   ];
   
   # Create Docker proxy network on startup
@@ -47,7 +35,6 @@
       RemainAfterExit = true;
       ExecStart = pkgs.writeShellScript "docker-networks.sh" ''
         set -e
-        # Wait for docker socket
         for i in {1..30}; do
           if [ -S /var/run/docker.sock ]; then
             break
@@ -55,7 +42,6 @@
           sleep 1
         done
         
-        # Create proxy network if it doesn't exist
         if ! ${pkgs.docker}/bin/docker network ls | ${pkgs.gnugrep}/bin/grep -q "proxy"; then
           ${pkgs.docker}/bin/docker network create proxy
         fi
