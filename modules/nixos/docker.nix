@@ -31,6 +31,7 @@
     docker-compose
     docker-buildx
     nvidia-container-toolkit
+    libnvidia-container
   ];
   
   # Create Docker proxy network on startup
