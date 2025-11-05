@@ -1,61 +1,74 @@
-# ~/.nixcfg/modules/nixos/docker.nix
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
-  # Enable NVIDIA container toolkit
+  ########################################
+  ## Docker + NVIDIA on NixOS (stable)
+  ########################################
+
+  # NVIDIA Container Toolkit drivers/hooks
   hardware.nvidia-container-toolkit.enable = true;
 
-  # Enable Docker
+  # Make sure the runtime + libs are actually in the system profile
+  environment.systemPackages = with pkgs; [
+    nvidia-container-toolkit
+    libnvidia-container
+    # optional: docker-compose v2 CLI, if you want the standalone too
+    # docker-compose
+  ];
+
+  # Docker daemon
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
+
+    # Daemon config with a STABLE runtime path (not a GC'ed /nix/store hash)
     daemon.settings = {
       default-runtime = "runc";
       runtimes = {
         nvidia = {
-          path = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
+          path = "/run/current-system/sw/bin/nvidia-container-runtime";
           runtimeArgs = [ ];
         };
       };
-    };        
-    
-    # Docker cleanup settings
-    autoPrune = {
-      enable = false;
-      dates = "weekly";
+
+      # Optional: keep logs sane
+      log-driver = "json-file";
+      log-opts = {
+        "max-size" = "50m";
+        "max-file" = "3";
+      };
     };
+
+    # Optional: adjust as you like
+    # storageDriver = "overlay2";
+    # enableNvidia = true;   # not required when we set runtimes above
   };
 
-  # Docker tools and NVIDIA container packages
-  environment.systemPackages = with pkgs; [
-    docker-compose
-    docker-buildx
-    nvidia-container-toolkit
-    libnvidia-container
-  ];
-  
-  # Create Docker proxy network on startup
-  systemd.services.docker-networks = {
-    description = "Create Docker networks";
-    requires = [ "docker.service" ];
-    after = [ "docker.service" ];
+  # Your user needs the right groups
+  users.users.admin.extraGroups = [ "docker" "video" "render" ];
+
+  ########################################
+  ## One-shot setup to ensure Docker hooks + CDI exist
+  ########################################
+  systemd.services."nvidia-container-toolkit-setup" = {
+    description = "Configure NVIDIA Container Toolkit runtime and generate CDI spec";
     wantedBy = [ "multi-user.target" ];
+    after = [ "docker.service" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = pkgs.writeShellScript "docker-networks.sh" ''
-        set -e
-        for i in {1..30}; do
-          if [ -S /var/run/docker.sock ]; then
-            break
-          fi
-          sleep 1
-        done
-        
-        if ! ${pkgs.docker}/bin/docker network ls | ${pkgs.gnugrep}/bin/grep -q "proxy"; then
-          ${pkgs.docker}/bin/docker network create proxy
-        fi
-      '';
     };
+    script = ''
+      set -e
+      # Wire the Docker runtime hook (safe to re-run)
+      ${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk runtime configure --runtime=docker
+
+      # Generate CDI so `--gpus` works without legacy runtime
+      mkdir -p /etc/cdi
+      ${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+
+      # Restart Docker to pick up changes
+      systemctl restart docker
+    '';
   };
 }
