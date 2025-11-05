@@ -10,6 +10,17 @@
     enable = true;
     enableOnBoot = true;
     
+    # Explicitly register NVIDIA runtime with Docker daemon
+    daemon.settings = {
+      default-runtime = "runc";
+      runtimes = {
+        nvidia = {
+          path = "nvidia-container-runtime";
+          runtimeArgs = [ ];
+        };
+      };
+    };
+    
     # Docker cleanup settings
     autoPrune = {
       enable = false;
