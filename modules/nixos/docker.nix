@@ -1,11 +1,13 @@
 { config, pkgs, lib, ... }:
 
+let
+  toolkit = pkgs.nvidia-container-toolkit;
+in
 {
   hardware.nvidia-container-toolkit.enable = true;
 
   environment.systemPackages = with pkgs; [
-    nvidia-container-toolkit
-    nvidia-docker
+    toolkit
     libnvidia-container
   ];
 
@@ -15,7 +17,7 @@
     daemon.settings = {
       runtimes = {
         nvidia = {
-          path = "/run/current-system/sw/bin/nvidia-docker";
+          path = "${toolkit}/bin/nvidia-container-runtime";
           runtimeArgs = [];
         };
       };
