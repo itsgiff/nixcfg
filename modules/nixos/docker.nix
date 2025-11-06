@@ -20,7 +20,6 @@
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
-    enableNvidia = true;
 
     # Daemon config with a STABLE runtime path (not a GC'ed /nix/store hash)
     daemon.settings = {
