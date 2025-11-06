@@ -5,6 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     nvidia-container-toolkit
+    nvidia-container-toolkit-tools
     libnvidia-container
   ];
 
