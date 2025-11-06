@@ -1,8 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  nvidiaCTK = pkgs.nvidia-container-toolkit;
-in
 {
   hardware.nvidia-container-toolkit.enable = true;
 
@@ -18,8 +15,8 @@ in
     daemon.settings = {
       runtimes = {
         nvidia = {
-          path = "${nvidiaCTK}/bin/nvidia-ctk";
-          runtimeArgs = [ "runtime" "configure" "--runtime=docker" ];
+          path = "/run/current-system/sw/bin/nvidia-docker";
+          runtimeArgs = [];
         };
       };
     };
