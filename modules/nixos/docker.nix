@@ -6,12 +6,13 @@
   environment.systemPackages = with pkgs; [
     nvidia-container-toolkit
     libnvidia-container
+    podman
   ];
 
-  virtualisation.docker = {
+  virtualisation.podman = {
     enable = true;
-    enableOnBoot = true;
+    dockerSocket.enable = true;
   };
 
-  users.users.admin.extraGroups = [ "docker" "video" "render" ];
+  users.users.admin.extraGroups = [ "podman" "video" "render" ];
 }
