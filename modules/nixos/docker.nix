@@ -26,10 +26,6 @@
       default-runtime = "runc";
       runtimes = {};
     };
-
-    # Optional: adjust as you like
-    # storageDriver = "overlay2";
-    enableNvidia = true;   # not required when we set runtimes above
   };
 
   # Your user needs the right groups
