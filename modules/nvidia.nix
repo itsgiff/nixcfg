@@ -9,7 +9,7 @@
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
-    open = false;
+    open = true;
     nvidiaSettings = true;
     forceFullCompositionPipeline = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
