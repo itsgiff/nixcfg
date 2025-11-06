@@ -1,13 +1,10 @@
 { config, pkgs, lib, ... }:
 
-let
-  toolkit = pkgs.nvidia-container-toolkit;
-in
 {
   hardware.nvidia-container-toolkit.enable = true;
 
   environment.systemPackages = with pkgs; [
-    toolkit
+    nvidia-container-toolkit
     libnvidia-container
   ];
 
@@ -15,14 +12,25 @@ in
     enable = true;
     enableOnBoot = true;
     daemon.settings = {
-      runtimes = {
-        nvidia = {
-          path = "${toolkit}/bin/nvidia-container-runtime";
-          runtimeArgs = [];
-        };
+      features = {
+        cdi = true;
       };
     };
   };
 
   users.users.admin.extraGroups = [ "docker" "video" "render" ];
+
+  systemd.services.setup-nvidia-cdi = {
+    description = "Generate NVIDIA CDI specs";
+    after = [ "docker.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      mkdir -p /etc/cdi
+      ${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+    '';
+  };
 }
