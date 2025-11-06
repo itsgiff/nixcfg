@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 
+let
+  nvidiaCTK = pkgs.nvidia-container-toolkit;
+in
 {
   hardware.nvidia-container-toolkit.enable = true;
 
@@ -11,22 +14,15 @@
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
+    daemon.settings = {
+      runtimes = {
+        nvidia = {
+          path = "${nvidiaCTK}/bin/nvidia-ctk";
+          runtimeArgs = [ "runtime" "configure" "--runtime=docker" ];
+        };
+      };
+    };
   };
 
   users.users.admin.extraGroups = [ "docker" "video" "render" ];
-
-  # Configure NVIDIA Docker integration
-  systemd.services.setup-nvidia-docker = {
-    description = "Setup NVIDIA Docker runtime";
-    after = [ "docker.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    script = ''
-      ${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk runtime configure --runtime=docker
-      systemctl restart docker
-    '';
-  };
 }
