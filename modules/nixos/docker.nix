@@ -11,6 +11,7 @@
   # Make sure the runtime + libs are actually in the system profile
   environment.systemPackages = with pkgs; [
     nvidia-container-toolkit
+    nvidia-container-runtime
     libnvidia-container
     # optional: docker-compose v2 CLI, if you want the standalone too
     # docker-compose
