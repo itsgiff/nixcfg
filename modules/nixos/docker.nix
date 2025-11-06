@@ -8,6 +8,7 @@ in
 
   environment.systemPackages = with pkgs; [
     nvidia-container-toolkit
+    nvidia-docker
     libnvidia-container
   ];
 
