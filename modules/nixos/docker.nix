@@ -23,11 +23,11 @@
 
     # Daemon config with a STABLE runtime path (not a GC'ed /nix/store hash)
     daemon.settings = {
-      default-runtime = "runc";
+      default-runtime = "nvidia";
       runtimes = {
         nvidia = {
-          path = "/run/current-system/sw/bin/nvidia-container-runtime";
-          runtimeArgs = [ ];
+          "path" = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
+          "runtimeArgs" = [];
         };
       };
 
