@@ -128,10 +128,10 @@
       "Menu World Time" = 1446377255;
       "Numbers" = 409203825;
       "Pages" = 409201541;
-      "reMarkable" = 1276493162;
+      # "reMarkable" = 1276493162;
       # "Slack" = 803453959;
       "Tailscale" = 1475387142;
-      "Windows App" = 1295203466;
+      # "Windows App" = 1295203466;
     };
   };
 }
