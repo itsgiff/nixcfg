@@ -10,7 +10,7 @@ This repository contains a reproducible, declarative configuration for my comput
 
 - **NixOS (x1 & nuc)**: ✅ Fully configured and operational on NixOS 24.11
 - **macOS (macbook)**: ✅ Successfully integrated with nix-darwin and operational
-- **Home Manager**: ✅ Working for all users across all systems (paul on x1/macbook, admin on nuc)
+- **Home Manager**: ✅ Working for all users across all systems (paul on x1/macbook)
 - **Feature Modules**: ✅ Core modules implemented and tested across platforms
 - **NFS Configuration**: ✅ Configured for shared storage access on NixOS systems
 - **Bootstrap Script**: ✅ `nixinit.sh` available for quickly setting up new machines
