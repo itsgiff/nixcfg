@@ -87,6 +87,7 @@
       "appcleaner"
       "balenaetcher"
       "bartender"
+      "bitwarden"
       "brooklyn"
       "discord"
       "docker-desktop"
@@ -121,7 +122,7 @@
     # Mac App Store applications to install through mas
     masApps = {
       # Format: "AppName" = App Store ID;
-      "Bitwarden" = 1352778147;
+      # "Bitwarden" = 1352778147; # moved to casks
       "G App Launcher" = 1543803459;
       # "HP Smart" = 1474276998;
       "Keynote" = 409183694;
