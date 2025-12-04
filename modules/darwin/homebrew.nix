@@ -84,6 +84,7 @@
     casks = [
       # Add macOS apps that aren't available in nixpkgs
       "alfred"
+      "antigravity"
       "appcleaner"
       "balenaetcher"
       "bartender"
