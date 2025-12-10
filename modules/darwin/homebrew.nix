@@ -104,6 +104,7 @@
       "microsoft-office"
       "obsidian"
       "obs"
+      "omnigraffle"
       "plex"
       "publii"
       "rectangle"
