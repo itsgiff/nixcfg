@@ -1,6 +1,6 @@
 # NixOS Configuration for X1 ThinkPad
 # Maintained as part of nixcfg repository
-# Last updated: May 2025
+# Last updated: December 2025 (Upgraded to 25.11)
 
 { config, pkgs, lib, inputs, hostname, ... }:
 
@@ -15,6 +15,7 @@
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.systemd-boot.consoleMode = "max";
   boot.loader.efi.canTouchEfiVariables = true;
+
   # Plymouth boot splash
   boot.plymouth.enable = true;
   boot.plymouth.theme ="breeze";
@@ -53,13 +54,15 @@
   # Localization and timezone
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
-  
-  # X11 and display configuration 
+
+  # --- REFATOR: GNOME & GDM moved out of xserver (NixOS 25.11) ---
+  services.displayManager.gdm.enable = true;
+  services.displayManager.gdm.autoSuspend = false;
+  services.desktopManager.gnome.enable = true;
+
+  # X11 Configuration (Strictly X11 stuff only)
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    displayManager.gdm.autoSuspend = false;
-    desktopManager.gnome.enable = true;
     xkb = {
       layout = "us";
       variant = "";
@@ -85,17 +88,17 @@
     gnome-photos
     gnome-tour
   ]);
-  
+
   # System fonts
   fonts.packages = with pkgs; [
     font-awesome
     fira fira-mono fira-code fira-code-symbols
     dejavu_fonts
     powerline-fonts
-    noto-fonts noto-fonts-emoji
+    noto-fonts noto-fonts-color-emoji
     material-icons
   ];
-  
+
   # PipeWire audio system
   security.rtkit.enable = true;
   services.pulseaudio.enable = false;
@@ -107,7 +110,7 @@
     };
     pulse.enable = true;
   };
-  
+
   # User configuration
   users.users.paul = {
     isNormalUser = true;
@@ -129,7 +132,7 @@
   environment.variables = {
     EDITOR = "nano";
   };
-  
+
   # Default system packages
   environment.systemPackages = with pkgs; [
     curl nano wget tree htop jq
@@ -149,8 +152,10 @@
     
     iperf nmap openvpn nss dig
     
-    bitwarden gnupg
-    
+    # --- FIX: Renamed package for 25.11 ---
+    bitwarden-desktop
+    gnupg
+  
     firefox google-chrome
     vscode
     signal-desktop discord
@@ -174,7 +179,7 @@
     gnomeExtensions.autohide-battery
     gnomeExtensions.gnome-bedtime
     gnomeExtensions.blur-my-shell
-    gnomeExtensions.espresso
+    # gnomeExtensions.espresso
     gnomeExtensions.dash-to-dock
     gnomeExtensions.freon
     gnomeExtensions.grand-theft-focus
@@ -191,18 +196,14 @@
     
     pavucontrol
     ytdownloader
-    
   ];
-  
+
   # Enable specific programs
   programs = {
     fish.enable = true;
     dconf.enable = true;
   };
-  
+
   # System version (important for NixOS upgrades - don't change after install)
   system.stateVersion = "23.05";
-  
-  # Automatic system updates
-  # system.autoUpgrade.enable = true;
 }

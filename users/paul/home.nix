@@ -5,7 +5,6 @@ let
   userMapping = {
     "x1" = "paul";         # ThinkPad
     "macbook" = "paul";    # Macbook
-    "nuc" = "admin";       # NUC
     # Add other machines as needed
   };
   
