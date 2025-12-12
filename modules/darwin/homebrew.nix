@@ -94,6 +94,7 @@
       "docker-desktop"
       "drawio"
       "firefox"
+      "geekbench"
       # "ghostty"
       "gimp"
       "google-chrome"
