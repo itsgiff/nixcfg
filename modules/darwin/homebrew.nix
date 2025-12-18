@@ -101,6 +101,7 @@
       "gcloud-cli"
       "google-drive"
       "handbrake-app"
+      "librewolf"
       "macfuse"
       "microsoft-office"
       "obsidian"
