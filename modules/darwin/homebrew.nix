@@ -91,7 +91,7 @@
       "bitwarden"
       "brooklyn"
       "discord"
-      "docker-desktop"
+      # "docker-desktop"
       "drawio"
       "firefox"
       "geekbench"
@@ -114,7 +114,7 @@
       "signal"
       # "slack"
       "spotify"
-      "tailscale-app"
+      # "tailscale-app"
       "the-unarchiver"
       "visual-studio-code"
       "vlc"
@@ -135,7 +135,7 @@
       "Pages" = 409201541;
       # "reMarkable" = 1276493162;
       # "Slack" = 803453959;
-      "Tailscale" = 1475387142;
+      # "Tailscale" = 1475387142;
       # "Windows App" = 1295203466;
     };
   };
