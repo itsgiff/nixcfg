@@ -96,12 +96,12 @@
       "firefox"
       "geekbench"
       # "ghostty"
-      "gimp"
+      # "gimp"
       "google-chrome"
       "gcloud-cli"
       "google-drive"
       "handbrake-app"
-      "librewolf"
+      # "librewolf"
       "macfuse"
       "microsoft-office"
       "obsidian"
@@ -110,7 +110,7 @@
       "plex"
       "publii"
       "raycast"
-      "rectangle"
+      # "rectangle"
       "remarkable"
       "signal"
       # "slack"
@@ -130,10 +130,10 @@
       # "Bitwarden" = 1352778147; # moved to casks
       "G App Launcher" = 1543803459;
       # "HP Smart" = 1474276998;
-      "Keynote" = 409183694;
+      # "Keynote" = 409183694;
       "Menu World Time" = 1446377255;
-      "Numbers" = 409203825;
-      "Pages" = 409201541;
+      # "Numbers" = 409203825;
+      # "Pages" = 409201541;
       # "reMarkable" = 1276493162;
       # "Slack" = 803453959;
       # "Tailscale" = 1475387142;
