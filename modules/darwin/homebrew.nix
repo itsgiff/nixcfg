@@ -90,6 +90,7 @@
       "bartender"
       "bitwarden"
       "brooklyn"
+      "claude-code"
       "discord"
       # "docker-desktop"
       "drawio"
