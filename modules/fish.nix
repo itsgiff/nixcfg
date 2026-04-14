@@ -34,6 +34,12 @@ in {
       if test -d $HOME/.local/bin
         fish_add_path $HOME/.local/bin
       end
+
+      # Initialize fnm (Fast Node Manager) if installed via Homebrew
+      if command -q fnm
+        fnm env --use-on-cd | source
+      end
+
     '';
 
     shellAliases = {
