@@ -35,6 +35,11 @@ in {
         fish_add_path $HOME/.local/bin
       end
 
+      # Initialize Rust/Cargo environment (installed via rustup)
+      if test -f $HOME/.cargo/env.fish
+        source $HOME/.cargo/env.fish
+      end
+
       # Initialize fnm (Fast Node Manager) if installed via Homebrew
       if command -q fnm
         fnm env --use-on-cd | source
