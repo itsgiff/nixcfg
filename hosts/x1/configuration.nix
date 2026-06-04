@@ -137,6 +137,7 @@
   environment.systemPackages = with pkgs; [
     curl nano wget tree htop jq
     cowsay unzip vim
+    claude-code
     
     bluez fprintd plymouth
     nixos-bgrt-plymouth

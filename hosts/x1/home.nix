@@ -10,7 +10,6 @@
   home.packages = with pkgs; [
     # Add X1-specific packages here
     publii
-    claude-code
   ];
   
   # X1-specific settings
