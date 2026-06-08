@@ -126,6 +126,9 @@
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
+    permittedInsecurePackages = [
+    "electron-39.8.10"
+    ];
   };
 
   # System wide environmental variables
@@ -148,7 +151,7 @@
     
     home-manager
 
-    docker docker-compose
+    docker_29 docker-compose
     terraform kubectl kubernetes-helm eksctl
     
     iperf nmap openvpn nss dig
