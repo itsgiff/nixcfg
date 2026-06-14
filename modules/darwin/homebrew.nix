@@ -20,6 +20,7 @@
     
     # Homebrew taps - need to be installed manually 
     taps = [
+       "msitarzewski/brew-browser"
      # "homebrew/bundle"
      # "homebrew/cask"
      ];
@@ -89,9 +90,10 @@
       "alfred"
       "antigravity"
       "appcleaner"
-      "balenaetcher"
+      # "balenaetcher"
       "bartender"
       "bitwarden"
+      "brew-browser"
       "brooklyn"
       "claude-code"
       "discord"
