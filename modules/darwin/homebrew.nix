@@ -90,7 +90,7 @@
       "alfred"
       "antigravity"
       "appcleaner"
-      # "balenaetcher"
+      "balenaetcher"
       "bartender"
       "bitwarden"
       "brew-browser"
