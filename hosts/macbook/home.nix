@@ -7,6 +7,8 @@
   };
   
   home.packages = with pkgs; [
-    # Add macOS-specific packages here
+   (python3.withPackages (ps: with ps; [
+   garminconnect
+   ]))
   ];
 }
