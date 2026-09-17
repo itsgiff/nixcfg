@@ -114,7 +114,7 @@
       "omnigraffle"
       "plex"
       "publii"
-      "raycast"
+      # "raycast"
       # "rectangle"
       "remarkable"
       "signal"
