@@ -15,7 +15,6 @@
     # Global Homebrew settings
     global = {
       brewfile = true;
-      lockfiles = false;
     };
     
     # Homebrew taps - need to be installed manually 
@@ -125,7 +124,7 @@
       "the-unarchiver"
       "visual-studio-code"
       "vlc"
-      "vnc-viewer"
+      "realvnc-connect-viewer"
       "whatsapp"
       "wifiman"
     ];
