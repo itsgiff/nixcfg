@@ -140,7 +140,7 @@
   environment.systemPackages = with pkgs; [
     curl nano wget tree htop jq
     cowsay unzip vim
-    claude-code
+    inputs.claude-code-nix.packages.${pkgs.system}.default   # was: claude-code
     
     bluez fprintd plymouth
     nixos-bgrt-plymouth
