@@ -12,8 +12,7 @@
   # Basic system settings
   system.stateVersion = 4;
   system.primaryUser = "paul";
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.enable = false;  # use nix-darwin with Determinate
+  nix.enable = false;  # Determinate Nix manages nix.conf (flakes already enabled)
   
   # User configuration
   users.users.paul = {
