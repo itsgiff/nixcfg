@@ -24,6 +24,11 @@ in {
       if test -d /run/current-system/sw/bin
         fish_add_path /run/current-system/sw/bin
       end
+
+      # Add Home Manager packages (home.packages with useUserPackages = true)
+      if test -d /etc/profiles/per-user/$USER/bin
+        fish_add_path /etc/profiles/per-user/$USER/bin
+      end
       
       # Add home-manager path if it exists
       if test -d $HOME/.nix-profile/bin
