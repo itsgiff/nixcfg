@@ -16,7 +16,6 @@ in {
   programs.fish.shellAliases = {
     # User-specific aliases 
     nixHome = "cd ~/.nixcfg && $EDITOR users/paul/home.nix";
-    homeSwitch = "cd ~/.nixcfg && home-manager switch --flake .#paul@${hostname}";
     fullUpdate = "cd ~/.nixcfg && nix flake update && ${if isMacOS then "sudo darwin-rebuild" else "sudo nixos-rebuild"} switch --flake .#${hostname}";
     
     # Infrastructure Management with path based on platform
