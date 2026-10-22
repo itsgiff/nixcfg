@@ -42,6 +42,14 @@
         Port = 22;
       };
 
+      ai = {
+        HostName = "10.10.1.70";
+        User = "op";
+        IdentityFile = "~/.ssh/infra/infra_ai_ed25519";
+        IdentitiesOnly = true;
+        Port = 22;
+      };
+
       pi = {
         HostName = "10.10.1.80";
         User = "admin";
@@ -63,6 +71,13 @@
         User = "storageadmin";
         IdentityFile = "~/.ssh/infra/infra_storage_ed25519";
         Port = 2222;
+      };
+
+      # Public services
+      "github.com" = {
+        User = "git";
+        IdentityFile = "~/.ssh/services/services_github_ed25519";
+        IdentitiesOnly = true;
       };
     };
   };
