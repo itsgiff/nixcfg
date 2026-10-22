@@ -14,8 +14,10 @@
   homebrew = {
     enable = true;
     onActivation = {
-      autoUpdate = true;
-      upgrade = true;
+      # No automatic brew update/upgrade during nixSwitch: upgrades happen
+      # only when run on purpose (brewup), so a switch never changes app versions.
+      autoUpdate = false;
+      upgrade = false;
       # cleanup = "zap"; # jesus this is destructive 
     };
     
