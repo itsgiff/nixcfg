@@ -23,6 +23,9 @@
     exec = "${pkgs.google-chrome}/bin/google-chrome-stable --app=https://www.notion.so";
     categories = [ "Office" ];
     terminal = false;
+    # Must match the window's app ID (Looking Glass → Windows → wmclass) so
+    # GNOME shows Notion as its own dock icon instead of grouping it under Chrome
+    settings.StartupWMClass = "chrome-www.notion.so__-Default";
   };
   
   # X1-specific settings
