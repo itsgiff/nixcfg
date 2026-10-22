@@ -98,9 +98,6 @@
         # 12. Git unwip - Undo the last WIP commit
         unwip = "!f() { git log -1 --pretty=%B | grep -q \"^WIP:\" && git reset HEAD~1 --soft || echo \"⚠️ Last commit is not a WIP commit\"; }; f";
         
-        # 13. Git nix-switch - Update and switch NixOS config
-        nix-switch = "!f() { cd ~/.nixcfg && git add . && git commit -m \"feat: $1\" && HOSTNAME=$(hostname) && if [[ \"$HOSTNAME\" == \"macbook\" ]]; then darwin-rebuild switch --flake .#macbook; elif [[ \"$HOSTNAME\" == \"nuc\" ]]; then sudo nixos-rebuild switch --flake .#nuc; else sudo nixos-rebuild switch --flake .#x1; fi; }; f";
-        
         # 15. Git changelog - Generate a simple changelog
         changelog = "!f() { git log --pretty=format:'%s' --reverse $(git describe --tags --abbrev=0)..HEAD | grep -v \"Merge\" | sed 's/^/- /'; }; f";
       };
