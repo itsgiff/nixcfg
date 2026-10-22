@@ -37,8 +37,6 @@
   environment.systemPackages = with pkgs; [
     curl
     wget
-    htop
-    ripgrep
   ];
 
   # Prevent nix-darwin from managing these shell files
