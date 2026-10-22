@@ -129,7 +129,6 @@
       "spotify"
       # "tailscale-app"
       "the-unarchiver"
-      "visual-studio-code"
       "vlc"
       "realvnc-connect-viewer"
       "whatsapp"
