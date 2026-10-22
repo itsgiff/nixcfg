@@ -10,8 +10,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,7 +22,7 @@
 
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nix-darwin, ... }@inputs:
     let
       x1System = "x86_64-linux";
       macSystem = "aarch64-darwin";
