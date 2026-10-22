@@ -18,7 +18,9 @@
       # only when run on purpose (brewup), so a switch never changes app versions.
       autoUpdate = false;
       upgrade = false;
-      # cleanup = "zap"; # jesus this is destructive 
+      # "check": never removes anything. If Homebrew has a package that isn't
+      # declared below, nixSwitch stops and lists it so you can decide.
+      cleanup = "check";
     };
     
     # Global Homebrew settings
