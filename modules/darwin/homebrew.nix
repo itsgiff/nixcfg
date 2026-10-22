@@ -3,6 +3,13 @@
 { config, pkgs, lib, ... }:
 
 {
+  # Put Homebrew on PATH for every shell: after the Nix profiles (order 1000),
+  # before macOS's /usr/local/bin:/usr/bin:... (order 1200).
+  environment.systemPath = lib.mkOrder 1100 [
+    "${config.homebrew.prefix}/bin"
+    "${config.homebrew.prefix}/sbin"
+  ];
+
   # Enable Homebrew
   homebrew = {
     enable = true;
