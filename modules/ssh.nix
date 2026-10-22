@@ -18,6 +18,7 @@
         HostName = "10.10.1.1";
         User = "root";
         IdentityFile = "~/.ssh/admin/admin_udm_ed25519";
+        IdentitiesOnly = true;
         Port = 22;
       };
 
@@ -25,6 +26,7 @@
         HostName = "10.10.1.40";
         User = "hassio";
         IdentityFile = "~/.ssh/infra/infra_homeassistant_ed25519";
+        IdentitiesOnly = true;
         Port = 22;
       };
 
@@ -32,6 +34,7 @@
         HostName = "10.10.1.50";
         User = "admin";
         IdentityFile = "~/.ssh/infra/infra_jumpbox_ed25519";
+        IdentitiesOnly = true;
         Port = 2424;
       };
 
@@ -39,6 +42,7 @@
         HostName = "10.10.1.60";
         User = "admin";
         IdentityFile = "~/.ssh/infra/infra_media_ed25519";
+        IdentitiesOnly = true;
         Port = 22;
       };
 
@@ -54,6 +58,7 @@
         HostName = "10.10.1.80";
         User = "admin";
         IdentityFile = "~/.ssh/infra/infra_pi_ed25519";
+        IdentitiesOnly = true;
         Port = 22;
       };
 
@@ -70,6 +75,7 @@
         HostName = "10.10.1.50";
         User = "storageadmin";
         IdentityFile = "~/.ssh/infra/infra_storage_ed25519";
+        IdentitiesOnly = true;
         Port = 2222;
       };
 
