@@ -30,9 +30,6 @@
       # User settings
       userSettings = {
         "workbench.iconTheme" = "material-icon-theme";
-        "sync.gist" = "2debdea5a28c7b4446548f427f607cb8";
-        "sync.autoDownload" = true;
-        "sync.autoUpload" = true;
         "workbench.startupEditor" = "newUntitledFile";
         "extensions.ignoreRecommendations" = true;
         "git.autofetch" = true;
@@ -40,7 +37,7 @@
         "git.confirmSync" = false;
         "git.openRepositoryInParentFolders" = "always";
         
-        "redhat.telemetry.enabled" = true;
+        "redhat.telemetry.enabled" = false;
         "security.workspace.trust.untrustedFiles" = "open";
         "security.workspace.trust.banner" = "never";
         "security.workspace.trust.startupPrompt" = "never";
