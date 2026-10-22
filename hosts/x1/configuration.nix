@@ -174,6 +174,7 @@
     gnome-settings-daemon
     gnome-characters gnome-clocks gnome-logs gnome-maps gnome-music
     
+    gnomeExtensions.appindicator   # tray icons (e.g. Claude Desktop)
     gnomeExtensions.autohide-battery
     gnomeExtensions.gnome-bedtime
     gnomeExtensions.blur-my-shell
