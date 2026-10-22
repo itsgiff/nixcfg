@@ -149,7 +149,6 @@
     git git-cliff git-crypt
     cmake
 
-    docker_29 docker-compose
     terraform kubectl kubernetes-helm eksctl
     
     iperf nmap openvpn nss dig
