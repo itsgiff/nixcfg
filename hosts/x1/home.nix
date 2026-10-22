@@ -17,6 +17,9 @@
     name = "Notion";
     genericName = "Notes and docs";
     comment = "Notion in a Chrome app window";
+    # Without this the entry has no Icon= line and GNOME shows its generic
+    # fallback. The ${} path copies the PNG into the Nix store.
+    icon = "${./icons/notion.png}";
     exec = "${pkgs.google-chrome}/bin/google-chrome-stable --app=https://www.notion.so";
     categories = [ "Office" ];
     terminal = false;
