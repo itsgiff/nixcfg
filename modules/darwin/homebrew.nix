@@ -40,7 +40,6 @@
       "fd"
       "findutils"
       "fnm"
-      "fish"
       "fzf"
       "gawk"
       "gh"
