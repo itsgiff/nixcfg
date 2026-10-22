@@ -148,8 +148,6 @@
     fish oh-my-fish
     git git-cliff git-crypt
     cmake
-    
-    home-manager
 
     docker_29 docker-compose
     terraform kubectl kubernetes-helm eksctl

@@ -33,7 +33,6 @@
   # Basic packages
   environment.systemPackages = with pkgs; [
     curl
-    home-manager
     wget
     htop
     ripgrep
