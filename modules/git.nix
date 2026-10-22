@@ -116,13 +116,12 @@
       color.ui = "auto";
       status.short = true;
 
-      merge.ff = "only";
       log.date = "iso";
 
       format.pretty = "%C(yellow)%h%Creset %ad %s%Cgreen [%cn]";
       help.autocorrect = 5;
 
-      pull.rebase = false;
+      pull.rebase = true;
 
       # Platform-specific safe directories
       safe.directory = lib.mkMerge [
