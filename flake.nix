@@ -43,6 +43,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Rename a conflicting unmanaged file to <name>.hm-bak instead of failing the switch
+            home-manager.backupFileExtension = "hm-bak";
             home-manager.extraSpecialArgs = { inherit inputs; hostname = "x1"; };
             home-manager.users.paul = ./users/paul/home.nix;
           }
@@ -59,6 +61,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Rename a conflicting unmanaged file to <name>.hm-bak instead of failing the switch
+            home-manager.backupFileExtension = "hm-bak";
             home-manager.extraSpecialArgs = { inherit inputs; hostname = "macbook"; };
             home-manager.users.paul = ./users/paul/home.nix;
           }
