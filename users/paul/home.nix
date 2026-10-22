@@ -33,6 +33,6 @@ in
   # Dotfiles (if needed)
   home.file = {};
 
-  # Let Home Manager install and manage itself
-  programs.home-manager.enable = true;
+  # No standalone home-manager command: Home Manager runs inside nixSwitch
+  # (NixOS/nix-darwin module), and rollbacks go through system generations.
 }
