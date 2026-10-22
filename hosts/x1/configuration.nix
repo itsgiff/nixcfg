@@ -1,6 +1,6 @@
 # NixOS Configuration for X1 ThinkPad
 # Maintained as part of nixcfg repository
-# Last updated: December 2025 (Upgraded to 25.11)
+# Release is pinned in flake.nix (nixpkgs input)
 
 { config, pkgs, lib, inputs, hostname, ... }:
 
@@ -19,7 +19,7 @@
   # Plymouth boot splash
   boot.plymouth.enable = true;
   boot.plymouth.theme ="breeze";
-  # Enble systemd
+  # Use systemd in the initrd
   boot.initrd.systemd.enable = true;
 
   # Enable firmware updates
@@ -55,7 +55,7 @@
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  # --- REFATOR: GNOME & GDM moved out of xserver (NixOS 25.11) ---
+  # GNOME & GDM (these options live outside services.xserver since NixOS 25.11)
   services.displayManager.gdm.enable = true;
   services.displayManager.gdm.autoSuspend = false;
   services.desktopManager.gnome.enable = true;
@@ -156,7 +156,6 @@
     
     iperf nmap openvpn nss dig
     
-    # --- FIX: Renamed package for 25.11 ---
     bitwarden-desktop
     gnupg
   

@@ -6,8 +6,7 @@
     enable = true;
     package = pkgs.vscode;
     
-    # For NixOS 25.05, the configuration uses profiles structure
-    # The old direct extensions/userSettings format was moved to profiles.default
+    # Extensions and settings live under profiles.default (Home Manager 25.05+)
     profiles.default = {
       # VS Code extensions
       extensions = with pkgs.vscode-extensions; [
