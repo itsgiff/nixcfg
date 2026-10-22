@@ -189,7 +189,6 @@
     gnomeExtensions.vitals
     gnomeExtensions.weather-oclock
     
-    rofi picom
     flat-remix-gnome
     
     pavucontrol
