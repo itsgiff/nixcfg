@@ -30,6 +30,7 @@
       "awscli"
       "azure-cli"
       "bat"
+      "chatgtp"
       "coreutils"
       "docker-compose"
       "docker-machine"

@@ -16,11 +16,11 @@ fi
 
 # Function to prompt for hostname - strict validation for only x1, nuc, or macbook
 prompt_hostname() {
-  read -p "Enter hostname for this machine (x1, nuc, or macbook): " hostname
+  read -p "Enter hostname for this machine (x1 or macbook): " hostname
   
   # Validate hostname is one of the expected values
-  if [[ "$hostname" != "x1" && "$hostname" != "nuc" && "$hostname" != "macbook" ]]; then
-    echo "ERROR: Hostname must be one of: x1, nuc, or macbook."
+  if [[ "$hostname" != "x1" && "$hostname" != "macbook" ]]; then
+    echo "ERROR: Hostname must be one of: x1 or macbook."
     echo "The flake configuration is only set up for these specific hosts."
     echo "Aborting."
     exit 1
@@ -117,29 +117,6 @@ apply_flake() {
   sudo nixos-rebuild switch --flake ".#$hostname"
 }
 
-# Setup Docker group if on NUC
-setup_docker_for_nuc() {
-  local hostname=$1
-  if [[ "$hostname" == "nuc" ]]; then
-    echo "Checking Docker installation for NUC..."
-    if command -v docker &> /dev/null; then
-      echo "Docker is installed. Setting up Docker environment for NUC..."
-      if groups | grep -q docker; then
-        echo "User is already in the docker group. Running newgrp docker to activate it."
-        # Note: newgrp will change the shell, so we can't continue executing commands after it
-        # We'll just inform the user instead
-        echo "After script completion, run 'newgrp docker' to activate the docker group."
-        echo "Then run 'docker network create proxy' if needed."
-      else
-        echo "User is not in the docker group. Please ensure your configuration adds the user to the docker group."
-        echo "After your next login or 'newgrp docker', you'll be able to use Docker commands."
-      fi
-    else
-      echo "Docker not found. Please ensure your NixOS configuration enables Docker."
-    fi
-  fi
-}
-
 # Initialize fish shell enhancements (optional)
 setup_fish() {
   read -p "Would you like to set up fish shell enhancements? [y/N]: " setup_fish_confirm
@@ -191,13 +168,6 @@ main() {
   
   echo "=== Setup Complete ==="
   echo "Your Nix configuration has been initialized."
-  
-  if [[ "$hostname" == "nuc" ]]; then
-    echo ""
-    echo "IMPORTANT FOR NUC: Run the following commands to activate Docker:"
-    echo "  newgrp docker"
-    echo "  docker network create proxy  # if needed"
-  fi
   
   echo ""
   echo "You may need to restart your system or login again for all changes to take effect."

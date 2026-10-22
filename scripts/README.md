@@ -18,14 +18,13 @@ curl -L https://raw.githubusercontent.com/itsgiff/nixcfg/main/scripts/nixinit.sh
 
 ### Features:
 
-- Validates hostname (must be one of: x1, nuc, macbook)
+- Validates hostname (must be one of: x1, macbook)
 - Backs up original NixOS configuration files
 - Ensures git is installed on NixOS systems
 - Clones the nixcfg repository and sets up the gitea remote
 - Enables nix flake experimental features
 - Applies the flake configuration for the specified host
 - Provides specialized handling for macOS
-- Sets up Docker environment for NUC host
 - Optionally installs fish shell enhancements
 
 ### Security Note:
