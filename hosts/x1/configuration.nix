@@ -139,10 +139,7 @@
     cowsay unzip vim
     inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.default   # claude-code via sadjow/claude-code-nix
     inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop   # Claude Desktop via aaddrick/claude-desktop-debian
-    
-    bluez fprintd plymouth
-    nixos-bgrt-plymouth
-    
+
     fish oh-my-fish
     git git-cliff git-crypt
     cmake
@@ -170,7 +167,6 @@
     dconf dconf2nix
     epiphany
     gnome-tweaks seahorse
-    gnome-settings-daemon
     gnome-characters gnome-clocks gnome-logs gnome-maps gnome-music
     
     gnomeExtensions.appindicator   # tray icons (e.g. Claude Desktop)
