@@ -71,7 +71,6 @@
       "p7zip"
       "pandoc"
       "pnpm"
-      "python"
       "rclone"
       "ripgrep"
       "rsync"
