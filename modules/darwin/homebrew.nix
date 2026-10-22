@@ -29,6 +29,8 @@
     # Homebrew taps - need to be installed manually 
     taps = [
        "msitarzewski/brew-browser"
+       "omlahore/tap"
+       "zackriya-solutions/meetily"
      # "homebrew/bundle"
      # "homebrew/cask"
      ];
@@ -136,6 +138,7 @@
       # "HP Smart" = 1474276998;
       # "Keynote" = 409183694;
       "Menu World Time" = 1446377255;
+      "WireGuard" = 1451685025;   # declared so Homebrew cleanup can't remove it
       # "Numbers" = 409203825;
       # "Pages" = 409201541;
       # "reMarkable" = 1276493162;
