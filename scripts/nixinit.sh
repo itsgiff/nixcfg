@@ -10,19 +10,21 @@ echo "This script will set up your NixOS configuration using the nixcfg reposito
 
 # Check if running as root and exit if so
 if [ "$(id -u)" -eq 0 ]; then
-  echo "ERROR: This script should not be run as root. Please run as a regular user."
+  echo "ERROR: This script should not be run as root. Please run as a regular user." >&2
   exit 1
 fi
 
 # Function to prompt for hostname - strict validation for only x1 or macbook
 prompt_hostname() {
-  read -p "Enter hostname for this machine (x1 or macbook): " hostname
+  # Read from the terminal, not stdin: under `curl ... | bash`, stdin is the script itself
+  read -r -p "Enter hostname for this machine (x1 or macbook): " hostname < /dev/tty
   
   # Validate hostname is one of the expected values
   if [[ "$hostname" != "x1" && "$hostname" != "macbook" ]]; then
-    echo "ERROR: Hostname must be one of: x1 or macbook."
-    echo "The flake configuration is only set up for these specific hosts."
-    echo "Aborting."
+    # stderr, so the message is shown instead of being captured by $(prompt_hostname)
+    echo "ERROR: Hostname must be one of: x1 or macbook." >&2
+    echo "The flake configuration is only set up for these specific hosts." >&2
+    echo "Aborting." >&2
     exit 1
   fi
   
@@ -119,7 +121,7 @@ apply_flake() {
 
 # Initialize fish shell enhancements (optional)
 setup_fish() {
-  read -p "Would you like to set up fish shell enhancements? [y/N]: " setup_fish_confirm
+  read -r -p "Would you like to set up fish shell enhancements? [y/N]: " setup_fish_confirm < /dev/tty
   if [[ "$setup_fish_confirm" == "y" || "$setup_fish_confirm" == "Y" ]]; then
     if command -v fish &> /dev/null; then
       echo "Setting up fish shell enhancements..."
@@ -157,7 +159,7 @@ main() {
     apply_flake "$hostname"
   else
     echo "For macOS, please follow the nix-darwin installation steps before applying the flake."
-    echo "See: https://github.com/LnL7/nix-darwin#install"
+    echo "See: https://github.com/nix-darwin/nix-darwin"
   fi
   
   # Optional setup
