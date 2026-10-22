@@ -135,7 +135,7 @@
 
   # Default system packages
   environment.systemPackages = with pkgs; [
-    curl nano wget tree htop jq
+    curl nano wget tree jq
     cowsay unzip vim
     inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.default   # claude-code via sadjow/claude-code-nix
     inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop   # Claude Desktop via aaddrick/claude-desktop-debian
