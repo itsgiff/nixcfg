@@ -21,9 +21,8 @@
     # (nix-darwin only applies `shell` to users listed in users.knownUsers)
   };
 
-  # Allowed login shells (/etc/shells). Homebrew fish stays listed until
-  # the login shell has moved to the Nix fish and the brew formula is removed.
-  environment.shells = [ pkgs.fish "/opt/homebrew/bin/fish" ];
+  # Allowed login shells (/etc/shells): the Nix fish only.
+  environment.shells = [ pkgs.fish ];
 
   # Set time zone
   time.timeZone = "America/Vancouver";
