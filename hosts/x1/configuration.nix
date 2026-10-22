@@ -155,7 +155,6 @@
     gnupg
   
     firefox google-chrome
-    vscode
     signal-desktop discord
     thunderbird
     obsidian
