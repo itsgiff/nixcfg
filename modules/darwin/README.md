@@ -15,18 +15,17 @@ This directory contains modular configurations specific to macOS (Darwin) system
 - **desktop.nix**: Desktop environment configuration
   - Environment variables (EDITOR, VISUAL, locale)
   - Homebrew environment variables (HOMEBREW_NO_ANALYTICS)
-  - Core desktop utilities (bat, exa, fd, fzf, rectangle, m-cli)
 
 - **homebrew.nix**: Homebrew package manager integration
-  - Global Homebrew settings (brewfile, auto-update)
-  - CLI tools via `brews` (mas)
-  - GUI applications via `casks` (alfred, bartender)
-  - Mac App Store applications via `masApps` (Pages, Numbers, Keynote)
+  - Activation settings (auto-update and upgrade on every switch; cleanup disabled)
+  - CLI tools via `brews`
+  - GUI applications via `casks`
+  - Mac App Store applications via `masApps`
   - Taps for additional repositories
 
 ## Usage
 
-Import these modules in your macOS configuration:
+These modules are imported by `hosts/macbook/configuration.nix`:
 
 ```nix
 # In hosts/macbook/configuration.nix
@@ -36,11 +35,8 @@ Import these modules in your macOS configuration:
   imports = [
     ../../modules/darwin/defaults.nix
     ../../modules/darwin/desktop.nix
-    # Uncomment when ready to use Homebrew
-    # ../../modules/darwin/homebrew.nix
+    ../../modules/darwin/homebrew.nix
   ];
-  
-  # Your other configuration...
 }
 ```
 
@@ -63,7 +59,7 @@ KeyRepeat = 2;          # Key repeat interval
 ```
 
 ### desktop.nix
-Manages environment variables, fonts, system packages, and services. Includes the Homebrew environment variable to disable analytics:
+Sets environment variables, including the Homebrew variable that disables analytics:
 
 ```nix
 # Environment variables 
@@ -73,15 +69,9 @@ environment.variables = {
   LANG = "en_CA.UTF-8";
   HOMEBREW_NO_ANALYTICS = "1";  # Disable Homebrew analytics collection
 };
-
-# Useful CLI tools
-environment.systemPackages = with pkgs; [
-  bat    # Better cat with syntax highlighting
-  fd     # User-friendly find alternative
-  fzf    # Fuzzy finder
-  m-cli  # macOS management from terminal
-];
 ```
+
+CLI tools such as bat, fd and fzf are installed through `homebrew.nix`, not here.
 
 ### homebrew.nix
 Manages Homebrew packages, casks, and Mac App Store applications:
@@ -90,7 +80,9 @@ Manages Homebrew packages, casks, and Mac App Store applications:
 homebrew = {
   enable = true;
   onActivation = {
-    cleanup = "zap";  # Removes packages not in the config
+    autoUpdate = true;
+    upgrade = true;
+    # cleanup = "zap";  # disabled: removes anything not listed
   };
   
   # GUI applications through Cask
@@ -118,4 +110,5 @@ Each module is designed to be modular and composable. You can:
 
 - The homebrew.nix module requires Homebrew to be installed.
 - Some settings might require a logout/login or a restart to take effect.
-- To update these settings, run `darwin-rebuild switch --flake .#macbook`
+- Because `cleanup` is disabled, removing an entry from `homebrew.nix` does not uninstall it.
+- To apply changes, run `sudo darwin-rebuild switch --flake .#macbook` (or the `nixSwitch` alias)
