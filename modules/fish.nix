@@ -13,43 +13,19 @@ in {
   programs.fish = {
     enable = true;
 
-    # Add initialization to source nix-darwin paths on macOS
+    # macOS extras. The Nix fish already sources nix-darwin's /etc/fish/config.fish,
+    # which puts the Nix profiles and Homebrew (modules/darwin/homebrew.nix) on PATH,
+    # and rustup's ~/.config/fish/conf.d/rustup.fish adds ~/.cargo/bin.
     interactiveShellInit = lib.optionalString isMacOS ''
-      # Source nix-darwin environment if available
-      if test -e /etc/static/fish/config.fish
-        source /etc/static/fish/config.fish
-      end
-
-      # Add nix-darwin paths to PATH if needed
-      if test -d /run/current-system/sw/bin
-        fish_add_path /run/current-system/sw/bin
-      end
-
-      # Add Home Manager packages (home.packages with useUserPackages = true)
-      if test -d /etc/profiles/per-user/$USER/bin
-        fish_add_path /etc/profiles/per-user/$USER/bin
-      end
-      
-      # Add home-manager path if it exists
-      if test -d $HOME/.nix-profile/bin
-        fish_add_path $HOME/.nix-profile/bin
-      end
-      
       # Add local bin directory to PATH
       if test -d $HOME/.local/bin
         fish_add_path $HOME/.local/bin
-      end
-
-      # Initialize Rust/Cargo environment (installed via rustup)
-      if test -f $HOME/.cargo/env.fish
-        source $HOME/.cargo/env.fish
       end
 
       # Initialize fnm (Fast Node Manager) if installed via Homebrew
       if command -q fnm
         fnm env --use-on-cd | source
       end
-
     '';
 
     shellAliases = {
