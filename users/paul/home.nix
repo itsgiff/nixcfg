@@ -15,6 +15,9 @@ in
     ../../modules/ssh.nix
     ../../modules/vscode.nix
     ./fish.nix
+
+    # Host-specific Home Manager settings (hosts/x1/home.nix, hosts/macbook/home.nix)
+    (../../hosts + "/${hostname}/home.nix")
   ];
 
   # Home Manager release
