@@ -12,6 +12,7 @@ in
   imports = [
     ../../modules/fastfetch.nix
     ../../modules/git.nix
+    ../../modules/ssh.nix
     ../../modules/vscode.nix
     ./fish.nix
   ];
