@@ -69,16 +69,9 @@
     };
   };
 
-  # Fingerprint reader support
-  services.fprintd = {
-    enable = true;
-    tod = {
-      enable = true;
-      driver = pkgs.libfprint-2-tod1-goodix;
-      # Alternative driver if needed:
-      # driver = pkgs.libfprint-2-tod1-vfs0090;
-    };
-  };
+  # Fingerprint reader: Synaptics 06cb:00fc, supported by libfprint's built-in
+  # synaptics driver, so no TOD (proprietary) driver is needed
+  services.fprintd.enable = true;
 
   # GNOME Services
   services.gnome.gnome-keyring.enable = true;
