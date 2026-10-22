@@ -12,12 +12,4 @@
     HOMEBREW_NO_ANALYTICS = "1";
   };
   
-  # macOS-specific packages
-  environment.systemPackages = with pkgs; [
-    # CLI tools
-    #
-    # Graphical tools
-    #
-  ];
-  
 }

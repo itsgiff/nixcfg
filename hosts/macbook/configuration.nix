@@ -42,9 +42,4 @@
   # Prevent nix-darwin from managing these shell files
   environment.etc."zshrc".enable = false;
   environment.etc."zprofile".enable = false;
-
-  system.activationScripts.postActivation.text = ''
-    # Additional activation scripts can go here
-    echo "Darwin configuration activated"
-  '';  
 }
