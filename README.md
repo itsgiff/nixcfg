@@ -110,7 +110,6 @@ home-manager switch --flake .#paul@macbook  # For MacBook
 ## Features
 
 - **Cross-platform:** Unified configuration across NixOS and macOS
-- **Multi-user:** Supports different usernames across systems (paul on x1/macbook, admin on nuc)
 - **Modular design:** Feature-based modules for easy reuse and organization
 - **Home Manager integration:** Consistent user environment across systems
 - **Reproducible:** Pinned dependencies via Flakes

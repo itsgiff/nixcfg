@@ -14,7 +14,7 @@ if [ "$(id -u)" -eq 0 ]; then
   exit 1
 fi
 
-# Function to prompt for hostname - strict validation for only x1, nuc, or macbook
+# Function to prompt for hostname - strict validation for only x1 or macbook
 prompt_hostname() {
   read -p "Enter hostname for this machine (x1 or macbook): " hostname
   
@@ -155,9 +155,6 @@ main() {
   # Apply flake for NixOS systems (macOS will need nix-darwin install first)
   if [[ "$hostname" != "macbook" ]]; then
     apply_flake "$hostname"
-    
-    # Check if this is NUC for Docker guidance
-    setup_docker_for_nuc "$hostname"
   else
     echo "For macOS, please follow the nix-darwin installation steps before applying the flake."
     echo "See: https://github.com/LnL7/nix-darwin#install"

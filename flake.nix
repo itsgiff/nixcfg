@@ -1,5 +1,5 @@
 {
-  description = "Unified Nix configurations for x1 (NixOS), macbook (macOS), and nuc (NixOS)";
+  description = "Unified Nix configurations for x1 (NixOS) and macbook (macOS)";
 
   inputs = {
     # Update to nixos-26.05 - updated on 09/17/26 
