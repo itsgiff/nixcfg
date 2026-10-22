@@ -58,17 +58,5 @@
           }
         ];
       };
-
-      homeConfigurations."paul@x1" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${x1System};
-        extraSpecialArgs = { inherit inputs; hostname = "x1"; };
-        modules = [ ./users/paul/home.nix { nixpkgs.config.allowUnfree = true; } ];
-      };
-
-      homeConfigurations."paul@macbook" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${macSystem};
-        extraSpecialArgs = { inherit inputs; hostname = "macbook"; };
-        modules = [ ./users/paul/home.nix { nixpkgs.config.allowUnfree = true; } ];
-      };
     };
 }

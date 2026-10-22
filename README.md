@@ -95,15 +95,7 @@ cd ~/.nixcfg
 sudo darwin-rebuild switch --flake .#macbook
 ```
 
-### Standalone Home Manager
-
-You can also use Home Manager standalone if needed:
-
-```bash
-cd ~/.nixcfg
-home-manager switch --flake .#paul@x1     # For ThinkPad
-home-manager switch --flake .#paul@macbook  # For MacBook
-```
+Home Manager runs as part of these system rebuilds (it is not used standalone).
 
 ## Features
 
