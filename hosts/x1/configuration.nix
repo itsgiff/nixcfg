@@ -32,7 +32,7 @@
       auto-optimise-store = true;
       trusted-users = [ "root" "paul" ];
       max-jobs = "auto";
-      cores = 8;
+      cores = 0;  # 0 = use all cores per build job
     };
     gc = {
       automatic = true;
