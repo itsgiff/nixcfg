@@ -17,8 +17,13 @@
   # User configuration
   users.users.paul = {
     home = "/Users/paul";
-    shell = pkgs.fish; # Use fish as the default shell
+    # Login shell is set once with: chsh -s /run/current-system/sw/bin/fish
+    # (nix-darwin only applies `shell` to users listed in users.knownUsers)
   };
+
+  # Allowed login shells (/etc/shells). Homebrew fish stays listed until
+  # the login shell has moved to the Nix fish and the brew formula is removed.
+  environment.shells = [ pkgs.fish "/opt/homebrew/bin/fish" ];
 
   # Set time zone
   time.timeZone = "America/Vancouver";
