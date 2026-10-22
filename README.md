@@ -8,7 +8,7 @@ This repository contains a reproducible, declarative configuration for my comput
 
 ## Current Status
 
-- **NixOS (x1)**: ✅ Fully configured and operational on NixOS 24.11
+- **NixOS (x1)**: ✅ Fully configured and operational on NixOS 26.05
 - **macOS (macbook)**: ✅ Successfully integrated with nix-darwin and operational
 - **Home Manager**: ✅ Working for all users across all systems (paul on x1/macbook)
 - **Feature Modules**: ✅ Core modules implemented and tested across platforms
@@ -25,10 +25,11 @@ This repository contains a reproducible, declarative configuration for my comput
 ├── hosts/                      # Machine-specific configurations
 │   ├── x1/                     # NixOS ThinkPad
 │   │   ├── configuration.nix   # System configuration
-│   │   └── hardware-configuration.nix
+│   │   ├── hardware-configuration.nix
+│   │   └── home.nix            # Host-specific home config (not yet imported)
 │   └── macbook/                # macOS MacBook
 │       ├── configuration.nix   # Darwin configuration
-│       └── home.nix            # Host-specific home config
+│       └── home.nix            # Host-specific home config (not yet imported)
 ├── modules/                    # Shared configuration modules
 │   ├── darwin/                 # macOS-specific modules
 │   │   ├── defaults.nix        # macOS system preferences
@@ -40,7 +41,7 @@ This repository contains a reproducible, declarative configuration for my comput
 │   ├── fastfetch.nix           # fastfetch config
 │   ├── fish.nix                # Fish shell configuration
 │   ├── git.nix                 # Git configuration
-│   ├── ssh.nix                 # SSH configuration
+│   ├── ssh.nix                 # SSH client hosts (not yet imported)
 │   └── vscode.nix              # VSCode configuration
 ├── scripts/                    # Utility scripts
 │   ├── nixinit.sh              # Bootstrap script for new machines
@@ -49,10 +50,7 @@ This repository contains a reproducible, declarative configuration for my comput
 │   └── paul/                   # Main user for x1 and macbook
 │       ├── fish.nix            # Fish shell configuration for paul
 │       └── home.nix            # Home Manager configuration
-├── README.md                   # This file
-└── docs/                       # Project documentation
-    ├── plan.md                 # Detailed implementation plan
-    └── tracker.md              # Project progress tracker
+└── README.md                   # This file
 ```
 
 ## Getting Started
@@ -94,7 +92,7 @@ Build and activate the Darwin configuration:
 
 ```bash
 cd ~/.nixcfg
-darwin-rebuild switch --flake .#macbook
+sudo darwin-rebuild switch --flake .#macbook
 ```
 
 ### Standalone Home Manager
@@ -130,12 +128,8 @@ home-manager switch --flake .#paul@macbook  # For MacBook
 ## Requirements
 
 - NixOS or Nix with flakes enabled
-- For macOS: nix-darwin
+- For macOS: Determinate Nix and nix-darwin
 - Git for version control
-
-## Documentation
-
-See the `docs/` directory for detailed implementation plans and progress tracking.
 
 ## License
 
