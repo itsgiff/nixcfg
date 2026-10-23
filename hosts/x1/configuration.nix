@@ -73,6 +73,21 @@
   # synaptics driver, so no TOD (proprietary) driver is needed
   services.fprintd.enable = true;
 
+  # Printing: Brother MFC-L3720CDW on Wi-Fi, driverless (IPP Everywhere/AirPrint).
+  # Avahi finds it over mDNS; cups-browsed (on by default with Avahi) adds the queue.
+  services.printing.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;      # resolve *.local names
+    openFirewall = true;  # UDP 5353 for mDNS
+  };
+
+  # Scanning: same printer, driverless network scanning (eSCL) for simple-scan
+  hardware.sane = {
+    enable = true;
+    extraBackends = [ pkgs.sane-airscan ];
+  };
+
   # GNOME Services
   services.gnome.gnome-keyring.enable = true;
   
