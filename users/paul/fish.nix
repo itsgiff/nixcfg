@@ -31,6 +31,8 @@ in {
   # fullUpdate: pull, update flake inputs, switch, then commit and push the new
   # flake.lock as "chore(flake): update inputs on <host>". On the Mac it also
   # runs brewup. Stops at the first failure and commits only after a good switch.
+  # Before pulling it checks the internet and origin (Gitea, home network or VPN)
+  # and waits for you to get online or connect the VPN.
   programs.fish.functions.fullUpdate = {
     description = "Pull, update flake inputs, switch, commit and push flake.lock${lib.optionalString isMacOS ", then brewup"}";
     body = ''
@@ -41,6 +43,20 @@ in {
         echo "fullUpdate: ~/.nixcfg has uncommitted changes; commit or stash them first" >&2
         git status --short
         return 1
+      end
+
+      # Flake inputs need the internet; origin (Gitea) needs the home network or the VPN
+      while true
+        set -l problem
+        if not curl -fs -o /dev/null --max-time 5 https://github.com
+          set problem "no internet connection. Get online"
+        else if not env GIT_SSH_COMMAND="ssh -o ConnectTimeout=5" git ls-remote -q origin HEAD >/dev/null 2>&1
+          set problem "can't reach origin (Gitea). Connect the VPN"
+        end
+        test -z "$problem"; and break
+        echo "fullUpdate: $problem" >&2
+        read -l -P "Press Enter to try again, or q then Enter to quit: " answer; or return 1
+        test "$answer" = q; and return 1
       end
 
       echo "==> git pull"

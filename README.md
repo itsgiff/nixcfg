@@ -68,7 +68,7 @@ The fish aliases are defined in `modules/fish.nix` and `users/paul/fish.nix`, an
 | `nixSwitch` | Rebuild and switch this machine from `~/.nixcfg` (system and Home Manager) |
 | `nixFlakeUpdate` | Update all flake inputs (`nix flake update`) without switching |
 | `nixUpgrade` | Update all inputs, then switch (no commit) |
-| `fullUpdate` | Pull, update all inputs, switch, then commit and push `flake.lock` as `chore(flake): update inputs on <host>`; on the Mac, then `brewup`. Needs a clean tree; commits nothing if the switch fails |
+| `fullUpdate` | Pull, update all inputs, switch, then commit and push `flake.lock` as `chore(flake): update inputs on <host>`; on the Mac, then `brewup`. Needs a clean tree; first waits until the internet and origin are reachable (asks you to get online or connect the VPN); commits nothing if the switch fails |
 | `nixClean` | Delete generations older than 2 days and collect garbage |
 | `git pull` / `git up` | Sync with Gitea (both rebase) |
 | `gcm "<type>(<scope>): <msg>"` | Commit with a conventional-commit message (`cmf` shows the format) |
