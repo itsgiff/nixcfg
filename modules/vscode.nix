@@ -42,7 +42,7 @@
         "security.workspace.trust.banner" = "never";
         "security.workspace.trust.startupPrompt" = "never";
         
-        "editor.fontFamily" = "'Noto', 'monospace', 'Hack Nerd Font', 'Weather Icons', 'Font Awesome 5 Free', 'icomoon-feather', 'unifont', 'Material'";
+        "editor.fontFamily" = "'Fira Code', Menlo, monospace";  # Fira Code on the x1, Menlo (VS Code's default) on the Mac
         "update.showReleaseNotes" = false;
         "[python]" = {
           "editor.formatOnType" = true;
