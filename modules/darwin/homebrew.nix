@@ -120,6 +120,7 @@
       "obsidian"
       "obs"
       "omnigraffle"
+      "perplexity"
       "plex"
       "publii"
       "remarkable"
