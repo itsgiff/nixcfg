@@ -1,127 +1,121 @@
-# NixOS & macOS Unified Configuration
+# nixcfg
 
-A unified Nix configuration for my Linux (x1) and macOS (macbook) systems using Flakes, Home Manager, and feature-based modules.
+Declarative Nix configuration for my two machines, built from one flake with Home Manager and shared modules.
 
-## Overview
+| Host | Machine | System | Platform |
+|---|---|---|---|
+| `x1` | Lenovo ThinkPad X1 Carbon Gen 11 | NixOS 26.05, GNOME | `x86_64-linux` |
+| `macbook` | MacBook | nix-darwin 26.05 on Determinate Nix | `aarch64-darwin` |
 
-This repository contains a reproducible, declarative configuration for my computing environments across both NixOS and macOS systems. It uses Nix Flakes to provide a unified, pinned dependency tree and structured outputs for system and user configurations.
+User `paul` on both, with fish as the login shell.
 
-## Current Status
+## Repository
 
-- **NixOS (x1)**: ✅ Fully configured and operational on NixOS 26.05
-- **macOS (macbook)**: ✅ Successfully integrated with nix-darwin and operational
-- **Home Manager**: ✅ Working for all users across all systems (paul on x1/macbook)
-- **Feature Modules**: ✅ Core modules implemented and tested across platforms
-- **NFS Configuration**: ✅ Configured for shared storage access on NixOS systems
-- **Bootstrap Script**: ✅ `nixinit.sh` available for quickly setting up new machines
-- **Secret Management**: 🔴 Not yet implemented
+- **origin is Gitea** on the home network: `gitea:paul/nixcfg.git`. The `gitea` SSH alias is defined in `modules/ssh.nix`. Connect the VPN before pulling or pushing from outside the home network.
+- **GitHub (`itsgiff/nixcfg`) is a public, read-only mirror.** Gitea pushes every commit to it within seconds. Don't push to GitHub directly.
+- The local clone lives at `~/.nixcfg` on both machines.
 
 ## Structure
 
 ```
 ~/.nixcfg/
-├── flake.nix                   # Main flake configuration
-├── flake.lock                  # Generated lock file (pinned dependencies)
-├── hosts/                      # Machine-specific configurations
-│   ├── x1/                     # NixOS ThinkPad
-│   │   ├── configuration.nix   # System configuration
+├── flake.nix                     # Inputs and the two system outputs
+├── flake.lock                    # Pinned input revisions
+├── hosts/
+│   ├── x1/
+│   │   ├── configuration.nix     # NixOS system config
 │   │   ├── hardware-configuration.nix
-│   │   └── home.nix            # Host-specific home config (not yet imported)
-│   └── macbook/                # macOS MacBook
-│       ├── configuration.nix   # Darwin configuration
-│       └── home.nix            # Host-specific home config (not yet imported)
-├── modules/                    # Shared configuration modules
-│   ├── darwin/                 # macOS-specific modules
-│   │   ├── defaults.nix        # macOS system preferences
-│   │   ├── desktop.nix         # macOS desktop environment
-│   │   ├── homebrew.nix        # Homebrew integration
-│   │   └── README.md           # macOS modules documentation
-│   ├── nixos/                  # NixOS-specific modules
-│   │   └── nfs.nix             # NFS configuration for NixOS
-│   ├── fastfetch.nix           # fastfetch config
-│   ├── fish.nix                # Fish shell configuration
-│   ├── git.nix                 # Git configuration
-│   ├── ssh.nix                 # SSH client hosts (not yet imported)
-│   └── vscode.nix              # VSCode configuration
-├── scripts/                    # Utility scripts
-│   ├── nixinit.sh              # Bootstrap script for new machines
-│   └── README.md               # Scripts documentation
-├── users/                      # User-specific configurations
-│   └── paul/                   # Main user for x1 and macbook
-│       ├── fish.nix            # Fish shell configuration for paul
-│       └── home.nix            # Home Manager configuration
-└── README.md                   # This file
+│   │   ├── home.nix              # x1-only Home Manager (Notion web-app launcher)
+│   │   └── icons/notion.png
+│   └── macbook/
+│       ├── configuration.nix     # nix-darwin system config
+│       └── home.nix              # Mac-only Home Manager (Python env with garminconnect)
+├── modules/
+│   ├── darwin/                   # macOS system modules (see modules/darwin/README.md)
+│   │   ├── defaults.nix          #   System Settings: Dock, Finder, keyboard, trackpad
+│   │   ├── desktop.nix           #   Environment variables
+│   │   └── homebrew.nix          #   Homebrew brews, casks, App Store apps, PATH
+│   ├── nixos/
+│   │   └── nfs.nix               # NFS automounts from the Synology (10.10.1.50)
+│   ├── fastfetch.nix             # Home Manager modules, shared by both hosts:
+│   ├── fish.nix                  #   fish settings and the nix* aliases
+│   ├── git.nix                   #   git identity, aliases and settings
+│   ├── ssh.nix                   #   SSH client hosts (machines these laptops connect to)
+│   └── vscode.nix                #   VS Code extensions and settings
+├── scripts/
+│   ├── nixinit.sh                # Bootstrap for a new machine (see scripts/README.md)
+│   └── README.md
+└── users/paul/
+    ├── home.nix                  # Shared Home Manager config; imports hosts/<host>/home.nix
+    └── fish.nix                  # User aliases (fullUpdate, brewup, ...)
 ```
 
-## Getting Started
+## How it fits together
 
-### Bootstrap a New Machine
+- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code) and `claude-desktop` (Claude Desktop on the x1).
+- **Outputs:** `nixosConfigurations.x1` and `darwinConfigurations.macbook`.
+- **Home Manager is integrated**, not standalone. It runs as part of every system switch (`useGlobalPkgs`, `useUserPackages`). There is no `home-manager` command and no `homeConfigurations` output; rollbacks go through system generations.
+- User packages land in `/etc/profiles/per-user/paul/bin`.
+- `users/paul/home.nix` imports `hosts/<hostname>/home.nix` through the `hostname` special argument, so per-machine user settings live next to that machine's system config.
+- If Home Manager finds an unmanaged file where it wants to write one (for example an old `~/.ssh/config`), it renames the old file to `<name>.hm-bak` instead of failing the switch. Look for `*.hm-bak` files after a switch that takes over a new file.
 
-To quickly set up a new machine with this configuration:
+## Daily use
+
+The fish aliases are defined in `modules/fish.nix` and `users/paul/fish.nix`, and work the same on both machines.
+
+| Command | What it does |
+|---|---|
+| `nixSwitch` | Rebuild and switch this machine from `~/.nixcfg` (system and Home Manager) |
+| `nixFlakeUpdate` | Update all flake inputs (`nix flake update`) without switching |
+| `nixUpgrade` / `fullUpdate` | Update all inputs, then switch |
+| `nixClean` | Delete generations older than 2 days and collect garbage |
+| `git pull` / `git up` | Sync with Gitea (both rebase) |
+| `gcm "<type>(<scope>): <msg>"` | Commit with a conventional-commit message (`cmf` shows the format) |
+| `brewup` | Mac: update and upgrade Homebrew packages (switches never do this) |
+
+### Making a change
+
+1. `git pull`
+2. Edit one thing.
+3. `nixSwitch` and check the result.
+4. `git add -u && gcm "…"`, then `git push`.
+5. On the other machine: `git pull`, then `nixSwitch` if the change applies to it.
+
+Keep it to one change per rebuild, so a failure points at a single cause. Update inputs (`nixFlakeUpdate`) as a commit of their own, so they're easy to roll back.
+
+For a change that should alter nothing, build without switching and compare:
 
 ```bash
-# For fresh NixOS installations:
-wget -O- https://raw.githubusercontent.com/itsgiff/nixcfg/main/scripts/nixinit.sh | bash
+nixos-rebuild build --flake .#x1 && nix store diff-closures /run/current-system ./result
+darwin-rebuild build --flake .#macbook && nix store diff-closures /run/current-system ./result
+```
 
-# If curl is available (e.g., on macOS):
+No output means the system is unchanged.
+
+### Rolling back
+
+- **NixOS:** pick an older generation in the boot menu, or `sudo nixos-rebuild switch --rollback`.
+- **nix-darwin:** `sudo darwin-rebuild switch --rollback`.
+- **Git:** `git restore <file>` before committing, `git revert <hash>` after.
+
+## macOS notes
+
+- **Nix and Homebrew coexist.** Nix provides the system, the Home Manager environment and some CLI tools. Homebrew (`modules/darwin/homebrew.nix`) provides GUI apps (casks), Mac App Store apps and most CLI tools.
+- **PATH order:** Nix profiles, then Homebrew, then macOS. `which -a <cmd>` shows every copy; the first one wins.
+- **Homebrew `cleanup = "check"`:** a switch never removes anything, but it stops and lists any Homebrew package that isn't declared in `homebrew.nix`. Declare it or uninstall it, then switch again.
+- Switches never update or upgrade Homebrew packages; run `brewup` when you want that.
+
+## Bootstrap a new machine
+
+```bash
 curl -L https://raw.githubusercontent.com/itsgiff/nixcfg/main/scripts/nixinit.sh | bash
 ```
 
-The script will:
-1. Prompt for the machine hostname (must be one of: x1, macbook)
-2. Set up the basic configuration and install git (for NixOS)
-3. Clone the nixcfg repository
-4. Enable experimental features for flakes
-5. Apply the flake configuration
-6. Optionally set up fish shell enhancements
+The script accepts only `x1` or `macbook` as the hostname. On NixOS it clones the repo and applies the flake; on macOS it clones the repo and stops, because Determinate Nix and nix-darwin have to be installed first. See `scripts/README.md`.
 
-### Manual Usage
+## Leave alone
 
-#### NixOS (x1)
-
-Build and activate the system configuration:
-
-```bash
-cd ~/.nixcfg
-sudo nixos-rebuild switch --flake .#x1
-```
-
-#### macOS (macbook)
-
-Build and activate the Darwin configuration:
-
-```bash
-cd ~/.nixcfg
-sudo darwin-rebuild switch --flake .#macbook
-```
-
-Home Manager runs as part of these system rebuilds (it is not used standalone).
-
-## Features
-
-- **Cross-platform:** Unified configuration across NixOS and macOS
-- **Modular design:** Feature-based modules for easy reuse and organization
-- **Home Manager integration:** Consistent user environment across systems
-- **Reproducible:** Pinned dependencies via Flakes
-- **Transitional:** Homebrew/Mac App Store support for macOS-specific applications
-- **Unfree Package Support:** Configuration includes allowance for proprietary software like VSCode
-- **NFS Integration:** Configured for seamless access to shared storage
-- **Bootstrap Script:** Easy setup for new machines with the nixinit.sh script
-
-## Next Steps
-
-1. Refine feature modules for better cross-platform compatibility
-2. Finalize Homebrew integration for macOS-specific applications
-3. Set up Mac App Store integration for macOS
-4. Implement secret management with sops-nix
-5. Add more application-specific configurations
-6. Document system management workflows
-
-## Requirements
-
-- NixOS or Nix with flakes enabled
-- For macOS: Determinate Nix and nix-darwin
-- Git for version control
+`system.stateVersion` (`"23.05"` on the x1, `4` on the Mac) and `home.stateVersion` (`"24.11"`) look out of date but are correct. They record the release each machine was first installed with, so state migrations stay compatible. Never bump them to match the current release.
 
 ## License
 

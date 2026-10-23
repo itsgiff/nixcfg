@@ -17,7 +17,8 @@ This directory contains modular configurations specific to macOS (Darwin) system
   - Homebrew environment variables (HOMEBREW_NO_ANALYTICS)
 
 - **homebrew.nix**: Homebrew package manager integration
-  - Activation settings (auto-update and upgrade on every switch; cleanup disabled)
+  - Puts Homebrew's `bin` and `sbin` on PATH after the Nix profiles and before macOS (`environment.systemPath`)
+  - Activation settings: no `brew update`/`upgrade` during a switch (run `brewup` instead); `cleanup = "check"`
   - CLI tools via `brews`
   - GUI applications via `casks`
   - Mac App Store applications via `masApps`
@@ -80,9 +81,9 @@ Manages Homebrew packages, casks, and Mac App Store applications:
 homebrew = {
   enable = true;
   onActivation = {
-    autoUpdate = true;
-    upgrade = true;
-    # cleanup = "zap";  # disabled: removes anything not listed
+    autoUpdate = false;   # switches never touch versions; use brewup
+    upgrade = false;
+    cleanup = "check";    # never removes; the switch stops on anything undeclared
   };
   
   # GUI applications through Cask
@@ -110,5 +111,6 @@ Each module is designed to be modular and composable. You can:
 
 - The homebrew.nix module requires Homebrew to be installed.
 - Some settings might require a logout/login or a restart to take effect.
-- Because `cleanup` is disabled, removing an entry from `homebrew.nix` does not uninstall it.
+- With `cleanup = "check"`, removing an entry from `homebrew.nix` doesn't uninstall it: run `brew uninstall <name>` yourself. If something is installed but not declared, the switch stops and lists it; declare it or uninstall it, then switch again.
+- `"uninstall"` and `"zap"` are the removing modes (`zap` also deletes app data). They also remove undeclared Mac App Store apps, which is why this config uses `"check"`.
 - To apply changes, run `sudo darwin-rebuild switch --flake .#macbook` (or the `nixSwitch` alias)
