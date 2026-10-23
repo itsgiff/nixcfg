@@ -101,7 +101,6 @@
       "bartender"
       "bitwarden"
       "brew-browser"
-      "brooklyn"
       "chatgpt"
       "claude-code"
       "discord"
