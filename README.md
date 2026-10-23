@@ -47,7 +47,7 @@ User `paul` on both, with fish as the login shell.
 │   └── README.md
 └── users/paul/
     ├── home.nix                  # Shared Home Manager config; imports hosts/<host>/home.nix
-    └── fish.nix                  # User aliases (fullUpdate, brewup, ...)
+    └── fish.nix                  # User aliases and the fullUpdate function
 ```
 
 ## How it fits together
@@ -67,7 +67,8 @@ The fish aliases are defined in `modules/fish.nix` and `users/paul/fish.nix`, an
 |---|---|
 | `nixSwitch` | Rebuild and switch this machine from `~/.nixcfg` (system and Home Manager) |
 | `nixFlakeUpdate` | Update all flake inputs (`nix flake update`) without switching |
-| `nixUpgrade` / `fullUpdate` | Update all inputs, then switch |
+| `nixUpgrade` | Update all inputs, then switch (no commit) |
+| `fullUpdate` | Pull, update all inputs, switch, then commit and push `flake.lock` as `chore(flake): update inputs on <host>`; on the Mac, then `brewup`. Needs a clean tree; commits nothing if the switch fails |
 | `nixClean` | Delete generations older than 2 days and collect garbage |
 | `git pull` / `git up` | Sync with Gitea (both rebase) |
 | `gcm "<type>(<scope>): <msg>"` | Commit with a conventional-commit message (`cmf` shows the format) |
