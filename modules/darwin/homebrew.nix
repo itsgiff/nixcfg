@@ -31,8 +31,6 @@
     # Homebrew taps - need to be installed manually 
     taps = [
        "msitarzewski/brew-browser"
-       "omlahore/tap"
-       "zackriya-solutions/meetily"
      # "homebrew/bundle"
      # "homebrew/cask"
      ];
