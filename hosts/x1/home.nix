@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # X1-specific configuration
@@ -42,6 +42,28 @@
     settings.StartupWMClass = "chrome-www.perplexity.ai__-Default";
   };
   
+  # Screen blank, lock and idle suspend (GNOME). Values match what was set
+  # in GNOME Settings on 2026-10-24, so the first switch changes nothing.
+  # uint32 keys need mkUint32; dconf rejects a plain int for them.
+  dconf.settings = {
+    "org/gnome/desktop/session" = {
+      idle-delay = lib.hm.gvariant.mkUint32 900; # blank after 15 min
+    };
+    "org/gnome/desktop/screensaver" = {
+      lock-enabled = true; # lock when the screen blanks (GNOME default)
+      lock-delay = lib.hm.gvariant.mkUint32 0; # lock immediately (GNOME default)
+    };
+    "org/gnome/settings-daemon/plugins/power" = {
+      idle-dim = false;
+      power-saver-profile-on-low-battery = false;
+      # Never suspend on idle; the timeouts only matter if a type is changed
+      sleep-inactive-ac-type = "nothing";
+      sleep-inactive-ac-timeout = 7200;
+      sleep-inactive-battery-type = "nothing";
+      sleep-inactive-battery-timeout = 3600;
+    };
+  };
+
   # X1-specific settings
   # For example, override settings from modules with specific values for this machine
 }
