@@ -132,8 +132,9 @@ in {
               end
             end
             
-            # Proceed with commit
-            git commit -m "$argv[1]"
+            # Proceed with commit. -a stages edits to tracked files, so no
+            # separate git add is needed for them. New files still need git add.
+            git commit -a -m "$argv[1]"
           '';
         };
     };
