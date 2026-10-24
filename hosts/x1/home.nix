@@ -41,6 +41,21 @@
     # Own dock icon instead of grouping under Chrome (same scheme as Notion)
     settings.StartupWMClass = "chrome-www.perplexity.ai__-Default";
   };
+
+  # ChatGPT: same Chrome --app approach as Notion and Perplexity. (OpenAI's
+  # Linux app is only packaged in nixos-unstable, which this flake doesn't use.)
+  xdg.desktopEntries.chatgpt = {
+    name = "ChatGPT";
+    genericName = "AI assistant";
+    comment = "ChatGPT in a Chrome app window";
+    icon = "${./icons/chatgpt.png}";
+    exec = "${pkgs.google-chrome}/bin/google-chrome-stable --app=https://chatgpt.com";
+    categories = [ "Network" ];
+    terminal = false;
+    # Own dock icon instead of grouping under Chrome (same scheme as Notion;
+    # no www. here because the --app URL has none)
+    settings.StartupWMClass = "chrome-chatgpt.com__-Default";
+  };
   
   # Screen blank, lock and idle suspend (GNOME). Values match what was set
   # in GNOME Settings on 2026-10-24, so the first switch changes nothing.
