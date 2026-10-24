@@ -28,6 +28,11 @@ in
     htop
     ripgrep
     fastfetch
+
+    # Git hooks for repos that use pre-commit (e.g. claude-host).
+    # pre-commit fetches most hook tools itself; gitleaks runs as a system binary.
+    pre-commit
+    gitleaks
   ];
 
   # Dotfiles (if needed)
