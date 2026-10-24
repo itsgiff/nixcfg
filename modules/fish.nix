@@ -76,6 +76,7 @@ in {
             =========================
             
             Format: "$(set_color yellow)"<type>(<scope>): <description>"$(set_color normal)"
+            Breaking change: add ! before the colon, e.g. "$(set_color yellow)"feat(fish)!: ..."$(set_color normal)"
             
             "$(set_color --bold)"Types:"$(set_color normal)"
             "$(set_color green)"feat"$(set_color normal)"     - A new feature or enhancement
@@ -85,8 +86,10 @@ in {
             "$(set_color green)"refactor"$(set_color normal)" - Code restructuring without feature changes
             "$(set_color green)"perf"$(set_color normal)"     - Performance improvements
             "$(set_color green)"test"$(set_color normal)"     - Test additions or modifications
+            "$(set_color green)"build"$(set_color normal)"    - Build system or packaging (e.g. Dockerfile)
             "$(set_color green)"chore"$(set_color normal)"    - Maintenance tasks, dependency updates
             "$(set_color green)"ci"$(set_color normal)"       - Changes to CI configuration
+            "$(set_color green)"revert"$(set_color normal)"   - Reverts a previous commit
             
             "$(set_color --bold)"Scopes:"$(set_color normal)"
             "$(set_color cyan)"core"$(set_color normal)"     - Base configuration
@@ -120,7 +123,7 @@ in {
             end
             
             # Check if the commit message follows the convention format
-            if not string match -q -r "^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\(.+\))?:.+" $argv[1]
+            if not string match -q -r "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?!?:.+" $argv[1]
               echo "\x1B[31mWarning:\x1B[0m Commit message doesn't follow the convention format."
               echo "See the correct format below:"
               git-commit-format
