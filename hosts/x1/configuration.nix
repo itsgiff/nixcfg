@@ -187,7 +187,6 @@
     gnomeExtensions.grand-theft-focus
     gnomeExtensions.user-themes
     gnomeExtensions.user-avatar-in-quick-settings
-    gnomeExtensions.thinkpad-battery-threshold
     gnomeExtensions.just-perfection
     gnomeExtensions.transparent-top-bar
     gnomeExtensions.vitals
