@@ -48,7 +48,8 @@
     name = "ChatGPT";
     genericName = "AI assistant";
     comment = "ChatGPT in a Chrome app window";
-    icon = "${./icons/chatgpt.png}";
+    # OpenAI knot in white on a clear background (from @lobehub/icons, MIT)
+    icon = "${./icons/chatgpt.svg}";
     exec = "${pkgs.google-chrome}/bin/google-chrome-stable --app=https://chatgpt.com";
     categories = [ "Network" ];
     terminal = false;
