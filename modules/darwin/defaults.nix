@@ -113,9 +113,26 @@
     screencapture = {
       location = "~/Pictures/Screenshots";
       type = "png";
+      target = "file";
     };
+
+    # Stage Manager and window tiling
+    WindowManager = {
+      GloballyEnabled = false;           # Stage Manager off
+      EnableTopTilingByEdgeDrag = false;
+      EnableTiledWindowMargins = false;
+      HideDesktop = false;
+      StandardHideWidgets = false;
+    };
+    spaces.spans-displays = true;        # "Displays have separate Spaces" off
   };
   
+  # Screensaver after 5 minutes. A per-host setting with no nix-darwin option,
+  # so it is written for the user after activation.
+  system.activationScripts.postActivation.text = ''
+    sudo --user=${config.system.primaryUser} -- defaults -currentHost write com.apple.screensaver idleTime -int 300
+  '';
+
   # Keyboard settings
   system.keyboard = {
     enableKeyMapping = true;
