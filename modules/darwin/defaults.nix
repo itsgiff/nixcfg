@@ -15,6 +15,10 @@
       mineffect = "scale";
       tilesize = 32;
       minimize-to-application = true;
+      # Chrome is the only pinned app, by choice (same on the x1). Anything
+      # pinned by hand is removed at the next switch.
+      persistent-apps = [ "/Applications/Google Chrome.app" ];
+      persistent-others = [ ];
       # Hot corners: bottom-left Mission Control, bottom-right off
       wvous-bl-corner = 2;
       wvous-br-corner = 1;
