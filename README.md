@@ -25,8 +25,10 @@ User `paul` on both, with fish as the login shell.
 │   ├── x1/
 │   │   ├── configuration.nix     # NixOS system config
 │   │   ├── hardware-configuration.nix
-│   │   ├── home.nix              # x1-only Home Manager (Notion web-app launcher)
-│   │   └── icons/notion.png
+│   │   ├── home.nix              # x1-only Home Manager: web-app launchers, Files bookmarks, default apps
+│   │   ├── gnome.nix             # GNOME settings (dconf): dash, power, keyboard, touchpad, extensions
+│   │   ├── wallpaper.jpg         # Desktop and lock-screen wallpaper (used by gnome.nix)
+│   │   └── icons/                # Launcher icons: notion.png, perplexity.svg, chatgpt.svg
 │   └── macbook/
 │       ├── configuration.nix     # nix-darwin system config
 │       └── home.nix              # Mac-only Home Manager (python3)
@@ -44,10 +46,13 @@ User `paul` on both, with fish as the login shell.
 │   └── vscode.nix                #   VS Code extensions and settings
 ├── scripts/
 │   ├── nixinit.sh                # Bootstrap for a new machine (see scripts/README.md)
+│   ├── mac-audit.sh              # Mac: list apps and settings nixcfg doesn't declare yet
+│   ├── defaults-watch.sh         # Mac: find the defaults key a settings toggle writes
+│   ├── x1-audit.sh               # x1: list GNOME settings, apps and dotfiles nixcfg doesn't declare yet
 │   └── README.md
 └── users/paul/
     ├── home.nix                  # Shared Home Manager config; imports hosts/<host>/home.nix
-    └── fish.nix                  # User aliases and the fullUpdate function
+    └── fish.nix                  # User aliases and the fullUpdate, prefwatch, macaudit and x1audit functions
 ```
 
 ## How it fits together
@@ -73,13 +78,15 @@ The fish aliases are defined in `modules/fish.nix` and `users/paul/fish.nix`, an
 | `git pull` / `git up` | Sync with Gitea (both rebase) |
 | `gcm "<type>(<scope>): <msg>"` | Commit with a conventional-commit message (`cmf` shows the format) |
 | `brewup` | Mac: update and upgrade Homebrew packages (switches never do this) |
+| `prefwatch` | Mac: run before and after changing one setting; prints the Nix line for it |
+| `macaudit` / `x1audit` | List what this machine has that nixcfg doesn't declare yet (see `scripts/README.md`) |
 
 ### Making a change
 
 1. `git pull`
 2. Edit one thing.
 3. `nixSwitch` and check the result.
-4. `git add -u && gcm "…"`, then `git push`.
+4. `gcm "…"` (it stages edits to tracked files itself; `git add` new files first), then `git push`.
 5. On the other machine: `git pull`, then `nixSwitch` if the change applies to it.
 
 Keep it to one change per rebuild, so a failure points at a single cause. Update inputs (`nixFlakeUpdate`) as a commit of their own, so they're easy to roll back.
@@ -99,12 +106,22 @@ No output means the system is unchanged.
 - **nix-darwin:** `sudo darwin-rebuild switch --rollback`.
 - **Git:** `git restore <file>` before committing, `git revert <hash>` after.
 
+## x1 notes
+
+- **GNOME settings are declared** in `hosts/x1/gnome.nix`. A setting changed by hand in GNOME is put back on the next switch, so change it there instead. To find the key a toggle writes, run `dconf watch /`, change it, and read the printed key.
+- **Default apps** (`xdg.mimeApps`) and **Files sidebar bookmarks** are declared in `hosts/x1/home.nix`; GNOME Settings and Files can't change them any more.
+- Notion, Perplexity and ChatGPT run as Chrome `--app` windows with their own launchers and dock icons. Apps added with Chrome's "Install as app" stay managed by Chrome sync.
+- The dash pins Google Chrome only, like the Mac Dock. Anything pinned by hand is removed on the next switch.
+- New GNOME extensions only show up after a log out and back in; do that before `gnome-extensions enable`.
+
 ## macOS notes
 
 - **Nix and Homebrew coexist.** Nix provides the system, the Home Manager environment and some CLI tools. Homebrew (`modules/darwin/homebrew.nix`) provides GUI apps (casks), Mac App Store apps and most CLI tools.
 - **PATH order:** Nix profiles, then Homebrew, then macOS. `which -a <cmd>` shows every copy; the first one wins.
 - **Homebrew `cleanup = "check"`:** a switch never removes anything, but it stops and lists any Homebrew package that isn't declared in `homebrew.nix`. Declare it or uninstall it, then switch again.
 - Switches never update or upgrade Homebrew packages; run `brewup` when you want that.
+- **The Dock pins Google Chrome only** (`persistent-apps` in `modules/darwin/defaults.nix`). Anything pinned by hand is removed on the next switch.
+- Before changing a setting in System Settings or an app, run `prefwatch`, change one thing, then run `prefwatch` again to get the Nix line to declare it.
 
 ## Bootstrap a new machine
 

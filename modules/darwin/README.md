@@ -5,11 +5,14 @@ This directory contains modular configurations specific to macOS (Darwin) system
 ## Module Overview
 
 - **defaults.nix**: System preferences and defaults configuration
-  - Dock settings (position, size, hiding behavior)
+  - Dock settings (position, size, hiding behavior, hot corners); Google Chrome is the only pinned app (`persistent-apps`)
   - Finder preferences (file extensions, view style, UI elements)
   - Global domain settings (keyboard, text behavior, panels)
   - Trackpad behavior (clicking, gestures, sensitivity)
+  - Menu bar clock and battery percentage, Activity Monitor view
+  - Stage Manager, window tiling and Spaces
   - Login window and screenshot preferences
+  - Screensaver delay (written by an activation script; nix-darwin has no option for it)
   - Keyboard mappings (Caps Lock to Control)
 
 - **desktop.nix**: Desktop environment configuration
@@ -113,4 +116,5 @@ Each module is designed to be modular and composable. You can:
 - Some settings might require a logout/login or a restart to take effect.
 - With `cleanup = "check"`, removing an entry from `homebrew.nix` doesn't uninstall it: run `brew uninstall <name>` yourself. If something is installed but not declared, the switch stops and lists it; declare it or uninstall it, then switch again.
 - `"uninstall"` and `"zap"` are the removing modes (`zap` also deletes app data). They also remove undeclared Mac App Store apps, which is why this config uses `"check"`.
+- To find the key a System Settings toggle writes, use `prefwatch` (see `scripts/README.md`).
 - To apply changes, run `sudo darwin-rebuild switch --flake .#macbook` (or the `nixSwitch` alias)

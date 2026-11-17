@@ -1,4 +1,4 @@
-# NixCfg Init Script
+# nixcfg scripts
 
 This directory contains utility scripts for the nixcfg configuration.
 
@@ -25,7 +25,7 @@ curl -L https://raw.githubusercontent.com/itsgiff/nixcfg/main/scripts/nixinit.sh
 - Enables nix flake experimental features
 - Applies the flake configuration for the specified host
 - Provides specialized handling for macOS
-- Optionally installs fish shell enhancements
+- Optionally installs oh-my-fish with the edan theme
 
 ### Security Note:
 
