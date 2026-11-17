@@ -39,7 +39,6 @@
     brews = [
       "aws-iam-authenticator"
       "awscli"
-      "azure-cli"
       "bat"
       "cmake"
       "coreutils"
@@ -97,6 +96,7 @@
       "alfred"
       "antigravity"
       "appcleaner"
+      "azure-cli"               # moved from formula to cask upstream (Nov 2026)
       "balenaetcher"
       "bartender"
       "bitwarden"

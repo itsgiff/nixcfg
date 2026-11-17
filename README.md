@@ -29,7 +29,7 @@ User `paul` on both, with fish as the login shell.
 │   │   └── icons/notion.png
 │   └── macbook/
 │       ├── configuration.nix     # nix-darwin system config
-│       └── home.nix              # Mac-only Home Manager (Python env with garminconnect)
+│       └── home.nix              # Mac-only Home Manager (python3)
 ├── modules/
 │   ├── darwin/                   # macOS system modules (see modules/darwin/README.md)
 │   │   ├── defaults.nix          #   System Settings: Dock, Finder, keyboard, trackpad
