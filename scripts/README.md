@@ -73,3 +73,21 @@ Finds which preference key a GUI toggle writes and prints a Nix snippet.
 bash ~/.nixcfg/scripts/defaults-watch.sh snap   # then change ONE setting and close the pane
 bash ~/.nixcfg/scripts/defaults-watch.sh diff
 ```
+
+## x1-audit.sh (x1)
+
+Read-only inventory of what the x1 has that nixcfg doesn't declare: dconf
+settings grouped by area (keys Home Manager already declares are counted, not
+listed; window sizes, last-used paths, history and timestamps are dropped),
+apps outside the system config (Flatpak, `nix profile`, AppImages, loose
+binaries, Chrome "Install as app" launchers), autostart entries, user systemd
+units, GNOME extensions by source, user fonts, unmanaged dotfiles and
+`*.hm-bak` leftovers. `dconf-new.nix` holds the undeclared keys as a
+Home Manager snippet (via dconf2nix).
+
+```bash
+bash ~/.nixcfg/scripts/x1-audit.sh    # report in ~/nixcfg-audit-<date>/
+```
+
+To find what one GNOME toggle writes (the x1's `prefwatch`): run `dconf watch /`
+in a terminal, change the setting, read the printed key and value, Ctrl-C.
