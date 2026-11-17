@@ -198,5 +198,33 @@ in
     "org/gnome/shell/extensions/quick-settings-avatar" = {
       avatar-size = 43;
     };
+
+    # Console: night theme. custom-font only takes effect if "use system
+    # font" is turned off in Console's preferences (it isn't today).
+    "org/gnome/Console" = {
+      theme = "night";
+      custom-font = "Anonymous Pro for Powerline 10";
+    };
+    # Files: list view by default, item counts for every folder
+    "org/gnome/nautilus/preferences" = {
+      default-folder-viewer = "list-view";
+      show-directory-item-counts = "always";
+    };
+    "org/gnome/nautilus/icon-view" = {
+      captions = [ "size" "type" "none" ];
+    };
+    # Open/save dialogs show hidden files (GTK 3 and GTK 4 apps)
+    "org/gtk/settings/file-chooser" = {
+      show-hidden = true;
+      clock-format = "12h";
+    };
+    "org/gtk/gtk4/settings/file-chooser" = {
+      show-hidden = true;
+      sort-directories-first = true;
+    };
+    # Overview search: Calculator and Calendar results off
+    "org/gnome/desktop/search-providers" = {
+      disabled = [ "org.gnome.Calculator.desktop" "org.gnome.Calendar.desktop" ];
+    };
   };
 }
