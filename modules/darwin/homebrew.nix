@@ -97,6 +97,7 @@
       "alfred"
       "antigravity"
       "appcleaner"
+      "artcraft-launcher"
       "azure-cli"               # moved from formula to cask upstream (Nov 2026)
       "balenaetcher"
       "bartender"
@@ -105,6 +106,7 @@
       "chatgpt"
       "claude"
       "claude-code"
+      "deckcraft"
       "discord"
       "drawio"
       "firefox"
@@ -123,6 +125,8 @@
       "obsidian"
       "obs"
       "omnigraffle"
+      "pdfcraft"
+      "photocraft"
       "perplexity"
       "plex"
       "publii"
@@ -135,6 +139,7 @@
       "realvnc-connect-viewer"
       "whatsapp"
       "wifiman"
+      "wordcraft"
       "zoom"
     ];
     
