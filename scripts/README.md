@@ -42,6 +42,16 @@ chmod +x nixinit.sh
 ./nixinit.sh
 ```
 
+## Quick reference (macbook)
+
+| I want to… | Run |
+|---|---|
+| find what a setting I'm about to change writes | `prefwatch`, change ONE setting, `prefwatch` again |
+| drop a half-finished prefwatch | `prefwatch reset` |
+| list apps and settings nixcfg doesn't declare yet | `macaudit` (add `--login-items` for login items) |
+
+`prefwatch` and `macaudit` are fish functions from `users/paul/fish.nix` that run the scripts below.
+
 ## mac-audit.sh (macbook)
 
 Read-only inventory of what the Mac has that nixcfg doesn't declare: apps by

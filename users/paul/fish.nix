@@ -84,4 +84,37 @@ in {
       brew update; and brew upgrade; and brew cleanup
     '';
   };
+
+  # prefwatch (Mac): find what a System Settings or app setting writes.
+  # Run it once before changing ONE setting, change it, run it again: the
+  # second run prints the changed keys and the Nix line to declare them.
+  # "prefwatch reset" throws away a snapshot you no longer need.
+  programs.fish.functions.prefwatch = lib.mkIf isMacOS {
+    description = "Run before and after changing one macOS setting; prints the Nix line for it";
+    body = ''
+      set -l dir (set -q TMPDIR; and echo $TMPDIR; or echo /tmp)/defaults-watch
+      if test "$argv[1]" = reset
+        rm -rf $dir; and echo "prefwatch: snapshot cleared"
+        return
+      end
+      # A snapshot older than an hour belongs to something else: start over
+      if test -f $dir/before/stamp; and test (math (date +%s) - (/usr/bin/stat -f %m $dir/before/stamp)) -lt 3600
+        bash ~/.nixcfg/scripts/defaults-watch.sh diff
+        rm -rf $dir
+        echo
+        echo "prefwatch: done. Run prefwatch again before the next setting."
+      else
+        bash ~/.nixcfg/scripts/defaults-watch.sh snap; or return 1
+        echo
+        echo "prefwatch: now change ONE setting, close the pane or app, then run prefwatch again."
+      end
+    '';
+  };
+
+  # macaudit (Mac): inventory apps and settings nixcfg doesn't declare yet.
+  # Options: --login-items, --containers, or an output folder.
+  programs.fish.functions.macaudit = lib.mkIf isMacOS {
+    description = "List Mac apps, settings and dotfiles that nixcfg doesn't declare yet";
+    body = "bash ~/.nixcfg/scripts/mac-audit.sh $argv";
+  };
 }
