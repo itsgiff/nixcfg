@@ -22,8 +22,10 @@ echo "Writing report to $OUT"
 # Everything in the user dconf database was written by hand (GNOME Settings,
 # Tweaks, an extension's prefs) or by Home Manager. State that changes on its
 # own (window sizes, recent/last-used, timestamps, history) is dropped.
-SKIP_SEC='^(org/gnome/control-center|org/gnome/evolution-data-server|org/gnome/portal|org/gnome/software|org/gnome/desktop/notifications/application|org/gnome/desktop/app-folders|org/gnome/nautilus/window-state|ca/desrt/dconf-editor|org/gnome/epiphany/state)|/state(/|$)|window-state'
-SKIP_KEY='^(window-.*|last-.*|recent.*|.*-history|.*timestamp.*|.*maximized|.*geometry|sidebar-width|app-picker-layout|welcome-dialog-last-shown-version|application-children|night-light-last-coordinates|migrated|first-run|enabled-extensions|disabled-extensions)$'
+# Skipped sections: app state, per-connection network flags, shortcuts apps
+# register themselves (global-shortcuts).
+SKIP_SEC='^(org/gnome/control-center|org/gnome/evolution-data-server|org/gnome/portal|org/gnome/software|org/gnome/desktop/notifications/application|org/gnome/desktop/app-folders|org/gnome/nautilus/window-state|ca/desrt/dconf-editor|org/gnome/epiphany/state|org/gnome/nm-applet/eap|org/gnome/settings-daemon/global-shortcuts|apps/seahorse)|/state(/|$)|/windows?(/|$)|window-state'
+SKIP_KEY='^(window-.*|last-.*|recent.*|.*-history|.*timestamp.*|.*maximized|.*geometry|width|height|sidebar-width|sidebar-size|name-column-width|col-[0-9]+-(width|visible)|current-tab|selected-color|custom-colors|donation-reminder-last-shown|support-notifier-.*|settings-version|rounded-blur-found|app-picker-layout|welcome-dialog-last-shown-version|application-children|night-light-last-coordinates|migrated.*|first-run|enabled-extensions|disabled-extensions)$'
 
 dconf dump / | awk -v ss="$SKIP_SEC" -v sk="$SKIP_KEY" '
   /^\[.*\]$/ { sec = substr($0, 2, length($0) - 2); skip = (sec ~ ss); next }
@@ -73,9 +75,22 @@ sort -t$'\t' -k1,1 -k3,3 -k4,4 "$TMP/marked.tsv" > "$TMP/sorted.tsv"
 # Same NEW keys as a Home Manager snippet, ready to copy from
 awk -F'\t' '$2 == "NEW" { if ($3 != p) { if (p != "") print ""; print "[" $3 "]"; p = $3 }
   v = $5; for (i = 6; i <= NF; i++) v = v "\t" $i; print $4 "=" v }' "$TMP/sorted.tsv" > "$TMP/new.ini"
+# dconf2nix rejects some values (e.g. typed empty arrays like @a(dd) []).
+# Drop the line it names and retry, so one odd key doesn't lose the rest.
 if have dconf2nix && [ -s "$TMP/new.ini" ]; then
-  dconf2nix -i "$TMP/new.ini" -o "$OUT/dconf-new.nix" 2>"$TMP/d2n.err" \
-    || echo "# dconf2nix failed: $(cat "$TMP/d2n.err")" > "$OUT/dconf-new.nix"
+  : > "$TMP/d2n.dropped"
+  for _ in $(seq 1 25); do
+    dconf2nix -i "$TMP/new.ini" -o "$OUT/dconf-new.nix" 2>"$TMP/d2n.err" && break
+    ln=$(grep -oE 'line [0-9]+' "$TMP/d2n.err" | head -1 | cut -d' ' -f2)
+    [ -n "$ln" ] || { echo "# dconf2nix failed: $(head -1 "$TMP/d2n.err")" > "$OUT/dconf-new.nix"; break; }
+    sec=$(head -n "$ln" "$TMP/new.ini" | grep '^\[' | tail -1)
+    echo "$sec $(sed -n "${ln}p" "$TMP/new.ini" | cut -d= -f1)" >> "$TMP/d2n.dropped"
+    sed -i "${ln}d" "$TMP/new.ini"
+  done
+  if [ -s "$TMP/d2n.dropped" ] && [ -f "$OUT/dconf-new.nix" ]; then
+    { echo "# Left out (dconf2nix can't parse the value; see dconf.md):"
+      sed 's/^/#   /' "$TMP/d2n.dropped"; cat "$OUT/dconf-new.nix"; } > "$TMP/d2n.nix" && mv "$TMP/d2n.nix" "$OUT/dconf-new.nix"
+  fi
 fi
 
 # ------------------------------------------------- 2. apps outside the config
@@ -154,8 +169,8 @@ fi
 
 # -------------------------------------------------------------- 6. dotfiles
 # State, caches, secrets and app data dirs are skipped; decided-unmanaged too (gh, omf).
-NOISE='^\.(cache|local|ssh|gnupg|pki|mozilla|thunderbird|nix-profile|nix-defexpr|nix-channels|Xauthority|ICEauthority|xsession-errors.*|lesshst|viminfo|python_history|node_repl_history|wget-hsts|bash_history|dbus|var|vscode|npm|cargo|rustup|java|zoom|steam|docker|kube|aws|azure|terraform\.d|config)$'
-CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bitwarden|obsidian|evolution|goa-1\.0|gnome-session|ibus|enchant|libreoffice|Claude|Electron|gh|omf|autostart|systemd|user-dirs\.dirs|user-dirs\.locale|.*\.hm-bak)$'
+NOISE='^\.(cache|local|ssh|gnupg|pki|mozilla|thunderbird|nix-profile|nix-defexpr|nix-channels|Xauthority|ICEauthority|xsession-errors.*|lesshst|viminfo|python_history|node_repl_history|wget-hsts|bash_history|dbus|var|vscode|npm|cargo|rustup|java|zoom|steam|docker|kube|aws|azure|terraform\.d|config|nixcfg)$'
+CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bitwarden|obsidian|evolution|goa-1\.0|gnome-session|ibus|enchant|libreoffice|Claude|Electron|gh|omf|autostart|systemd|user-dirs\.dirs|user-dirs\.locale|.*\.hm-bak|.*~)$'
 {
   echo "# status  path"
   for f in "$HOME"/.[!.]* "$HOME"/.config/*; do
@@ -168,7 +183,7 @@ CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bit
     esac
     is_nix_link "$f" && continue
     if [ -d "$f" ] && [ -n "$(find "$f" -maxdepth 3 -type l -lname '/nix/store/*' -print -quit 2>/dev/null)" ]; then
-      extra=$(find "$f" -maxdepth 3 -type f ! -name '*.hm-bak' ! -path '*/cache*' ! -name fish_variables 2>/dev/null | head -5 | sed "s#$HOME/##" | tr '\n' ' ')
+      extra=$(find "$f" -maxdepth 3 -type f ! -name '*.hm-bak' ! -ipath '*cache*' ! -name fish_variables 2>/dev/null | head -5 | sed "s#$HOME/##" | tr '\n' ' ')
       echo "partial    ${f#"$HOME"/}   unmanaged files: ${extra:-none}"
     else
       echo "UNMANAGED  ${f#"$HOME"/}"
