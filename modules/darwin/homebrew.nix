@@ -122,6 +122,7 @@
       "publii"
       "remarkable"
       "signal"
+      "slack"
       "spotify"
       "the-unarchiver"
       "vlc"
