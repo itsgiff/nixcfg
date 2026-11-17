@@ -74,6 +74,46 @@
     file:///mnt/files files
   '';
 
+  # Default apps (~/.config/mimeapps.list). GNOME Settings > Default Apps and
+  # "always open with" can't change these any more; change them here.
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications =
+      let
+        chrome = "google-chrome.desktop";
+        vscode = "code.desktop";
+        thunderbird = "thunderbird.desktop";
+      in
+      {
+        # Web
+        "x-scheme-handler/http" = chrome;
+        "x-scheme-handler/https" = chrome;
+        "x-scheme-handler/about" = chrome;
+        "x-scheme-handler/unknown" = chrome;
+        "text/html" = chrome;
+        "application/xhtml+xml" = chrome;
+        # Text, scripts and unknown files open in VS Code
+        "text/plain" = vscode;
+        "application/x-yaml" = vscode;
+        "application/x-shellscript" = vscode;
+        "application/octet-stream" = vscode;
+        "application/x-zerosize" = vscode;
+        # Documents and images
+        "application/pdf" = "org.gnome.Papers.desktop";
+        "image/png" = "feh.desktop";
+        # Mail
+        "x-scheme-handler/mailto" = thunderbird;
+        "x-scheme-handler/mid" = thunderbird;
+        "x-scheme-handler/net.thunderbird" = thunderbird;
+        "message/rfc822" = thunderbird;
+        # Signal links and Claude Code sign-in links (Claude Code writes its
+        # own claude-code-url-handler.desktop)
+        "x-scheme-handler/sgnl" = "signal.desktop";
+        "x-scheme-handler/signalcaptcha" = "signal.desktop";
+        "x-scheme-handler/claude-cli" = "claude-code-url-handler.desktop";
+      };
+  };
+
   # X1-specific settings
   # For example, override settings from modules with specific values for this machine
 }
