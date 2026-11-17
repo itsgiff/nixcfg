@@ -99,5 +99,11 @@ in
     "org/gnome/shell/keybindings" = {
       toggle-overview = [ ];
     };
+
+    # Touchpad: tap to click, two-finger scrolling
+    "org/gnome/desktop/peripherals/touchpad" = {
+      tap-to-click = true;
+      two-finger-scrolling-enabled = true;
+    };
   };
 }
