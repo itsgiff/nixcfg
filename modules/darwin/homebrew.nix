@@ -118,6 +118,7 @@
       "macfuse"
       "microsoft-auto-update"   # installed alongside microsoft-office
       "microsoft-office"
+      "microsoft-teams"
       "notion"
       "obsidian"
       "obs"
@@ -134,6 +135,7 @@
       "realvnc-connect-viewer"
       "whatsapp"
       "wifiman"
+      "zoom"
     ];
     
     # Mac App Store applications to install through mas
