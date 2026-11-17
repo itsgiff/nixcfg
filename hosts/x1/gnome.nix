@@ -71,5 +71,33 @@ in
     "org/gnome/Weather" = {
       locations = [ victoriaHarbour ];
     };
+
+    # Keyboard: US layout; Ctrl+Alt+Backspace ends the session
+    "org/gnome/desktop/input-sources" = {
+      sources = [ (mkTuple [ "xkb" "us" ]) ];
+      xkb-options = [ "terminate:ctrl_alt_bksp" ];
+    };
+    # Shortcuts: Super+S Settings, Super+H home folder, Super+F search,
+    # Super+T Console. The default minimize shortcut and the overview toggle
+    # (Super alone) are switched off.
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      control-center = [ "<Super>s" ];
+      home = [ "<Super>h" ];
+      search = [ "<Super>f" ];
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+      ];
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      name = "Console";
+      command = "kgx";
+      binding = "<Super>t";
+    };
+    "org/gnome/desktop/wm/keybindings" = {
+      minimize = [ ];
+    };
+    "org/gnome/shell/keybindings" = {
+      toggle-overview = [ ];
+    };
   };
 }
