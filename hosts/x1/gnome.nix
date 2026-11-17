@@ -6,6 +6,22 @@
 # uint32 keys need mkUint32; dconf rejects a plain int for them.
 { lib, ... }:
 
+let
+  inherit (lib.hm.gvariant) mkUint32 mkVariant mkTuple mkEmptyArray type;
+
+  # A GWeather location: (version 2, <(name, station code, is-city,
+  # [(latitude, longitude)], [nearby (latitude, longitude)])>)
+  victoriaHarbour = mkVariant (mkTuple [
+    (mkUint32 2)
+    (mkVariant (mkTuple [
+      "Victoria Harbour"
+      "CYWH"
+      false
+      [ (mkTuple [ 0.84503025199168524 (-2.1525727383085753) ]) ]
+      (mkEmptyArray (type.tupleOf [ type.double type.double ]))
+    ]))
+  ]);
+in
 {
   dconf.settings = {
     # Dash/dock pins: Google Chrome only, same as the Mac Dock (persistent-apps).
@@ -32,6 +48,28 @@
       sleep-inactive-ac-timeout = 7200;
       sleep-inactive-battery-type = "nothing";
       sleep-inactive-battery-timeout = 3600;
+    };
+
+    # Interface: dark style, 12-hour clock, battery percentage in the top bar.
+    # Accent, fonts, GTK and icon themes are left at GNOME's defaults.
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      clock-format = "12h";
+      show-battery-percentage = true;
+    };
+    # Window buttons on the left: close, then minimize (no maximize)
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "close,minimize:appmenu";
+    };
+    # Weather (top-bar weather/clock extension and the Weather app): follow the
+    # current location, with Victoria Harbour (CYWH) as the saved place.
+    # Coordinates are radians; Nix keeps 6 decimals, a few metres off.
+    "org/gnome/shell/weather" = {
+      automatic-location = true;
+      locations = [ victoriaHarbour ];
+    };
+    "org/gnome/Weather" = {
+      locations = [ victoriaHarbour ];
     };
   };
 }
