@@ -117,4 +117,10 @@ in {
     description = "List Mac apps, settings and dotfiles that nixcfg doesn't declare yet";
     body = "bash ~/.nixcfg/scripts/mac-audit.sh $argv";
   };
+
+  # x1audit (x1): the same inventory for NixOS/GNOME. Optional output folder.
+  programs.fish.functions.x1audit = lib.mkIf (!isMacOS) {
+    description = "List x1 GNOME settings, apps and dotfiles that nixcfg doesn't declare yet";
+    body = "bash ~/.nixcfg/scripts/x1-audit.sh $argv";
+  };
 }

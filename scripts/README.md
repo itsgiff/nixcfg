@@ -52,6 +52,15 @@ chmod +x nixinit.sh
 
 `prefwatch` and `macaudit` are fish functions from `users/paul/fish.nix` that run the scripts below.
 
+## Quick reference (x1)
+
+| I want to… | Run |
+|---|---|
+| find what a GNOME setting I'm about to change writes | `dconf watch /`, change it, read the key, Ctrl-C |
+| list GNOME settings, apps and dotfiles nixcfg doesn't declare yet | `x1audit` |
+
+`x1audit` is a fish function from `users/paul/fish.nix` that runs `x1-audit.sh`.
+
 ## mac-audit.sh (macbook)
 
 Read-only inventory of what the Mac has that nixcfg doesn't declare: apps by
