@@ -33,6 +33,13 @@
   # Basic programs
   programs.fish.enable = true;
   
+  # Fonts, installed to /Library/Fonts/Nix Fonts (replaces the copies that
+  # were installed by hand in ~/Library/Fonts)
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+    open-sans
+  ];
+
   # Basic packages
   environment.systemPackages = with pkgs; [
     curl
