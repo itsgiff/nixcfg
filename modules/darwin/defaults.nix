@@ -14,6 +14,10 @@
       showhidden = true;
       mineffect = "scale";
       tilesize = 32;
+      minimize-to-application = true;
+      # Hot corners: bottom-left Mission Control, bottom-right off
+      wvous-bl-corner = 2;
+      wvous-br-corner = 1;
     };
     
     # Finder settings
@@ -25,6 +29,12 @@
       FXPreferredViewStyle = "Nlsv"; # List view
       ShowPathbar = true;
       ShowStatusBar = true;
+      AppleShowAllFiles = true;          # show hidden files
+      NewWindowTarget = "Home";          # new windows open the home folder
+      FXRemoveOldTrashItems = true;      # empty Trash items after 30 days
+      ShowExternalHardDrivesOnDesktop = false;
+      ShowHardDrivesOnDesktop = false;
+      ShowRemovableMediaOnDesktop = false;
     };
     
     # Global domain settings
