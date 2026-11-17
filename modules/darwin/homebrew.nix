@@ -30,6 +30,7 @@
     
     # Homebrew taps - need to be installed manually 
     taps = [
+       "hashicorp/tap"   # terraform (removed from homebrew-core, Nov 2026)
        "msitarzewski/brew-browser"
      # "homebrew/bundle"
      # "homebrew/cask"
@@ -82,7 +83,7 @@
       "speedtest-cli"
       "tcpdump"
       "telnet"
-      "terraform"
+      "hashicorp/tap/terraform"   # HashiCorp's official tap
       "trash"
       "tree"
       "vim"
