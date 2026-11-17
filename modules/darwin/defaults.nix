@@ -39,6 +39,12 @@
     
     # Global domain settings
     NSGlobalDomain = {
+      # Appearance
+      AppleInterfaceStyle = "Dark";
+      AppleICUForce24HourTime = true;
+      NSTableViewDefaultSizeMode = 2;    # medium sidebar icons and rows
+      "com.apple.sound.beep.feedback" = 1; # play feedback when volume changes
+
       # Disable "natural" scrolling
       "com.apple.swipescrolldirection" = false;
       
@@ -73,6 +79,16 @@
       ActuationStrength = 1; # 0 = light, 1 = medium, 2 = firm
     };
     
+    # Menu bar
+    menuExtraClock = {
+      ShowDate = 0;                      # when space allows
+      ShowDayOfWeek = true;
+      ShowAMPM = true;
+    };
+    controlcenter.BatteryShowPercentage = true;
+
+    ActivityMonitor.ShowCategory = 100;  # all processes
+
     # Login window settings
     loginwindow = {
       GuestEnabled = false;
