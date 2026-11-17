@@ -41,3 +41,25 @@ chmod +x nixinit.sh
 # Run it
 ./nixinit.sh
 ```
+
+## mac-audit.sh (macbook)
+
+Read-only inventory of what the Mac has that nixcfg doesn't declare: apps by
+source (cask / App Store / Nix / pkg / manual, with cask suggestions), third-party
+and Apple preference domains, Dock items, unmanaged dotfiles and `*.hm-bak`
+leftovers, launchd jobs, fonts.
+
+```bash
+bash ~/.nixcfg/scripts/mac-audit.sh                 # report in ~/nixcfg-audit-<date>/
+bash ~/.nixcfg/scripts/mac-audit.sh --login-items   # also login items (Automation prompt)
+bash ~/.nixcfg/scripts/mac-audit.sh --containers    # also sandboxed apps' prefs (privacy prompt)
+```
+
+## defaults-watch.sh (macbook)
+
+Finds which preference key a GUI toggle writes and prints a Nix snippet.
+
+```bash
+bash ~/.nixcfg/scripts/defaults-watch.sh snap   # then change ONE setting and close the pane
+bash ~/.nixcfg/scripts/defaults-watch.sh diff
+```
