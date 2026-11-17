@@ -117,6 +117,7 @@
       "granola"
       "handbrake-app"
       "jamie"
+      "logi-options+"
       "macfuse"
       "microsoft-auto-update"   # installed alongside microsoft-office
       "microsoft-office"
@@ -125,6 +126,7 @@
       "obsidian"
       "obs"
       "omnigraffle"
+      "onyx"
       "pdfcraft"
       "photocraft"
       "perplexity"
