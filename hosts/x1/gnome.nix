@@ -9,6 +9,17 @@
 let
   inherit (lib.hm.gvariant) mkUint32 mkVariant mkTuple mkEmptyArray type;
 
+  # Wallpaper for the desktop and the lock screen. The ${} path copies the
+  # JPEG into the Nix store (the original was an 8 MB PNG in
+  # ~/.local/share/backgrounds).
+  wallpaper = {
+    picture-uri = "file://${./wallpaper.jpg}";
+    picture-options = "zoom";
+    color-shading-type = "solid";
+    primary-color = "#000000000000";
+    secondary-color = "#000000000000";
+  };
+
   # A GWeather location: (version 2, <(name, station code, is-city,
   # [(latitude, longitude)], [nearby (latitude, longitude)])>)
   victoriaHarbour = mkVariant (mkTuple [
@@ -36,7 +47,7 @@ in
     "org/gnome/desktop/session" = {
       idle-delay = lib.hm.gvariant.mkUint32 900; # blank after 15 min
     };
-    "org/gnome/desktop/screensaver" = {
+    "org/gnome/desktop/screensaver" = wallpaper // {
       lock-enabled = true; # lock when the screen blanks (GNOME default)
       lock-delay = lib.hm.gvariant.mkUint32 0; # lock immediately (GNOME default)
     };
@@ -225,6 +236,11 @@ in
     # Overview search: Calculator and Calendar results off
     "org/gnome/desktop/search-providers" = {
       disabled = [ "org.gnome.Calculator.desktop" "org.gnome.Calendar.desktop" ];
+    };
+
+    # Desktop wallpaper, same picture in light and dark style
+    "org/gnome/desktop/background" = wallpaper // {
+      picture-uri-dark = wallpaper.picture-uri;
     };
   };
 }
