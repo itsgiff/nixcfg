@@ -105,5 +105,98 @@ in
       tap-to-click = true;
       two-finger-scrolling-enabled = true;
     };
+
+    # Extension settings (enabling the extensions stays manual by design).
+    # Shell theme for the User Themes extension (flat-remix-gnome package)
+    "org/gnome/shell/extensions/user-theme" = {
+      name = "Flat-Remix-Blue-Dark";
+    };
+    # Dash to Dock: bottom, 32px icons, hides when a window overlaps it,
+    # grey background with dynamic transparency, no trash icon, external
+    # monitor (DP-1) preferred
+    "org/gnome/shell/extensions/dash-to-dock" = {
+      dock-position = "BOTTOM";
+      dash-max-icon-size = 32;
+      height-fraction = 0.9;
+      intellihide-mode = "FOCUS_APPLICATION_WINDOWS";
+      disable-overview-on-startup = true;
+      show-favorites = true;
+      show-running = true;
+      show-trash = false;
+      show-icons-notifications-counter = false;
+      running-indicator-style = "DOTS";
+      unity-backlit-items = false;
+      preview-size-scale = 0.14;
+      apply-custom-theme = false;
+      custom-theme-shrink = true;
+      custom-background-color = true;
+      background-color = "rgb(119,118,123)";
+      background-opacity = 0.5;
+      transparency-mode = "DYNAMIC";
+      multi-monitor = false;
+      preferred-monitor = -2;
+      preferred-monitor-by-connector = "DP-1";
+    };
+    # Blur my Shell: blurred dock, unblurred top bar
+    "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
+      blur = true;
+      static-blur = true;
+      brightness = 0.6;
+      sigma = 50;
+      override-background = false;
+      style-dash-to-dock = 0;
+      pipeline = "pipeline_default_rounded";
+    };
+    "org/gnome/shell/extensions/blur-my-shell/panel" = {
+      blur = false;
+      brightness = 0.6;
+      sigma = 50;
+    };
+    "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
+      brightness = 0.6;
+      sigma = 50;
+    };
+    "org/gnome/shell/extensions/blur-my-shell/window-list" = {
+      brightness = 0.6;
+      sigma = 50;
+    };
+    # Just Perfection: no Activities button, no app menu label, no running-app
+    # dots in the dash, start on the desktop instead of the overview
+    "org/gnome/shell/extensions/just-perfection" = {
+      activities-button = false;
+      app-menu-label = false;
+      dash-app-running = false;
+      notification-banner-position = 2;
+      startup-status = 0;
+      theme = true;
+    };
+    # Vitals: memory and CPU in the top bar
+    "org/gnome/shell/extensions/vitals" = {
+      hot-sensors = [ "_memory_usage_" "_processor_usage_" ];
+      position-in-panel = 2;
+      fixed-widths = true;
+      hide-icons = false;
+      hide-zeros = false;
+      show-battery = false;
+      show-system = true;
+      use-higher-precision = true;
+    };
+    # Freon: average temperature in the top bar
+    "org/gnome/shell/extensions/freon" = {
+      hot-sensors = [ "__average__" ];
+      panel-box-index = 1;
+      position-in-panel = 2;
+      use-drive-nvmecli = false;
+    };
+    # Bedtime Mode: automatic schedule (ending at 5 am); button shows while active
+    "org/gnome/shell/extensions/bedtime-mode" = {
+      automatic-schedule = true;
+      schedule-end-hours = 5;
+      ondemand-button-visibility = "active-schedule";
+    };
+    # User avatar in Quick Settings
+    "org/gnome/shell/extensions/quick-settings-avatar" = {
+      avatar-size = 43;
+    };
   };
 }
