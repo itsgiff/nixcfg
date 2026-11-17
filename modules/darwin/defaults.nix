@@ -48,6 +48,9 @@
       # Disable "natural" scrolling
       "com.apple.swipescrolldirection" = false;
       
+      # No two-finger swipe to go back/forward in browsers
+      AppleEnableSwipeNavigateWithScrolls = false;
+
       # Full keyboard navigation
       AppleKeyboardUIMode = 3;
       
@@ -77,7 +80,18 @@
       TrackpadRightClick = true;
       TrackpadThreeFingerDrag = true;
       ActuationStrength = 1; # 0 = light, 1 = medium, 2 = firm
+      FirstClickThreshold = 1;           # click pressure: medium
+      TrackpadPinch = true;
+      TrackpadRotate = true;
+      # Gestures: 2 = swipe between pages/spaces, Mission Control, App Expose
+      TrackpadThreeFingerHorizSwipeGesture = 2;
+      TrackpadThreeFingerVertSwipeGesture = 2;
+      TrackpadFourFingerHorizSwipeGesture = 2;
+      TrackpadTwoFingerFromRightEdgeSwipeGesture = 3; # Notification Center
     };
+
+    # Mouse tracking speed
+    ".GlobalPreferences"."com.apple.mouse.scaling" = 2.0;
     
     # Menu bar
     menuExtraClock = {
