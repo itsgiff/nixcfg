@@ -62,6 +62,12 @@
   # in GNOME Settings on 2026-10-24, so the first switch changes nothing.
   # uint32 keys need mkUint32; dconf rejects a plain int for them.
   dconf.settings = {
+    # Dash/dock pins: Google Chrome only, same as the Mac Dock (persistent-apps).
+    # Running apps still show while open; anything pinned by hand is reset
+    # on the next switch.
+    "org/gnome/shell" = {
+      favorite-apps = [ "google-chrome.desktop" ];
+    };
     "org/gnome/desktop/session" = {
       idle-delay = lib.hm.gvariant.mkUint32 900; # blank after 15 min
     };
