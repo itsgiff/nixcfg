@@ -39,13 +39,30 @@ brew info --json=v2 --installed 2>/dev/null | jq -r '
   .casks[] | .token as $t | .artifacts[]? | objects | .app? // empty
   | ((map(objects | .target) | first) // (map(strings) | first)) // empty
   | "\(split("/") | last)\t\($t)"' > "$TMP/cask-installed" 2>/dev/null
-CASK_API="$(brew --cache 2>/dev/null)/api/cask.jws.json"
-if [ -f "$CASK_API" ]; then
-  jq -r '.payload | fromjson | .[] | .token as $t | .artifacts[]? | objects | .app? // empty
-    | ((map(objects | .target) | first) // (map(strings) | first)) // empty
-    | "\(split("/") | last)\t\($t)"' "$CASK_API" > "$TMP/cask-all" 2>/dev/null
-else
-  : > "$TMP/cask-all"
+# Cask suggestions for apps not installed by Homebrew: match app names and
+# bundle-id parts against Homebrew's cask name list, then keep only casks
+# whose app artifact really has that name.
+list_apps() {
+  for dir in /Applications "$HOME/Applications"; do
+    [ -d "$dir" ] && find "$dir" -maxdepth 3 -name '*.app' -prune -print 2>/dev/null
+  done | sort -u
+}
+: > "$TMP/cask-all"
+CASK_NAMES="$(brew --cache 2>/dev/null)/api/cask_names.txt"
+if [ -f "$CASK_NAMES" ]; then
+  list_apps | while IFS= read -r app; do
+    n=$(basename "$app" .app)
+    printf '%s\n%s\n' "$n" "$(printf '%s' "$n" | sed -E 's/ [0-9.]+$//; s/\.(us|app)$//')"
+    bundle_id "$app" | tr '.' '\n'
+  done | tr 'A-Z' 'a-z' | sed -E 's/[^a-z0-9+]+/-/g; s/^-+//; s/-+$//' | grep -v '^$' | sort -u > "$TMP/guesses"
+  grep -Fx -f "$TMP/guesses" "$CASK_NAMES" > "$TMP/cands" 2>/dev/null
+  if [ -s "$TMP/cands" ]; then
+    # shellcheck disable=SC2046
+    brew info --json=v2 --cask $(cat "$TMP/cands") 2>/dev/null | jq -r '
+      .casks[] | .token as $t | .artifacts[]? | objects | .app? // empty
+      | ((map(objects | .target) | first) // (map(strings) | first)) // empty
+      | "\(split("/") | last)\t\($t)"' > "$TMP/cask-all" 2>/dev/null
+  fi
 fi
 lookup() { awk -F'\t' -v n="$1" '$1==n {print $2; exit}' "$2"; }
 
@@ -53,9 +70,7 @@ have mas && mas list 2>/dev/null > "$TMP/mas" || : > "$TMP/mas"
 
 printf 'status\tsource\tapp\tbundle_id\tsuggestion\n' > "$OUT/apps.tsv"
 : > "$TMP/bundles"
-for dir in /Applications "$HOME/Applications"; do
-  [ -d "$dir" ] && find "$dir" -maxdepth 3 -name '*.app' -prune -print 2>/dev/null
-done | sort -u | while IFS= read -r app; do
+list_apps | while IFS= read -r app; do
   name=$(basename "$app"); short=${name%.app}
   bid=$(bundle_id "$app")
   printf '%s\t%s\n' "$bid" "$short" >> "$TMP/bundles"
@@ -295,7 +310,7 @@ c() { grep -c "$1" "$2" 2>/dev/null || true; }
   echo "| unmanaged user LaunchAgents | $(c '^UNMANAGED' "$OUT/launchd.txt") | launchd.txt |"
   echo "| user fonts | $(($(wc -l < "$OUT/fonts.txt") - 1)) | fonts.txt |"
   if [ ! -s "$TMP/cask-all" ]; then
-    echo; echo "Note: no Homebrew cask API cache, so no cask suggestions for manual apps (run 'brew update' once)."
+    echo; echo "Note: no cask suggestions found for manual apps (Homebrew's cask name list missing, or no matches)."
   fi
 } > "$OUT/SUMMARY.md"
 cat "$OUT/SUMMARY.md"
