@@ -61,6 +61,19 @@
     settings.StartupWMClass = "chrome-chatgpt.com__-Default";
   };
   
+  # Files (Nautilus) sidebar bookmarks: the NFS shares from the Synology
+  # (modules/nixos/nfs.nix) and Downloads. Add bookmarks here, not in Files:
+  # Files would replace the link, and the next switch would move its file
+  # aside to bookmarks.hm-bak.
+  xdg.configFile."gtk-3.0/bookmarks".text = ''
+    file:///mnt/backups backups
+    file:///mnt/files/Google%20Drive Google Drive
+    file:///home/paul/Downloads Downloads
+    file:///mnt/data data
+    file:///mnt/docker docker
+    file:///mnt/files files
+  '';
+
   # X1-specific settings
   # For example, override settings from modules with specific values for this machine
 }
