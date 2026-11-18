@@ -150,6 +150,8 @@
 
     fish oh-my-fish
     git git-cliff git-crypt
+    gh               # GitHub CLI
+    nodejs           # Node.js LTS (nodejs_24 on 26.05), with npm and npx
     cmake
 
     terraform kubectl kubernetes-helm eksctl
