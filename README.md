@@ -25,7 +25,7 @@ User `paul` on both, with fish as the login shell.
 │   ├── x1/
 │   │   ├── configuration.nix     # NixOS system config
 │   │   ├── hardware-configuration.nix
-│   │   ├── home.nix              # x1-only Home Manager: web-app launchers, Files bookmarks, default apps
+│   │   ├── home.nix              # x1-only Home Manager: web-app launchers, Files bookmarks, default apps, Yogurt update check
 │   │   ├── gnome.nix             # GNOME settings (dconf): dash, power, keyboard, touchpad, extensions
 │   │   ├── wallpaper.jpg         # Desktop and lock-screen wallpaper (used by gnome.nix)
 │   │   ├── yogurt.nix            # Yogurt meeting notes, packaged from its release AppImage
@@ -111,7 +111,7 @@ No output means the system is unchanged.
 
 - **GNOME settings are declared** in `hosts/x1/gnome.nix`. A setting changed by hand in GNOME is put back on the next switch, so change it there instead. To find the key a toggle writes, run `dconf watch /`, change it, and read the printed key.
 - **Default apps** (`xdg.mimeApps`) and **Files sidebar bookmarks** are declared in `hosts/x1/home.nix`; GNOME Settings and Files can't change them any more.
-- **Yogurt** isn't in nixpkgs, so `hosts/x1/yogurt.nix` wraps its release AppImage. To update it, bump `version`, set `hash = lib.fakeHash`, build, and copy the real hash from the error.
+- **Yogurt** isn't in nixpkgs, so `hosts/x1/yogurt.nix` wraps its release AppImage. To update it, bump `version`, set `hash = lib.fakeHash`, build, and copy the real hash from the error. A weekly user timer (Monday mornings, `yogurt-update-check` in `hosts/x1/home.nix`) sends a GNOME notification when GitHub has a newer release; run it by hand with `systemctl --user start yogurt-update-check`.
 - Notion, Perplexity and ChatGPT run as Chrome `--app` windows with their own launchers and dock icons. Apps added with Chrome's "Install as app" stay managed by Chrome sync.
 - The dash pins Google Chrome only, like the Mac Dock. Anything pinned by hand is removed on the next switch.
 - New GNOME extensions only show up after a log out and back in; do that before `gnome-extensions enable`.

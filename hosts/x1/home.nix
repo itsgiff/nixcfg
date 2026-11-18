@@ -1,5 +1,42 @@
 { config, pkgs, lib, ... }:
 
+let
+  # Same derivation the system installs (configuration.nix), read for its version
+  yogurt = pkgs.callPackage ./yogurt.nix { };
+
+  yogurt-update-check = pkgs.writeShellApplication {
+    name = "yogurt-update-check";
+    runtimeInputs = with pkgs; [ coreutils curl jq libnotify ];
+    text = ''
+      installed="''${1:-${yogurt.version}}"
+      state="''${XDG_STATE_HOME:-$HOME/.local/state}/yogurt-update-check"
+
+      # Offline or rate-limited: try again next week
+      latest=$(curl -fsSL --max-time 20 \
+        https://api.github.com/repos/FrigadeHQ/yogurt/releases/latest \
+        | jq -r '.tag_name // empty') || exit 0
+      latest="''${latest#v}"
+      [ -n "$latest" ] || exit 0
+
+      if [ "$latest" = "$installed" ]; then
+        echo "Yogurt $installed is the latest release"
+        exit 0
+      fi
+      # Already told about this version
+      if [ -f "$state" ] && [ "$(cat "$state")" = "$latest" ]; then
+        echo "Yogurt $latest is out (already notified)"
+        exit 0
+      fi
+
+      notify-send --app-name=Yogurt --icon=yogurt \
+        "Yogurt $latest is out" \
+        "nixcfg has $installed. Bump version and hash in hosts/x1/yogurt.nix."
+      echo "Yogurt $latest is out; nixcfg has $installed"
+      mkdir -p "$(dirname "$state")"
+      echo "$latest" > "$state"
+    '';
+  };
+in
 {
   # GNOME settings (dconf) live in their own file
   imports = [ ./gnome.nix ];
@@ -12,7 +49,29 @@
   # X1-specific packages
   home.packages = with pkgs; [
     # Add X1-specific packages here
+    yogurt-update-check   # also runnable by hand; pass a version to test, e.g. 0.0.0
   ];
+
+  # Yogurt is a pinned AppImage (yogurt.nix), so fullUpdate never updates it.
+  # Once a week, compare the packaged version with GitHub's latest release and
+  # send a GNOME notification, once per new version. Run it now with
+  # `systemctl --user start yogurt-update-check`.
+  systemd.user.services.yogurt-update-check = {
+    Unit.Description = "Check GitHub for a newer Yogurt release";
+    Service = {
+      Type = "oneshot";
+      ExecStart = lib.getExe yogurt-update-check;
+    };
+  };
+  systemd.user.timers.yogurt-update-check = {
+    Unit.Description = "Weekly check for a newer Yogurt release";
+    Timer = {
+      OnCalendar = "Mon *-*-* 10:00:00";   # Monday mornings
+      Persistent = true;   # missed while asleep or off: run at next login
+      RandomizedDelaySec = "1h";
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
 
   # Notion has no official Linux desktop app, so run notion.so in a
   # Chrome app window (own window and launcher, no browser UI)
