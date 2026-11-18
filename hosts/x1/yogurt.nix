@@ -6,11 +6,11 @@
 
 let
   pname = "yogurt";
-  version = "0.3.7";
+  version = "0.3.42";
 
   src = fetchurl {
     url = "https://github.com/FrigadeHQ/yogurt/releases/download/v${version}/Yogurt-linux-x86_64.AppImage";
-    hash = "sha256-Gs59xz2BKT25KKpjlz1tgbNCb+mtmxEIGiKdI67bpoE=";
+    hash = "sha256-qx/EHfbLXq0KJ4Euzd8nKyEbDJ883oDMKRgno/QH+p8=";
   };
 
   # Unpacked AppImage, for its .desktop file and icon
@@ -25,8 +25,9 @@ appimageTools.wrapType2 {
     install -Dm444 ${contents}/yogurt.desktop $out/share/applications/yogurt.desktop
     substituteInPlace $out/share/applications/yogurt.desktop \
       --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=yogurt --no-sandbox %U'
-    install -Dm444 ${contents}/usr/share/icons/hicolor/1024x1024/apps/yogurt.png \
-      $out/share/icons/hicolor/1024x1024/apps/yogurt.png
+    # Icons at every size the AppImage ships (16 to 1024 px)
+    mkdir -p $out/share
+    cp -r ${contents}/usr/share/icons $out/share/
   '';
 
   meta = {
