@@ -198,6 +198,8 @@
     
     pavucontrol
     ytdownloader
+
+    (callPackage ./yogurt.nix { })   # Yogurt meeting notes (wrapped AppImage, see yogurt.nix)
   ];
 
   # Enable specific programs
