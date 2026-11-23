@@ -163,6 +163,7 @@
   
     firefox google-chrome
     signal-desktop discord slack
+    spotify          # official client (unfree; Spotify Connect discovery uses mDNS, already open via Avahi)
     thunderbird
     publii
     drawio
