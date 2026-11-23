@@ -123,7 +123,6 @@
       "microsoft-office"
       "microsoft-teams"
       "notion"
-      "obsidian"
       "obs"
       "omnigraffle"
       "onyx"

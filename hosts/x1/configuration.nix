@@ -164,7 +164,6 @@
     firefox google-chrome
     signal-desktop discord slack
     thunderbird
-    obsidian
     publii
     drawio
     
