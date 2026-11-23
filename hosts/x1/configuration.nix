@@ -73,6 +73,14 @@
   # synaptics driver, so no TOD (proprietary) driver is needed
   services.fprintd.enable = true;
 
+  # Logitech mice and keyboards (Unifying/Bolt receivers, Bluetooth HID++):
+  # Solaar in place of Logi Options+ on the Mac. Installs Solaar plus its udev
+  # rules, so it runs without sudo; tray icon via the appindicator extension.
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
+
   # Printing: Brother MFC-L3720CDW on Wi-Fi, driverless (IPP Everywhere/AirPrint).
   # Avahi finds it over mDNS; cups-browsed (on by default with Avahi) adds the queue.
   services.printing.enable = true;
