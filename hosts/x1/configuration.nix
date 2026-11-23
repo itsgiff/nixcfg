@@ -206,6 +206,9 @@
   programs = {
     fish.enable = true;
     dconf.enable = true;
+    # Zoom through its module, not the bare package: the module builds it with
+    # PipeWire audio and the GNOME desktop portal (Wayland screen sharing)
+    zoom-us.enable = true;
   };
 
   # System version (important for NixOS upgrades - don't change after install)
