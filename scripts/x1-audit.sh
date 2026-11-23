@@ -170,7 +170,7 @@ fi
 # -------------------------------------------------------------- 6. dotfiles
 # State, caches, secrets and app data dirs are skipped; decided-unmanaged too (gh, omf).
 NOISE='^\.(cache|local|ssh|gnupg|pki|mozilla|thunderbird|nix-profile|nix-defexpr|nix-channels|Xauthority|ICEauthority|xsession-errors.*|lesshst|viminfo|python_history|node_repl_history|wget-hsts|bash_history|dbus|var|vscode|npm|cargo|rustup|java|zoom|steam|docker|kube|aws|azure|terraform\.d|config|nixcfg)$'
-CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bitwarden|evolution|goa-1\.0|gnome-session|ibus|enchant|libreoffice|Claude|Electron|gh|omf|autostart|systemd|user-dirs\.dirs|user-dirs\.locale|.*\.hm-bak|.*~)$'
+CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bitwarden|evolution|goa-1\.0|gnome-session|ibus|enchant|libreoffice|Claude|Electron|spotify|teams-for-linux|zoom|zoom\.conf|zoomus\.conf|solaar|gh|omf|autostart|systemd|user-dirs\.dirs|user-dirs\.locale|.*\.hm-bak|.*~)$'
 {
   echo "# status  path"
   for f in "$HOME"/.[!.]* "$HOME"/.config/*; do
