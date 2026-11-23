@@ -119,6 +119,21 @@ in
     # no www. here because the --app URL has none)
     settings.StartupWMClass = "chrome-chatgpt.com__-Default";
   };
+
+  # WhatsApp: same Chrome --app approach as Notion, Perplexity and ChatGPT
+  # (replaces the Chrome "Install as app" launcher, which nixcfg didn't declare).
+  # Icon: simple-icons logo in the brand colour, like Perplexity's.
+  xdg.desktopEntries.whatsapp = {
+    name = "WhatsApp";
+    genericName = "Messaging";
+    comment = "WhatsApp Web in a Chrome app window";
+    icon = "${./icons/whatsapp.svg}";
+    exec = "${pkgs.google-chrome}/bin/google-chrome-stable --app=https://web.whatsapp.com";
+    categories = [ "Network" "InstantMessaging" ];
+    terminal = false;
+    # Own dock icon instead of grouping under Chrome (same scheme as Notion)
+    settings.StartupWMClass = "chrome-web.whatsapp.com__-Default";
+  };
   
   # Files (Nautilus) sidebar bookmarks: the NFS shares from the Synology
   # (modules/nixos/nfs.nix) and Downloads. Add bookmarks here, not in Files:
