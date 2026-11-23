@@ -114,6 +114,9 @@ fi
   for f in "$HOME"/.local/share/applications/*.desktop; do
     [ -e "$f" ] || continue
     is_nix_link "$f" && continue
+    # Decided unmanaged: Chrome "Install as app" launchers (Chrome sync owns
+    # them) and Claude Code's URL handler (it writes its own; xdg.mimeApps uses it)
+    case "$(basename "$f")" in chrome-*-Default.desktop|claude-code-url-handler.desktop) continue ;; esac
     printf '%s\t%s\n' "$(basename "$f")" "$(grep -m1 '^Exec=' "$f" | cut -c6-120)"
   done
   echo; echo "## Printers added by hand (CUPS queues; nixcfg relies on driverless discovery)"
@@ -169,8 +172,10 @@ fi
 
 # -------------------------------------------------------------- 6. dotfiles
 # State, caches, secrets and app data dirs are skipped; decided-unmanaged too (gh, omf).
-NOISE='^\.(cache|local|ssh|gnupg|pki|mozilla|thunderbird|nix-profile|nix-defexpr|nix-channels|Xauthority|ICEauthority|xsession-errors.*|lesshst|viminfo|python_history|node_repl_history|wget-hsts|bash_history|dbus|var|vscode|npm|cargo|rustup|java|zoom|steam|docker|kube|aws|azure|terraform\.d|config|nixcfg)$'
-CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bitwarden|evolution|goa-1\.0|gnome-session|ibus|enchant|libreoffice|Claude|Electron|spotify|teams-for-linux|zoom|zoom\.conf|zoomus\.conf|solaar|gh|omf|autostart|systemd|user-dirs\.dirs|user-dirs\.locale|.*\.hm-bak|.*~)$'
+# Reviewed Nov 22 2026 (Notion task 88): app data of installed apps, VS Code
+# extension state, Claude/Codex state, GNOME/GTK state files.
+NOISE='^\.(cache|local|ssh|gnupg|pki|mozilla|thunderbird|nix-profile|nix-defexpr|nix-channels|Xauthority|ICEauthority|xsession-errors.*|lesshst|viminfo|python_history|node_repl_history|wget-hsts|bash_history|dbus|var|vscode|npm|cargo|rustup|java|zoom|steam|docker|kube|aws|azure|terraform\.d|config|nixcfg|claude|claude\.json|codex|copilot|vscode-shared|redhat|gitlab|dotnet|cups|gnome|compose-cache)$'
+CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bitwarden|evolution|goa-1\.0|gnome-session|ibus|enchant|libreoffice|Claude|Electron|spotify|teams-for-linux|zoom|zoom\.conf|zoomus\.conf|solaar|Code|Codex|draw\.io|eog|epiphany|GIMP|Publii|Yogurt|gnome-control-center|gnome-initial-setup-done|gtk-2\.0|gtk-4\.0|menus|monitors\.xml|nautilus|pavucontrol\.ini|gh|omf|autostart|systemd|user-dirs\.dirs|user-dirs\.locale|.*\.hm-bak|.*~)$'
 {
   echo "# status  path"
   for f in "$HOME"/.[!.]* "$HOME"/.config/*; do
@@ -183,8 +188,11 @@ CFG_NOISE='^(dconf|pulse|google-chrome|chromium|BraveSoftware|discord|Signal|Bit
     esac
     is_nix_link "$f" && continue
     if [ -d "$f" ] && [ -n "$(find "$f" -maxdepth 3 -type l -lname '/nix/store/*' -print -quit 2>/dev/null)" ]; then
-      extra=$(find "$f" -maxdepth 3 -type f ! -name '*.hm-bak' ! -ipath '*cache*' ! -name fish_variables 2>/dev/null | head -5 | sed "s#$HOME/##" | tr '\n' ' ')
-      echo "partial    ${f#"$HOME"/}   unmanaged files: ${extra:-none}"
+      extra=$(find "$f" -maxdepth 3 -type f ! -name '*.hm-bak' ! -ipath '*cache*' ! -name fish_variables \
+        ! -path '*/fish/conf.d/omf.fish' ! -name 'fish_frozen_*' 2>/dev/null | head -5 | sed "s#$HOME/##" | tr '\n' ' ')
+      # Only Nix links inside (or only decided-unmanaged files): fully managed
+      [ -n "$extra" ] || continue
+      echo "partial    ${f#"$HOME"/}   unmanaged files: $extra"
     else
       echo "UNMANAGED  ${f#"$HOME"/}"
     fi

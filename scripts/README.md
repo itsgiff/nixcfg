@@ -89,10 +89,16 @@ Read-only inventory of what the x1 has that nixcfg doesn't declare: dconf
 settings grouped by area (keys Home Manager already declares are counted, not
 listed; window sizes, last-used paths, history and timestamps are dropped),
 apps outside the system config (Flatpak, `nix profile`, AppImages, loose
-binaries, Chrome "Install as app" launchers), autostart entries, user systemd
-units, GNOME extensions by source, user fonts, unmanaged dotfiles and
-`*.hm-bak` leftovers. `dconf-new.nix` holds the undeclared keys as a
-Home Manager snippet (via dconf2nix).
+binaries, hand-made launchers), autostart entries, user systemd units, GNOME
+extensions by source, user fonts, unmanaged dotfiles and `*.hm-bak` leftovers.
+`dconf-new.nix` holds the undeclared keys as a Home Manager snippet (via
+dconf2nix).
+
+Things decided to stay unmanaged are skipped: Chrome "Install as app" launchers
+(Chrome sync owns them), Claude Code's URL handler, and the app-data and state
+folders in the script's `NOISE` / `CFG_NOISE` lists. A folder that holds only
+Nix links counts as managed. Add a name to those lists when you decide an
+item stays unmanaged.
 
 ```bash
 bash ~/.nixcfg/scripts/x1-audit.sh    # report in ~/nixcfg-audit-<date>/
