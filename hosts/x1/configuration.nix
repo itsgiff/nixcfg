@@ -164,6 +164,8 @@
     firefox google-chrome
     signal-desktop discord slack
     spotify          # official client (unfree; Spotify Connect discovery uses mDNS, already open via Avahi)
+    teams-for-linux  # unofficial Teams client (Microsoft has none for Linux); runs under XWayland
+                     # unless NIXOS_OZONE_WL=1 is set, which limits screen sharing
     thunderbird
     publii
     drawio
