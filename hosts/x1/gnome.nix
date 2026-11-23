@@ -61,12 +61,14 @@ in
       sleep-inactive-battery-timeout = 3600;
     };
 
-    # Interface: dark style, 12-hour clock, battery percentage in the top bar.
+    # Interface: dark style, 12-hour clock, battery percentage in the top bar,
+    # middle-click paste kept on (newer GNOME turns it off by default).
     # Accent, fonts, GTK and icon themes are left at GNOME's defaults.
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
       clock-format = "12h";
       show-battery-percentage = true;
+      gtk-enable-primary-paste = true;
     };
     # Window buttons on the left: close, then minimize (no maximize)
     "org/gnome/desktop/wm/preferences" = {
