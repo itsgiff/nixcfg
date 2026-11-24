@@ -116,11 +116,15 @@ the two can be compared before nixcfg declares any of it: command-line
 binaries and where each came from (Nix, Homebrew, npm, a self-installer),
 desktop apps and launchers, every file in the clients' config folders
 (`~/.claude`, `~/.codex`, Claude Desktop, ChatGPT, Perplexity and others; caches,
-sessions and history left out) with whether Home Manager manages it,
+sessions, history and plugin catalogs left out, and only the top-level files of
+app data folders) with whether Home Manager manages it,
 redacted `settings.json` / `config.toml` / `claude_desktop_config.json`, MCP
-server names, instruction files (`CLAUDE.md`, `AGENTS.md`), and every
-`SKILL.md` under `$HOME` with the client that loads it (user, project, plugin,
-app copy, or `loose` when no client looks there).
+server names, instruction files (`CLAUDE.md`, `AGENTS.md`), the `skills` CLI
+lock file (`~/.agents/.skill-lock.json`), and every `SKILL.md` under `$HOME`
+with the client that loads it. Skills you put there (user, project, linked, or
+`loose` when no client looks there) are listed one by one; copies a client keeps
+for you (installed plugins, marketplace catalogs, Codex plugin caches, Claude
+Desktop's copies of your account's skills and plugins) get one line per plugin.
 
 `skills.tsv` and `files.tsv` carry a content hash per skill and per file, so
 the same hash on both machines means identical. Credential files are never

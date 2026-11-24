@@ -130,7 +130,7 @@ h "3. Desktop apps and launchers"
 
 # ------------------------------------------------------------ 4. config folders
 # Client folders: every file except the noise below, with how it's managed.
-NOISE='/(projects|todos|shell-snapshots|statsig|ide|file-history|session-env|debug|telemetry|sessions|log|logs|cache|Cache|Code Cache|GPUCache|DawnCache|DawnGraphiteCache|DawnWebGPUCache|IndexedDB|Local Storage|Session Storage|WebStorage|blob_storage|Crashpad|Service Worker|Shared Dictionary|VideoDecodeStats|vm_bundles|claude-code-vm|sentry|Network|Partitions|Dictionaries|node_modules|\.git|archived_sessions|history|tmp)(/|$)|history\.jsonl$'
+NOISE='/(projects|todos|shell-snapshots|statsig|ide|file-history|session-env|debug|telemetry|sessions|log|logs|cache|Cache|Code Cache|GPUCache|DawnCache|DawnGraphiteCache|DawnWebGPUCache|IndexedDB|Local Storage|Session Storage|WebStorage|blob_storage|Crashpad|Service Worker|Shared Dictionary|VideoDecodeStats|vm_bundles|claude-code-vm|sentry|Network|Partitions|Dictionaries|node_modules|\.git|archived_sessions|history|tmp|\.tmp|backups|marketplaces|local-agent-mode-sessions)(/|$)|/plugins/cache/|history\.jsonl$'
 SECRET_FILE='(auth\.json|\.credentials\.json|credentials|.*token.*|.*\.key|Cookies.*|.*\.pem)$'
 if [ $MAC = 1 ]; then AS="$HOME/Library/Application Support"
   DIRS="$HOME/.claude|$HOME/.codex|$HOME/.agents|$HOME/.gemini|$HOME/.cursor|$HOME/.config/opencode|$HOME/.config/mcp|$HOME/.ollama|$AS/Claude|$AS/Claude-3p|$AS/com.openai.chat|$AS/ChatGPT|$AS/Codex|$AS/Perplexity|$AS/ai.perplexity.mac|$AS/Comet"
@@ -145,7 +145,10 @@ for d in $DIRS; do
   IFS=$OLDIFS
   [ -e "$d" ] || continue
   say ""; say "### $(rel "$d")  [$(linkinfo "$d")]"
-  find -L "$d" \( -type d -o -type f \) 2>/dev/null | grep -vE "$NOISE" | LC_ALL=C sort | while IFS= read -r f; do
+  # App data folders are mostly a browser profile: only their top-level files matter
+  case "$d" in */Application\ Support/*|"$HOME"/.config/Claude|"$HOME"/.config/ChatGPT|"$HOME"/.config/Codex) depth="-maxdepth 1" ;; *) depth="" ;; esac
+  # shellcheck disable=SC2086
+  find -L "$d" $depth \( -type d -o -type f \) 2>/dev/null | grep -vE "$NOISE" | LC_ALL=C sort | while IFS= read -r f; do
     [ -f "$f" ] || continue
     b=$(wc -c < "$f" | tr -d ' ')
     if echo "$f" | grep -qiE "$SECRET_FILE"; then s="(secret, not read)"; else s=$(sha "$f"); fi
@@ -155,6 +158,7 @@ for d in $DIRS; do
   n=$(wc -l < "$TMP/list" | tr -d ' ')
   if [ "$n" -gt 150 ]; then head -150 "$TMP/list" | code; say "($n files, first 150 shown; all in files.tsv)"
   else code < "$TMP/list"; fi
+  [ -n "$depth" ] && say "(app data: top-level files only)"
   IFS='|'
 done
 IFS=$OLDIFS
@@ -167,6 +171,7 @@ show_json "$HOME/.claude/settings.json"
 show_json "$HOME/.claude/settings.local.json"
 show_json "$HOME/.claude/plugins/installed_plugins.json"
 show_json "$HOME/.claude/plugins/known_marketplaces.json"
+show_json "$HOME/.agents/.skill-lock.json"
 show_toml "$HOME/.codex/config.toml"
 show_json "$HOME/.config/mcp/mcp.json"
 if [ $MAC = 1 ]; then show_json "$AS/Claude/claude_desktop_config.json"; show_json "$AS/Claude/config.json"
@@ -216,7 +221,12 @@ sort -u "$TMP/skillfiles" -o "$TMP/skillfiles"
 client_of() {
   case "$1" in
     "$HOME"/.claude/skills/*)            echo "Claude Code|user" ;;
+    "$HOME"/.claude/plugins/cache/*)     echo "Claude Code|installed plugin" ;;
+    "$HOME"/.claude/plugins/marketplaces/*) echo "Claude Code|marketplace catalog" ;;
     "$HOME"/.claude/plugins/*)           echo "Claude Code|plugin" ;;
+    "$HOME"/.codex/.tmp/*|"$HOME"/.codex/plugins/*|"$HOME"/.cache/codex-runtimes/*) echo "Codex|plugin cache" ;;
+    */local-agent-mode-sessions/skills-plugin/*) echo "Claude Desktop|account built-in" ;;
+    */local-agent-mode-sessions/*)       echo "Claude Desktop|account plugin" ;;
     "$HOME"/.codex/skills/.system/*)     echo "Codex|built-in" ;;
     "$HOME"/.codex/skills/*)             echo "Codex|user" ;;
     "$HOME"/.agents/skills/*)            echo "Codex (~/.agents)|user" ;;
@@ -253,12 +263,25 @@ awk -F'\t' -v OFS='\t' 'NR==FNR { if ($5 ~ /^link->/) src[substr($5, 7)] = $4; n
 h "7. Skills ($(($(wc -l < "$OUT/skills.tsv") - 1)) found)"
 say "client/scope: which client loads it (\`loose\` = a SKILL.md no client looks at, e.g. a download or a source copy). content_sha covers every file in the skill folder, so the same value on both machines means identical skills."
 say ""
+# Copies a client keeps for you (plugin caches, marketplace catalogs, Desktop's
+# copies of account skills) are summarised per plugin; the rest is listed.
+COPY='^(installed plugin|marketplace catalog|plugin cache|account built-in|account plugin)$'
+say "### Skills on disk that you put there (user, project, linked, loose)"
+say ""
 say "| name | client | scope | path | managed | files | content_sha | modified |"
 say "|---|---|---|---|---|---|---|---|"
-tail -n +2 "$OUT/skills.tsv" | sort -t$'\t' -k2,2 -k3,3 -k1,1 | awk -F'\t' '{printf "| %s | %s | %s | %s | %s | %s | %s | %s |\n",$1,$2,$3,$4,$5,$6,$7,$8}' >> "$R"
+tail -n +2 "$OUT/skills.tsv" | awk -F'\t' -v c="$COPY" '$3 !~ c' | sort -t$'\t' -k2,2 -k3,3 -k1,1 \
+  | awk -F'\t' '{printf "| %s | %s | %s | %s | %s | %s | %s | %s |\n",$1,$2,$3,$4,$5,$6,$7,$8}' >> "$R"
 say ""
-say "Same content in more than one place on this machine:"
-tail -n +2 "$OUT/skills.tsv" | awk -F'\t' '{n[$7]++; p[$7]=p[$7] "\n  " $4} END {for (s in n) if (n[s]>1) printf "%s:%s\n", s, p[s]}' | code
+say "### Copies kept by a client (one line per plugin; every row is in skills.tsv)"
+say ""
+say "| client | scope | count | folder | skills |"
+say "|---|---|---|---|---|"
+tail -n +2 "$OUT/skills.tsv" | awk -F'\t' -v c="$COPY" '$3 ~ c { g = $4; if (!sub(/\/skills\/[^\/]+$/, "", g)) sub(/\/[^\/]+$/, "", g); k = $2 "\t" $3 "\t" g; n[k]++; names[k] = names[k] (names[k] == "" ? "" : ", ") $1 }
+  END { for (k in n) { split(k, a, "\t"); printf "| %s | %s | %d | %s | %s |\n", a[1], a[2], n[k], a[3], names[k] } }' | sort >> "$R"
+say ""
+say "Same content in more than one place on this machine (skills you put there):"
+tail -n +2 "$OUT/skills.tsv" | awk -F'\t' -v c="$COPY" '$3 !~ c {n[$7]++; p[$7]=p[$7] "\n  " $4} END {for (s in n) if (n[s]>1) printf "%s:%s\n", s, p[s]}' | code
 
 # ------------------------------------------------------------ 8. other agent files
 h "8. Commands, agents, hooks, project-level files"
