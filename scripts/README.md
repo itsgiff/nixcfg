@@ -49,8 +49,9 @@ chmod +x nixinit.sh
 | find what a setting I'm about to change writes | `prefwatch`, change ONE setting, `prefwatch` again |
 | drop a half-finished prefwatch | `prefwatch reset` |
 | list apps and settings nixcfg doesn't declare yet | `macaudit` (add `--login-items` for login items) |
+| list AI clients, their config and skills | `aiaudit` |
 
-`prefwatch` and `macaudit` are fish functions from `users/paul/fish.nix` that run the scripts below.
+`prefwatch`, `macaudit` and `aiaudit` are fish functions from `users/paul/fish.nix` that run the scripts below.
 
 ## Quick reference (x1)
 
@@ -58,8 +59,9 @@ chmod +x nixinit.sh
 |---|---|
 | find what a GNOME setting I'm about to change writes | `dconf watch /`, change it, read the key, Ctrl-C |
 | list GNOME settings, apps and dotfiles nixcfg doesn't declare yet | `x1audit` |
+| list AI clients, their config and skills | `aiaudit` |
 
-`x1audit` is a fish function from `users/paul/fish.nix` that runs `x1-audit.sh`.
+`x1audit` and `aiaudit` are fish functions from `users/paul/fish.nix` that run `x1-audit.sh` and `ai-audit.sh`.
 
 ## mac-audit.sh (macbook)
 
@@ -106,3 +108,26 @@ bash ~/.nixcfg/scripts/x1-audit.sh    # report in ~/nixcfg-audit-<date>/
 
 To find what one GNOME toggle writes (the x1's `prefwatch`): run `dconf watch /`
 in a terminal, change the setting, read the printed key and value, Ctrl-C.
+
+## ai-audit.sh (both)
+
+Read-only inventory of the AI clients on this machine, run on both machines so
+the two can be compared before nixcfg declares any of it: command-line
+binaries and where each came from (Nix, Homebrew, npm, a self-installer),
+desktop apps and launchers, every file in the clients' config folders
+(`~/.claude`, `~/.codex`, Claude Desktop, ChatGPT, Perplexity and others; caches,
+sessions and history left out) with whether Home Manager manages it,
+redacted `settings.json` / `config.toml` / `claude_desktop_config.json`, MCP
+server names, instruction files (`CLAUDE.md`, `AGENTS.md`), and every
+`SKILL.md` under `$HOME` with the client that loads it (user, project, plugin,
+app copy, or `loose` when no client looks there).
+
+`skills.tsv` and `files.tsv` carry a content hash per skill and per file, so
+the same hash on both machines means identical. Credential files are never
+read, and values under `env` / `headers` or with key-like names are printed as
+`<redacted>`; still skim `report.md` before sharing it. On the Mac, searching
+`~/Documents`, `~/Desktop` or `~/Downloads` may ask for Terminal's permission once.
+
+```bash
+bash ~/.nixcfg/scripts/ai-audit.sh    # report in ~/nixcfg-ai-audit-<host>-<date>/ and a .tgz next to it
+```

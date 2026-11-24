@@ -50,10 +50,11 @@ User `paul` on both, with fish as the login shell.
 │   ├── mac-audit.sh              # Mac: list apps and settings nixcfg doesn't declare yet
 │   ├── defaults-watch.sh         # Mac: find the defaults key a settings toggle writes
 │   ├── x1-audit.sh               # x1: list GNOME settings, apps and dotfiles nixcfg doesn't declare yet
+│   ├── ai-audit.sh               # Both: list AI clients, their config folders, MCP servers and skills
 │   └── README.md
 └── users/paul/
     ├── home.nix                  # Shared Home Manager config; imports hosts/<host>/home.nix
-    └── fish.nix                  # User aliases and the fullUpdate, prefwatch, macaudit and x1audit functions
+    └── fish.nix                  # User aliases and the fullUpdate, prefwatch, macaudit, x1audit and aiaudit functions
 ```
 
 ## How it fits together
@@ -81,6 +82,7 @@ The fish aliases are defined in `modules/fish.nix` and `users/paul/fish.nix`, an
 | `brewup` | Mac: update and upgrade Homebrew packages (switches never do this) |
 | `prefwatch` | Mac: run before and after changing one setting; prints the Nix line for it |
 | `macaudit` / `x1audit` | List what this machine has that nixcfg doesn't declare yet (see `scripts/README.md`) |
+| `aiaudit` | List AI clients (Claude Code, Codex, Claude Desktop, ChatGPT, Perplexity, …), their config and every skill on this machine |
 
 ### Making a change
 

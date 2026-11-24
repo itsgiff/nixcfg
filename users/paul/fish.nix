@@ -123,4 +123,11 @@ in {
     description = "List x1 GNOME settings, apps and dotfiles that nixcfg doesn't declare yet";
     body = "bash ~/.nixcfg/scripts/x1-audit.sh $argv";
   };
+
+  # aiaudit (both): inventory AI clients, their config folders, MCP servers and
+  # every skill under $HOME. Optional output folder.
+  programs.fish.functions.aiaudit = {
+    description = "List AI clients, their config and skills on this machine";
+    body = "bash ~/.nixcfg/scripts/ai-audit.sh $argv";
+  };
 }
