@@ -112,6 +112,18 @@ in
     settings.StartupWMClass = "chrome-www.perplexity.ai__-Default";
   };
 
+  # Claude Code sign-in links (claude-cli://). Claude Code writes its own
+  # claude-code-url-handler.desktop pointing at whichever store path first ran
+  # it, which breaks once garbage collection removes that version. This one is
+  # rebuilt on every switch, so it always points at the installed Claude Code.
+  xdg.desktopEntries.claude-cli-url-handler = {
+    name = "Claude Code URL Handler";
+    exec = "${config.programs.claude-code.package}/bin/claude --handle-uri %u";
+    terminal = false;
+    noDisplay = true;
+    mimeType = [ "x-scheme-handler/claude-cli" ];
+  };
+
   # WhatsApp: same Chrome --app approach as Notion and Perplexity
   # (replaces the Chrome "Install as app" launcher, which nixcfg didn't declare).
   # Icon: simple-icons logo in the brand colour, like Perplexity's.
@@ -172,11 +184,10 @@ in
         "x-scheme-handler/mid" = thunderbird;
         "x-scheme-handler/net.thunderbird" = thunderbird;
         "message/rfc822" = thunderbird;
-        # Signal links and Claude Code sign-in links (Claude Code writes its
-        # own claude-code-url-handler.desktop)
+        # Signal links and Claude Code sign-in links
         "x-scheme-handler/sgnl" = "signal.desktop";
         "x-scheme-handler/signalcaptcha" = "signal.desktop";
-        "x-scheme-handler/claude-cli" = "claude-code-url-handler.desktop";
+        "x-scheme-handler/claude-cli" = "claude-cli-url-handler.desktop";
       };
   };
 
