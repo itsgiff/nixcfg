@@ -2,27 +2,30 @@
 
 Claude Code and Codex, set up the same way on both machines through Home Manager.
 This page is the how-to: each recipe below says which file to edit and which
-commands to run, to add or remove a skill, plugin, agent or slash command.
+commands to run, to add or remove an MCP server, skill, plugin, agent or slash
+command.
 
 ## What lives where
 
 | Layer | What | Managed by |
 |---|---|---|
 | Account | claude.ai skills, connectors, projects and memory; ChatGPT/Codex plugins and connectors | The Claude and ChatGPT apps. They sync to every device by themselves, so they stay out of nixcfg |
-| Machine | Claude Code (binary, settings, plugins, skills, agents, slash commands); Codex skills | This folder |
+| Machine | Claude Code (binary, settings, plugins, MCP servers, skills, agents, slash commands); Codex skills | This folder |
 | Project | `.claude/settings.json`, `.mcp.json`, `CLAUDE.md` / `AGENTS.md`, project skills in `.claude/skills/` | Committed in that project's own repo |
 | App state | `~/.claude.json`, sessions, history, sign-ins, `~/.codex/config.toml` | Never managed (the apps rewrite these) |
 
 | File | What it declares |
 |---|---|
 | `claude-code.nix` | Claude Code package, user settings (`~/.claude/settings.json`) and plugins |
+| `mcp.nix` | MCP servers for Claude Code |
 | `skills.nix` | Skills from other people's repos (pinned flake inputs), for Claude Code and Codex |
 | `local.nix` | Your own skills, agents and slash commands, read from `local/` |
 | `local/` | The files themselves: `skills/<name>/SKILL.md`, `agents/<name>.md`, `commands/<name>.md`. Created when you add the first one |
 
-Plugins are passed by the `claude` command's wrapper (`--plugin-dir`), so they
-apply to Claude Code started with `claude`. Claude Desktop and claude.ai don't
-see them; they use your account's skills and connectors.
+Plugins and MCP servers are passed by the `claude` command's wrapper
+(`--plugin-dir`), so they apply to Claude Code started with `claude`. Claude
+Desktop and claude.ai don't see them; they use your account's skills and
+connectors.
 
 ## Every change, start to finish
 
@@ -41,6 +44,87 @@ Start a new `claude` session to pick up the change; Codex needs a new chat.
 `nix flake lock` adds a new input to `flake.lock` (or drops a removed one)
 without updating the others. If a switch fails, nothing has changed: fix the
 file or `git restore` it.
+
+## MCP servers (Claude Code)
+
+MCP servers give Claude Code tools that reach outside it (GitHub, a database,
+the NixOS option search). They're declared in `servers` in `mcp.nix`. Home
+Manager writes them to `~/.config/mcp/mcp.json` and the `claude` wrapper loads
+them. Codex isn't included: the ChatGPT app owns `~/.codex/config.toml`, so add
+Codex MCP servers in the app.
+
+### Add an MCP server
+
+Pick the first kind that fits, and add a block inside `servers = { … };`:
+
+1. **Packaged in nixpkgs** (best: pinned with the system, nothing fetched at
+   run time). Search with `nix search nixpkgs mcp`, then:
+
+   ```nix
+   nixos = {
+     command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+   };
+   ```
+
+2. **Remote (HTTP) server**: just the URL. If it needs a sign-in, run `/mcp` in
+   Claude Code and pick the server; the sign-in stays in Claude Code's own
+   state, not in the repo.
+
+   ```nix
+   context7 = {
+     url = "https://mcp.context7.com/mcp";
+   };
+   ```
+
+3. **Only on npm**: run it with npx and pin the version, so both machines run
+   the same one. npx servers also need `node` on PATH (`which node`).
+
+   ```nix
+   some-server = {
+     command = "${pkgs.nodejs}/bin/npx";
+     args = [ "-y" "some-mcp-server@1.2.3" ];
+   };
+   ```
+
+The block's name (`nixos`, `context7`, …) is the name Claude Code shows. Then
+the steps in "Every change", with `gcm "feat(ai): add <name> MCP server"`. In a
+new `claude` session, `/mcp` lists it with its status.
+
+### An MCP server that needs a token or key
+
+Never write a secret in a `.nix` file: it ends up in the Nix store and on the
+public GitHub mirror. Put it in a file on each machine instead (fish):
+
+```fish
+mkdir -p ~/.config/mcp-secrets && chmod 700 ~/.config/mcp-secrets
+read -s -P 'Token: ' t; printf '%s' $t > ~/.config/mcp-secrets/github; set -e t
+chmod 600 ~/.config/mcp-secrets/github
+```
+
+and point the server's variable at it. `secret "github"` in `mcp.nix` means
+`~/.config/mcp-secrets/github` on whichever machine you're on:
+
+```nix
+github = {
+  command = "${pkgs.github-mcp-server}/bin/github-mcp-server";
+  args = [ "stdio" ];
+  env.GITHUB_PERSONAL_ACCESS_TOKEN.file = secret "github";
+};
+```
+
+The file is read each time the server starts. Do the `mkdir`/`read` step on both
+machines; without the file, that server fails to start but the others work.
+
+### Remove an MCP server
+
+Delete its block from `servers` (or comment it out to keep it for later), then
+the steps in "Every change". If it had a secret, also
+`rm ~/.config/mcp-secrets/<name>` on both machines.
+
+### Only for one project
+
+Put it in that repo's `.mcp.json` instead (`claude mcp add --scope project …`
+from inside the repo writes it), and commit it there.
 
 ## Skills
 
@@ -212,6 +296,11 @@ cd ~/.nixcfg && git rm modules/ai/local/agents/<name>.md && nixSwitch && gcm "fe
   app. The app owns `~/.codex/config.toml`, so nixcfg never writes it.
 - **Per-project setup:** commit it in that project's repo (`.claude/`,
   `.mcp.json`, `AGENTS.md`), not here.
+- **Claude Desktop MCP servers:** Claude Desktop rewrites its own
+  `claude_desktop_config.json`, so it isn't linked from here. Use your claude.ai
+  connectors there.
+- **MCP secrets:** the files in `~/.config/mcp-secrets/`, made by hand on each
+  machine.
 
 ## Checking
 
@@ -230,5 +319,5 @@ cd ~/.nixcfg && git rm modules/ai/local/agents/<name>.md && nixSwitch && gcm "fe
 - A bad switch: `sudo nixos-rebuild switch --rollback` (x1) or
   `sudo darwin-rebuild switch --rollback` (Mac).
 
-You can also ask Claude to "add the X skill / plugin to nixcfg": it drafts the
+You can also ask Claude to "add the X MCP server / skill / plugin to nixcfg": it drafts the
 patch following this page.

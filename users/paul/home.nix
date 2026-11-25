@@ -17,6 +17,7 @@ in
     ../../modules/ai/claude-code.nix
     ../../modules/ai/skills.nix
     ../../modules/ai/local.nix
+    ../../modules/ai/mcp.nix
     ./fish.nix
 
     # Host-specific Home Manager settings (hosts/x1/home.nix, hosts/macbook/home.nix)

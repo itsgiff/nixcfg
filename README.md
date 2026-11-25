@@ -36,10 +36,11 @@ User `paul` on both, with fish as the login shell.
 ├── modules/
 │   ├── ai/                       # AI clients, shared by both hosts (see modules/ai/README.md):
 │   │   ├── claude-code.nix       #   Claude Code package, user settings and plugins
+│   │   ├── mcp.nix               #   MCP servers for Claude Code
 │   │   ├── skills.nix            #   Skills from other repos, for Claude Code and Codex
 │   │   ├── local.nix             #   Your own skills, agents and slash commands, from local/
 │   │   ├── local/                #   skills/<name>/SKILL.md, agents/<name>.md, commands/<name>.md
-│   │   └── README.md             #   How to add or remove skills, plugins, agents and commands
+│   │   └── README.md             #   How to add or remove MCP servers, skills, plugins, agents and commands
 │   ├── darwin/                   # macOS system modules (see modules/darwin/README.md)
 │   │   ├── defaults.nix          #   System Settings: Dock, Finder, keyboard, trackpad
 │   │   ├── desktop.nix           #   Environment variables
@@ -70,7 +71,7 @@ User `paul` on both, with fish as the login shell.
 - **Home Manager is integrated**, not standalone. It runs as part of every system switch (`useGlobalPkgs`, `useUserPackages`). There is no `home-manager` command and no `homeConfigurations` output; rollbacks go through system generations.
 - User packages land in `/etc/profiles/per-user/paul/bin`.
 - `users/paul/home.nix` imports `hosts/<hostname>/home.nix` through the `hostname` special argument, so per-machine user settings live next to that machine's system config.
-- **AI tools:** Claude Code and Codex are set up in `modules/ai/`. To add or remove a skill, plugin, agent or slash command, follow `modules/ai/README.md`. Account-level skills, connectors and ChatGPT plugins stay in the apps.
+- **AI tools:** Claude Code and Codex are set up in `modules/ai/`. To add or remove an MCP server, skill, plugin, agent or slash command, follow `modules/ai/README.md`. Account-level skills, connectors and ChatGPT plugins stay in the apps.
 - If Home Manager finds an unmanaged file where it wants to write one (for example an old `~/.ssh/config`), it renames the old file to `<name>.hm-bak` instead of failing the switch. Look for `*.hm-bak` files after a switch that takes over a new file.
 
 ## Daily use
