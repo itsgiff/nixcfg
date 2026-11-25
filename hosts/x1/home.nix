@@ -4,6 +4,53 @@ let
   # Same derivation the system installs (configuration.nix), read for its version
   yogurt = pkgs.callPackage ./yogurt.nix { };
 
+  # ChatGPT's own app icon, taken from the official OpenAI .deb that the
+  # codex-desktop input repackages (that package swaps in a community icon).
+  # Same url, name and hash as the input's fetch, so it is the .deb already
+  # in the store and follows the input on every flake update.
+  chatgptPins = builtins.fromJSON
+    (builtins.readFile "${inputs.codex-desktop}/nix/upstream-linux-packages.json");
+  chatgptDeb = pkgs.fetchurl {
+    url = "https://persistent.oaistatic.com/codex-app-prod/linux/deb/${chatgptPins.amd64.repositoryPath}";
+    hash = chatgptPins.amd64.sri;
+    name = "chatgpt_${chatgptPins.version}_amd64.deb";
+  };
+  chatgptIcon = pkgs.runCommand "chatgpt.png" { nativeBuildInputs = [ pkgs.dpkg ]; } ''
+    # Unpack only the PNGs: a full `dpkg-deb -x` fails in the build sandbox,
+    # which refuses the setuid bit on Electron's chrome-sandbox
+    mkdir root
+    dpkg-deb --fsys-tarfile ${chatgptDeb} \
+      | tar -x -C root --no-same-owner --no-same-permissions --wildcards '*.png'
+    # Largest hicolor app icon, else the Electron window icon
+    # `|| true`: the builder runs with errexit and pipefail, so a find with no
+    # match (or no usr/share/icons) would otherwise end the build silently
+    icon=$(find root/usr/share/icons -path '*/apps/*.png' 2>/dev/null | sort -V | tail -n1 || true)
+    [ -n "$icon" ] || icon=$(find root -name icon-chatgpt.png | head -n1 || true)
+    if [ -z "$icon" ]; then
+      echo "No ChatGPT icon found in the .deb. PNG candidates:" >&2
+      find root -name '*.png' | grep -i -e icon -e chatgpt -e openai >&2 || true
+      exit 1
+    fi
+    echo "Using $icon"
+    cp "$icon" $out
+  '';
+
+  # The input's package with its launcher renamed from "ChatGPT Community" to
+  # "ChatGPT" and given the real icon, like the Mac app. Wraps the same build
+  # the module installs by default, so nothing is rebuilt.
+  chatgptDesktop = pkgs.symlinkJoin {
+    name = "codex-desktop-chatgpt-branding";
+    paths = [ inputs.codex-desktop.packages.${pkgs.stdenv.hostPlatform.system}.codex-desktop ];
+    postBuild = ''
+      desktopFile="$out/share/applications/codex-desktop.desktop"
+      target="$(readlink -f "$desktopFile")"
+      rm -f "$desktopFile"
+      substitute "$target" "$desktopFile" \
+        --replace-fail "Name=ChatGPT Community" "Name=ChatGPT" \
+        --replace-fail "Icon=codex-desktop" "Icon=${chatgptIcon}"
+    '';
+  };
+
   yogurt-update-check = pkgs.writeShellApplication {
     name = "yogurt-update-check";
     runtimeInputs = with pkgs; [ coreutils curl jq libnotify ];
@@ -46,8 +93,12 @@ in
 
   # ChatGPT desktop app with Codex (ilysenko/codex-desktop-linux, from OpenAI's
   # official Linux .deb; command and launcher: codex-desktop). Shares
-  # ~/.codex with Codex skills from modules/ai/skills.nix.
-  programs.codexDesktopLinux.enable = true;
+  # ~/.codex with Codex skills from modules/ai/skills.nix. Shown as "ChatGPT"
+  # with OpenAI's icon (chatgptDesktop above).
+  programs.codexDesktopLinux = {
+    enable = true;
+    package = chatgptDesktop;
+  };
 
   # X1-specific configuration
   home.sessionVariables = {
