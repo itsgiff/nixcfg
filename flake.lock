@@ -42,6 +42,22 @@
         "type": "github"
       }
     },
+    "claude-plugins-official": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1795554885,
+        "narHash": "sha256-4o4BbW198W0HFRLfD22Cld6h2xP2jJj/8kwoql/XH+Y=",
+        "owner": "anthropics",
+        "repo": "claude-plugins-official",
+        "rev": "6985b2d88dc08b4a0d202f5f0301f02e360b9cb1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "claude-plugins-official",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -78,6 +94,22 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "knowledge-work-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1795476753,
+        "narHash": "sha256-QErobbZsA6ZE/2H6ZnycxQeKC+iVALX/K+Z8cPXvWI8=",
+        "owner": "anthropics",
+        "repo": "knowledge-work-plugins",
+        "rev": "5e504ae11498f2b8daa30d86b7dab97b2ecd8092",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "knowledge-work-plugins",
         "type": "github"
       }
     },
@@ -137,9 +169,28 @@
       "inputs": {
         "claude-code-nix": "claude-code-nix",
         "claude-desktop": "claude-desktop",
+        "claude-plugins-official": "claude-plugins-official",
         "home-manager": "home-manager",
+        "knowledge-work-plugins": "knowledge-work-plugins",
         "nix-darwin": "nix-darwin",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "superpowers": "superpowers"
+      }
+    },
+    "superpowers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793744227,
+        "narHash": "sha256-rP5YsyGuPd9YSW/Fj3aukrq1bLuV+nwwQMK4JaZQgkI=",
+        "owner": "obra",
+        "repo": "superpowers",
+        "rev": "22f0b463e7a5e579904dd6211a520321035526f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obra",
+        "repo": "superpowers",
+        "type": "github"
       }
     },
     "systems": {

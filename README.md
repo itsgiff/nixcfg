@@ -35,7 +35,7 @@ User `paul` on both, with fish as the login shell.
 │       └── home.nix              # Mac-only Home Manager (python3)
 ├── modules/
 │   ├── ai/                       # AI clients, shared by both hosts (Home Manager):
-│   │   └── claude-code.nix       #   Claude Code package and user settings
+│   │   └── claude-code.nix       #   Claude Code package, user settings and plugins
 │   ├── darwin/                   # macOS system modules (see modules/darwin/README.md)
 │   │   ├── defaults.nix          #   System Settings: Dock, Finder, keyboard, trackpad
 │   │   ├── desktop.nix           #   Environment variables
@@ -61,7 +61,7 @@ User `paul` on both, with fish as the login shell.
 
 ## How it fits together
 
-- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code on both machines, installed by `modules/ai/claude-code.nix`) and `claude-desktop` (Claude Desktop on the x1).
+- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code on both machines, installed by `modules/ai/claude-code.nix`), the Claude Code plugin sources `claude-plugins-official`, `knowledge-work-plugins` and `superpowers` (plain sources, `flake = false`) and `claude-desktop` (Claude Desktop on the x1).
 - **Outputs:** `nixosConfigurations.x1` and `darwinConfigurations.macbook`.
 - **Home Manager is integrated**, not standalone. It runs as part of every system switch (`useGlobalPkgs`, `useUserPackages`). There is no `home-manager` command and no `homeConfigurations` output; rollbacks go through system generations.
 - User packages land in `/etc/profiles/per-user/paul/bin`.

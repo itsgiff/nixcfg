@@ -20,6 +20,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Claude Code plugins (modules/ai/claude-code.nix), loaded with --plugin-dir.
+    # Plain sources, pinned in flake.lock; fullUpdate moves them.
+    claude-plugins-official = {
+      url = "github:anthropics/claude-plugins-official";
+      flake = false;
+    };
+    knowledge-work-plugins = {
+      url = "github:anthropics/knowledge-work-plugins";
+      flake = false;
+    };
+    superpowers = {
+      url = "github:obra/superpowers";
+      flake = false;
+    };
+
     # Claude Desktop for Linux: repackages Anthropic's official .deb (x1 only)
     claude-desktop = {
       url = "github:aaddrick/claude-desktop-debian";

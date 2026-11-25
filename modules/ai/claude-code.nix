@@ -4,6 +4,10 @@
 # link). Change user settings here, not in Claude Code: /config, /model and
 # "always allow" at user level can't save. Per-project settings
 # (.claude/settings.local.json) still work as usual.
+#
+# Plugins come from pinned flake inputs and load through the wrapper's
+# --plugin-dir, so /plugin install and enable/disable don't apply to them:
+# add or remove a plugin here.
 { pkgs, inputs, ... }:
 
 {
@@ -17,5 +21,15 @@
       tui = "fullscreen";
       agentPushNotifEnabled = true;
     };
+
+    plugins = [
+      "${inputs.claude-plugins-official}/plugins/code-review"
+      "${inputs.claude-plugins-official}/plugins/frontend-design"
+      "${inputs.claude-plugins-official}/plugins/skill-creator"
+      "${inputs.claude-plugins-official}/plugins/claude-code-setup"
+      "${inputs.claude-plugins-official}/plugins/claude-md-management"
+      "${inputs.superpowers}"                     # obra/superpowers (listed in claude-plugins-official)
+      "${inputs.knowledge-work-plugins}/sales"
+    ];
   };
 }
