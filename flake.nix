@@ -35,6 +35,12 @@
       flake = false;
     };
 
+    # Skills for Claude Code and Codex (modules/ai/skills.nix)
+    emilkowalski-skills = {
+      url = "github:emilkowalski/skills";
+      flake = false;
+    };
+
     # Claude Desktop for Linux: repackages Anthropic's official .deb (x1 only)
     claude-desktop = {
       url = "github:aaddrick/claude-desktop-debian";
