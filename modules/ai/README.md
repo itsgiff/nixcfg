@@ -58,7 +58,8 @@ Codex MCP servers in the app.
 Pick the first kind that fits, and add a block inside `servers = { … };`:
 
 1. **Packaged in nixpkgs** (best: pinned with the system, nothing fetched at
-   run time). Search with `nix search nixpkgs mcp`, then:
+   run time). Search with `nix search nixpkgs mcp`, then (this one, `nixos`,
+   is already declared: mcp-nixos for NixOS, Home Manager and nix-darwin options):
 
    ```nix
    nixos = {

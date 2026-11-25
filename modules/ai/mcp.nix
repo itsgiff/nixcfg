@@ -19,12 +19,15 @@ in
     enable = true;
 
     servers = {
+      # NixOS, Home Manager and nix-darwin options and packages, looked up live
+      # instead of from the model's memory (search.nixos.org, the Home Manager
+      # and nix-darwin manuals, NixHub). Packaged in nixpkgs, so it's pinned
+      # with the system and nothing is installed at run time.
+      nixos = {
+        command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+      };
+
       # Examples. Uncomment one (or copy it), then switch.
-      #
-      # Packaged in nixpkgs: pinned with the system, nothing downloaded at run time.
-      # nixos = {
-      #   command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-      # };
       #
       # Needs a token, read from a file outside the repo when the server starts.
       # github = {
