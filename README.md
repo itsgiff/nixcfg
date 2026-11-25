@@ -29,7 +29,7 @@ User `paul` on both, with fish as the login shell.
 │   │   ├── gnome.nix             # GNOME settings (dconf): dash, power, keyboard, touchpad, extensions
 │   │   ├── wallpaper.jpg         # Desktop and lock-screen wallpaper (used by gnome.nix)
 │   │   ├── yogurt.nix            # Yogurt meeting notes, packaged from its release AppImage
-│   │   └── icons/                # Launcher icons: notion.png, perplexity.svg, chatgpt.svg
+│   │   └── icons/                # Launcher icons: notion.png, perplexity.svg, whatsapp.svg
 │   └── macbook/
 │       ├── configuration.nix     # nix-darwin system config
 │       └── home.nix              # Mac-only Home Manager (python3)
@@ -62,7 +62,7 @@ User `paul` on both, with fish as the login shell.
 
 ## How it fits together
 
-- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code on both machines, installed by `modules/ai/claude-code.nix`), the Claude Code plugin sources `claude-plugins-official`, `knowledge-work-plugins` and `superpowers`, and the skill source `emilkowalski-skills` (plain sources, `flake = false`) and `claude-desktop` (Claude Desktop on the x1).
+- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code on both machines, installed by `modules/ai/claude-code.nix`), the Claude Code plugin sources `claude-plugins-official`, `knowledge-work-plugins` and `superpowers`, and the skill source `emilkowalski-skills` (plain sources, `flake = false`), `claude-desktop` (Claude Desktop on the x1) and `codex-desktop` (the ChatGPT app with Codex on the x1).
 - **Outputs:** `nixosConfigurations.x1` and `darwinConfigurations.macbook`.
 - **Home Manager is integrated**, not standalone. It runs as part of every system switch (`useGlobalPkgs`, `useUserPackages`). There is no `home-manager` command and no `homeConfigurations` output; rollbacks go through system generations.
 - User packages land in `/etc/profiles/per-user/paul/bin`.
@@ -117,7 +117,8 @@ No output means the system is unchanged.
 - **GNOME settings are declared** in `hosts/x1/gnome.nix`. A setting changed by hand in GNOME is put back on the next switch, so change it there instead. To find the key a toggle writes, run `dconf watch /`, change it, and read the printed key.
 - **Default apps** (`xdg.mimeApps`) and **Files sidebar bookmarks** are declared in `hosts/x1/home.nix`; GNOME Settings and Files can't change them any more.
 - **Yogurt** isn't in nixpkgs, so `hosts/x1/yogurt.nix` wraps its release AppImage. To update it, bump `version`, set `hash = lib.fakeHash`, build, and copy the real hash from the error. A weekly user timer (Monday mornings, `yogurt-update-check` in `hosts/x1/home.nix`) sends a GNOME notification when GitHub has a newer release; run it by hand with `systemctl --user start yogurt-update-check`.
-- Notion, Perplexity, ChatGPT and WhatsApp run as Chrome `--app` windows with their own launchers and dock icons. Apps added with Chrome's "Install as app" stay managed by Chrome sync.
+- Notion, Perplexity and WhatsApp run as Chrome `--app` windows with their own launchers and dock icons. Apps added with Chrome's "Install as app" stay managed by Chrome sync.
+- ChatGPT (with Codex) is OpenAI's Linux app, packaged by the `codex-desktop` input (`programs.codexDesktopLinux`; command `codex-desktop`).
 - The dash pins Google Chrome only, like the Mac Dock. Anything pinned by hand is removed on the next switch.
 - New GNOME extensions only show up after a log out and back in; do that before `gnome-extensions enable`.
 

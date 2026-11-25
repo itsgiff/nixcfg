@@ -41,6 +41,13 @@
       flake = false;
     };
 
+    # ChatGPT desktop app (with Codex) for Linux: wraps OpenAI's official .deb
+    # (x1 only). No nixpkgs follows: it builds against the nixos-unstable it
+    # pins and tests with.
+    codex-desktop = {
+      url = "github:ilysenko/codex-desktop-linux";
+    };
+
     # Claude Desktop for Linux: repackages Anthropic's official .deb (x1 only)
     claude-desktop = {
       url = "github:aaddrick/claude-desktop-debian";

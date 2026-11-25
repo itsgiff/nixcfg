@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   # Same derivation the system installs (configuration.nix), read for its version
@@ -39,7 +39,15 @@ let
 in
 {
   # GNOME settings (dconf) live in their own file
-  imports = [ ./gnome.nix ];
+  imports = [
+    ./gnome.nix
+    inputs.codex-desktop.homeManagerModules.default
+  ];
+
+  # ChatGPT desktop app with Codex (ilysenko/codex-desktop-linux, from OpenAI's
+  # official Linux .deb; command and launcher: codex-desktop). Shares
+  # ~/.codex with Codex skills from modules/ai/skills.nix.
+  programs.codexDesktopLinux.enable = true;
 
   # X1-specific configuration
   home.sessionVariables = {
@@ -104,23 +112,7 @@ in
     settings.StartupWMClass = "chrome-www.perplexity.ai__-Default";
   };
 
-  # ChatGPT: same Chrome --app approach as Notion and Perplexity. (OpenAI's
-  # Linux app is only packaged in nixos-unstable, which this flake doesn't use.)
-  xdg.desktopEntries.chatgpt = {
-    name = "ChatGPT";
-    genericName = "AI assistant";
-    comment = "ChatGPT in a Chrome app window";
-    # OpenAI knot in white on a clear background (from @lobehub/icons, MIT)
-    icon = "${./icons/chatgpt.svg}";
-    exec = "${pkgs.google-chrome}/bin/google-chrome-stable --app=https://chatgpt.com";
-    categories = [ "Network" ];
-    terminal = false;
-    # Own dock icon instead of grouping under Chrome (same scheme as Notion;
-    # no www. here because the --app URL has none)
-    settings.StartupWMClass = "chrome-chatgpt.com__-Default";
-  };
-
-  # WhatsApp: same Chrome --app approach as Notion, Perplexity and ChatGPT
+  # WhatsApp: same Chrome --app approach as Notion and Perplexity
   # (replaces the Chrome "Install as app" launcher, which nixcfg didn't declare).
   # Icon: simple-icons logo in the brand colour, like Perplexity's.
   xdg.desktopEntries.whatsapp = {
