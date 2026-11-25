@@ -44,6 +44,7 @@
   environment.systemPackages = with pkgs; [
     curl
     wget
+    inputs.claude-code-nix.packages.${pkgs.stdenv.hostPlatform.system}.default   # claude-code via sadjow/claude-code-nix (same as the x1)
   ];
 
   # Prevent nix-darwin from managing these shell files

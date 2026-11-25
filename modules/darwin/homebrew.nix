@@ -105,7 +105,6 @@
       "brew-browser"
       "chatgpt"
       "claude"
-      "claude-code"
       "deckcraft"
       "discord"
       "drawio"

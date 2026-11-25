@@ -59,7 +59,7 @@ User `paul` on both, with fish as the login shell.
 
 ## How it fits together
 
-- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code) and `claude-desktop` (Claude Desktop on the x1).
+- **Inputs:** nixpkgs `nixos-26.05`, home-manager `release-26.05`, nix-darwin `nix-darwin-26.05`, `claude-code-nix` (Claude Code on both machines) and `claude-desktop` (Claude Desktop on the x1).
 - **Outputs:** `nixosConfigurations.x1` and `darwinConfigurations.macbook`.
 - **Home Manager is integrated**, not standalone. It runs as part of every system switch (`useGlobalPkgs`, `useUserPackages`). There is no `home-manager` command and no `homeConfigurations` output; rollbacks go through system generations.
 - User packages land in `/etc/profiles/per-user/paul/bin`.
