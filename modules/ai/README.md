@@ -20,7 +20,7 @@ command.
 | `mcp.nix` | MCP servers for Claude Code |
 | `skills.nix` | Skills from other people's repos (pinned flake inputs), for Claude Code and Codex |
 | `local.nix` | Your own skills, agents and slash commands, read from `local/` |
-| `local/` | The files themselves: `skills/<name>/SKILL.md`, `agents/<name>.md`, `commands/<name>.md`. Created when you add the first one |
+| `local/` | The files themselves: `skills/<name>/SKILL.md`, `agents/<name>.md`, `commands/<name>.md`. Holds `skills/nixcfg/`, the house rules for working on this repo |
 
 Plugins and MCP servers are passed by the `claude` command's wrapper
 (`--plugin-dir`), so they apply to Claude Code started with `claude`. Claude
@@ -320,4 +320,7 @@ cd ~/.nixcfg && git rm modules/ai/local/agents/<name>.md && nixSwitch && gcm "fe
   `sudo darwin-rebuild switch --rollback` (Mac).
 
 You can also ask Claude to "add the X MCP server / skill / plugin to nixcfg": it drafts the
-patch following this page.
+patch following this page. In Claude Code and Codex on either machine, the `nixcfg` skill
+(`local/skills/nixcfg/SKILL.md`) gives the agent the house rules: it works in a clone in
+`/tmp`, writes patch files to `/tmp/nixcfg-patches/`, and never edits `~/.nixcfg`, switches,
+commits or pushes. Update that skill when a rule here changes.

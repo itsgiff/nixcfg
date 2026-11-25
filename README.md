@@ -40,6 +40,7 @@ User `paul` on both, with fish as the login shell.
 │   │   ├── skills.nix            #   Skills from other repos, for Claude Code and Codex
 │   │   ├── local.nix             #   Your own skills, agents and slash commands, from local/
 │   │   ├── local/                #   skills/<name>/SKILL.md, agents/<name>.md, commands/<name>.md
+│   │   │   └── skills/nixcfg/    #     House rules for agents working on this repo (patches only, checks, gotchas)
 │   │   └── README.md             #   How to add or remove MCP servers, skills, plugins, agents and commands
 │   ├── darwin/                   # macOS system modules (see modules/darwin/README.md)
 │   │   ├── defaults.nix          #   System Settings: Dock, Finder, keyboard, trackpad
