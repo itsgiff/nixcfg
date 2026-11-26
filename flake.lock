@@ -8,11 +8,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1795471286,
-        "narHash": "sha256-eff6PLpfE8Z/keVrrenlcw25HUoELC+Jd3OI1HsQizQ=",
+        "lastModified": 1795572098,
+        "narHash": "sha256-wOpnOftqLD2aIG0bv39tbKwayZfW7iQ2gWsykIOToGg=",
         "owner": "sadjow",
         "repo": "claude-code-nix",
-        "rev": "fadaff01f0a5728ec1e2a5928bcdf68163eb2a15",
+        "rev": "19faa670a1e75f6fb055ae401b5d3d792371e077",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
     "claude-plugins-official": {
       "flake": false,
       "locked": {
-        "lastModified": 1795554885,
-        "narHash": "sha256-4o4BbW198W0HFRLfD22Cld6h2xP2jJj/8kwoql/XH+Y=",
+        "lastModified": 1795647086,
+        "narHash": "sha256-J9pxacOMDz6wEHJHo5d0JhLfR/95hhJwUz1RmHqRvcI=",
         "owner": "anthropics",
         "repo": "claude-plugins-official",
-        "rev": "6985b2d88dc08b4a0d202f5f0301f02e360b9cb1",
+        "rev": "0fbfda5a91f4adc311daca25acc99132f40f0b6e",
         "type": "github"
       },
       "original": {
@@ -64,11 +64,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1795566933,
-        "narHash": "sha256-9CsgL/Kjz2FnCN+HFRu3yMq5PIp8brosACJkerguI1w=",
+        "lastModified": 1795695714,
+        "narHash": "sha256-9t1I3vLnWi920lqYDSHMtJXwn1iY3OYa1K+SqfEjv0o=",
         "owner": "ilysenko",
         "repo": "codex-desktop-linux",
-        "rev": "bda8c7e36f9a1313a7facf35832f00998a2c9f06",
+        "rev": "ebb97799faa1a3437608e8f1812801a1c7b14b74",
         "type": "github"
       },
       "original": {
