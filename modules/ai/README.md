@@ -16,7 +16,7 @@ command.
 
 | File | What it declares |
 |---|---|
-| `claude-code.nix` | Claude Code package, user settings (`~/.claude/settings.json`) and plugins |
+| `claude-code.nix` | Claude Code package, user settings (`~/.claude/settings.json`) and plugins; on the Mac, keeps the sign-in link handler pointed at the installed Claude Code |
 | `mcp.nix` | MCP servers for Claude Code |
 | `skills.nix` | Skills from other people's repos (pinned flake inputs), for Claude Code and Codex |
 | `local.nix` | Your own skills, agents and slash commands, read from `local/` |

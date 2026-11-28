@@ -8,7 +8,13 @@
 # Plugins come from pinned flake inputs and load through the wrapper's
 # --plugin-dir, so /plugin install and enable/disable don't apply to them:
 # add or remove a plugin here.
-{ pkgs, inputs, ... }:
+#
+# Mac sign-in links (claude-cli://) open ~/Applications/Claude Code URL
+# Handler.app, which Claude Code creates with a link to the exact store path
+# that first ran it. Claude Code doesn't update that link when it's upgraded,
+# so it goes stale (and breaks once garbage collection removes that version).
+# Every switch points it at the installed Claude Code and re-registers it.
+{ config, lib, pkgs, inputs, ... }:
 
 {
   programs.claude-code = {
@@ -32,4 +38,15 @@
       "${inputs.knowledge-work-plugins}/sales"
     ];
   };
+
+  home.activation.claudeCodeUrlHandler = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      app="$HOME/Applications/Claude Code URL Handler.app"
+      # Skipped until Claude Code has created the app (first sign-in)
+      if [ -d "$app/Contents/MacOS" ]; then
+        run ln -sfn ${lib.escapeShellArg "${config.programs.claude-code.package}/bin/.claude-unwrapped"} "$app/Contents/MacOS/claude"
+        run /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$app"
+      fi
+    ''
+  );
 }

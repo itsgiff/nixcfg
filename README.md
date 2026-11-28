@@ -136,6 +136,7 @@ No output means the system is unchanged.
 - **Homebrew `cleanup = "check"`:** a switch never removes anything, but it stops and lists any Homebrew package that isn't declared in `homebrew.nix`. Declare it or uninstall it, then switch again.
 - Switches never update or upgrade Homebrew packages; run `brewup` when you want that.
 - **The Dock pins Google Chrome only** (`persistent-apps` in `modules/darwin/defaults.nix`). Anything pinned by hand is removed on the next switch.
+- **Claude Code sign-in links** open `~/Applications/Claude Code URL Handler.app`, which Claude Code creates but doesn't update when it's upgraded. Every switch points it at the installed Claude Code (`modules/ai/claude-code.nix`).
 - Before changing a setting in System Settings or an app, run `prefwatch`, change one thing, then run `prefwatch` again to get the Nix line to declare it.
 
 ## Bootstrap a new machine
