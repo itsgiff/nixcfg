@@ -20,7 +20,7 @@ suggest a command; `nixSwitch` and `nixos-rebuild`/`darwin-rebuild` differ by ho
 1. **Paul makes every change and every commit.** Never edit files in
    `~/.nixcfg`, never run `nixSwitch`, `nixUpgrade`, `fullUpdate`, `sudo`,
    `git commit`, `git push` or `nix flake update` there. Deliver a patch file
-   (see "Making a patch").
+   in `~/Downloads` (see "Making a patch").
 2. **One change per patch and per rebuild**, so a failure points at one cause.
    Related edits that only work together are one change; anything else is a
    second patch. Flake input updates are always their own change.
@@ -51,19 +51,20 @@ rm -rf /tmp/nixcfg-work && git clone -q ~/.nixcfg /tmp/nixcfg-work && cd /tmp/ni
 git add -A                                   # a flake only sees files git knows about
 ```
 
-Check it there (next section), then write the patch, numbered if there are
-several, and show Paul the diff:
+Check it there (next section), then write the patch to `~/Downloads`, numbered
+if there are several. Use a unique name so an older patch is not overwritten,
+and show Paul the diff:
 
 ```bash
-mkdir -p /tmp/nixcfg-patches
-git -C /tmp/nixcfg-work diff --cached > /tmp/nixcfg-patches/0001-<slug>.patch
+mkdir -p ~/Downloads
+git -C /tmp/nixcfg-work diff --cached > ~/Downloads/0001-<slug>.patch
 ```
 
 Give Paul one copy-pasteable block, chained with `&&` so a failure stops
 before the rebuild:
 
 ```fish
-cd ~/.nixcfg && git pull && git apply --check /tmp/nixcfg-patches/0001-<slug>.patch && git apply /tmp/nixcfg-patches/0001-<slug>.patch && git add <new files> && nixSwitch
+cd ~/.nixcfg && git pull && git apply --check ~/Downloads/0001-<slug>.patch && git apply ~/Downloads/0001-<slug>.patch && git add <new files> && nixSwitch
 ```
 
 Leave out `git add` when the patch creates no files. Then, separately, after

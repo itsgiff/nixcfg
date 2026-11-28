@@ -95,6 +95,10 @@ The fish aliases are defined in `modules/fish.nix` and `users/paul/fish.nix`, an
 
 ### Making a change
 
+When Claude Code or Codex prepares a nixcfg change on either machine, the shared
+`nixcfg` skill has it work in a temporary clone and give you a patch in
+`~/Downloads` to apply and switch yourself.
+
 1. `git pull`
 2. Edit one thing.
 3. `nixSwitch` and check the result.

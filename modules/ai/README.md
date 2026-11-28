@@ -324,8 +324,8 @@ cd ~/.nixcfg && git rm modules/ai/local/agents/<name>.md && nixSwitch && gcm "fe
 - A bad switch: `sudo nixos-rebuild switch --rollback` (x1) or
   `sudo darwin-rebuild switch --rollback` (Mac).
 
-You can also ask Claude to "add the X MCP server / skill / plugin to nixcfg": it drafts the
-patch following this page. In Claude Code and Codex on either machine, the `nixcfg` skill
+You can also ask Claude Code or Codex to "add the X MCP server / skill / plugin to nixcfg":
+it drafts the patch following this page. On either machine, the shared `nixcfg` skill
 (`local/skills/nixcfg/SKILL.md`) gives the agent the house rules: it works in a clone in
-`/tmp`, writes patch files to `/tmp/nixcfg-patches/`, and never edits `~/.nixcfg`, switches,
+`/tmp`, writes patch files to `~/Downloads/`, and never edits `~/.nixcfg`, switches,
 commits or pushes. Update that skill when a rule here changes.
