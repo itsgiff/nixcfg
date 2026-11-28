@@ -7,7 +7,7 @@
 # Sources are pinned flake inputs; fullUpdate moves them. To add a skill,
 # add its source as an input (flake = false) and its name below. Skills from
 # your claude.ai account sync by themselves and don't belong here.
-{ lib, inputs, ... }:
+{ lib, pkgs, inputs, ... }:
 
 let
   # github:emilkowalski/skills (design and animation)
@@ -39,11 +39,11 @@ in
 {
   programs.claude-code.skills = skills;
 
-  # Codex runs inside the ChatGPT app, which writes ~/.codex/config.toml
-  # itself: no package and no settings here, so Home Manager only adds skills.
+  # The CLI and skills are managed here; the ChatGPT app still writes
+  # ~/.codex/config.toml itself.
   programs.codex = {
     enable = true;
-    package = null;
+    package = pkgs.codex;
     inherit skills;
   };
 }

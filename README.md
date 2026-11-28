@@ -72,7 +72,7 @@ User `paul` on both, with fish as the login shell.
 - **Home Manager is integrated**, not standalone. It runs as part of every system switch (`useGlobalPkgs`, `useUserPackages`). There is no `home-manager` command and no `homeConfigurations` output; rollbacks go through system generations.
 - User packages land in `/etc/profiles/per-user/paul/bin`.
 - `users/paul/home.nix` imports `hosts/<hostname>/home.nix` through the `hostname` special argument, so per-machine user settings live next to that machine's system config.
-- **AI tools:** Claude Code and Codex are set up in `modules/ai/`. To add or remove an MCP server, skill, plugin, agent or slash command, follow `modules/ai/README.md`. Account-level skills, connectors and ChatGPT plugins stay in the apps.
+- **AI tools:** Claude Code and the Codex CLI are installed through `modules/ai/`. To add or remove an MCP server, skill, plugin, agent or slash command, follow `modules/ai/README.md`. Account-level skills, connectors and ChatGPT plugins stay in the apps.
 - If Home Manager finds an unmanaged file where it wants to write one (for example an old `~/.ssh/config`), it renames the old file to `<name>.hm-bak` instead of failing the switch. Look for `*.hm-bak` files after a switch that takes over a new file.
 
 ## Daily use

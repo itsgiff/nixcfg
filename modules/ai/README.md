@@ -1,6 +1,6 @@
 # modules/ai
 
-Claude Code and Codex, set up the same way on both machines through Home Manager.
+Claude Code and the Codex CLI, set up the same way on both machines through Home Manager.
 This page is the how-to: each recipe below says which file to edit and which
 commands to run, to add or remove an MCP server, skill, plugin, agent or slash
 command.
@@ -10,7 +10,7 @@ command.
 | Layer | What | Managed by |
 |---|---|---|
 | Account | claude.ai skills, connectors, projects and memory; ChatGPT/Codex plugins and connectors | The Claude and ChatGPT apps. They sync to every device by themselves, so they stay out of nixcfg |
-| Machine | Claude Code (binary, settings, plugins, MCP servers, skills, agents, slash commands); Codex skills | This folder |
+| Machine | Claude Code (binary, settings, plugins, MCP servers, skills, agents, slash commands); Codex CLI and skills | This folder |
 | Project | `.claude/settings.json`, `.mcp.json`, `CLAUDE.md` / `AGENTS.md`, project skills in `.claude/skills/` | Committed in that project's own repo |
 | App state | `~/.claude.json`, sessions, history, sign-ins, `~/.codex/config.toml` | Never managed (the apps rewrite these) |
 
@@ -18,7 +18,7 @@ command.
 |---|---|
 | `claude-code.nix` | Claude Code package, user settings (`~/.claude/settings.json`) and plugins; on the Mac, keeps the sign-in link handler pointed at the installed Claude Code |
 | `mcp.nix` | MCP servers for Claude Code |
-| `skills.nix` | Skills from other people's repos (pinned flake inputs), for Claude Code and Codex |
+| `skills.nix` | Codex CLI from pinned nixpkgs, plus skills from other people's repos for Claude Code and Codex |
 | `local.nix` | Your own skills, agents and slash commands, read from `local/` |
 | `local/` | The files themselves: `skills/<name>/SKILL.md`, `agents/<name>.md`, `commands/<name>.md`. Holds `skills/nixcfg/`, the house rules for working on this repo |
 
@@ -26,6 +26,10 @@ Plugins and MCP servers are passed by the `claude` command's wrapper
 (`--plugin-dir`), so they apply to Claude Code started with `claude`. Claude
 Desktop and claude.ai don't see them; they use your account's skills and
 connectors.
+
+The `codex` command comes from the pinned nixpkgs package on both machines.
+Run `codex --version` after switching to verify it is on PATH. The ChatGPT app
+continues to own `~/.codex/config.toml` and sign-in state.
 
 ## Every change, start to finish
 
